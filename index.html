@@ -163,7 +163,7 @@ function go(k,first){CUR=k;[].forEach.call($('tabs').querySelectorAll('button'),
   $('sub').textContent=k==='3p'?'3Pシュート チャレンジ':(mo?mo.y+'年'+mo.m+'月　':'')+'試合は押すと詳しく見られます';
   var html=k==='3p'?D.tp:(mo?mo.main:'');
   var v=$('view');v.classList.add('out');
-  setTimeout(function(){v.innerHTML=html;applyView();v.classList.remove('out');reveal(v);
+  setTimeout(function(){v.innerHTML=html;[].forEach.call(v.querySelectorAll('script'),function(o){var n=document.createElement('script');n.textContent=o.textContent;o.parentNode.replaceChild(n,o)});applyView();v.classList.remove('out');reveal(v);
     var td=document.getElementById('today');if(first&&td&&td.offsetParent)setTimeout(function(){td.scrollIntoView({block:'center',behavior:'smooth'})},500);
     else if(!first)window.scrollTo({top:0,behavior:'smooth'})},first?0:180)}
 function applyView(){var c=$('vCard'),tb=$('vTable');if(!c||!tb)return;var tbl=VIEW==='table';c.style.display=tbl?'none':'';tb.style.display=tbl?'':'none';
