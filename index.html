@@ -41,10 +41,18 @@ main{padding:12px 16px 56px;max-width:560px;margin:0 auto;background:none!import
 .mt-in button{flex:1;position:relative;z-index:1;border:0;background:none;border-radius:10px;padding:10px 0;font-weight:900;font-size:15px;color:#77756f;transition:color .35s var(--ease);font-family:inherit}
 .mt-in button.on{color:#000}
 .mt-in .pill{position:absolute;top:0;bottom:0;left:0;border-radius:10px;background:var(--y);transition:transform .5s var(--ease),width .5s var(--ease);box-shadow:0 0 22px rgba(255,235,59,.35)}
-.sub{display:flex;gap:6px;margin:0 0 14px}
-.sub a,.sub button{flex:1;text-align:center;border-radius:999px;padding:10px 0;font-size:13px;font-weight:800;text-decoration:none;background:var(--card);color:var(--y);border:1px solid var(--line);font-family:inherit;transition:transform .2s}
-.sub .on{background:var(--y);color:#000;border-color:var(--y)}
-.sub a:active,.sub button:active{transform:scale(.95)}
+.sub{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 16px}
+.nv{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:12px 12px 11px;border-radius:14px;background:linear-gradient(160deg,#1c1c19,#121210);border:1px solid var(--line);color:var(--txt);text-decoration:none;font-family:inherit;text-align:left;transition:transform .25s var(--ease),border-color .3s,box-shadow .3s;-webkit-appearance:none;cursor:pointer}
+.nv:before{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,235,59,.14),transparent);transform:skewX(-20deg);animation:shine 3.2s var(--ease) 1.4s 1 both}
+@keyframes shine{from{left:-60%}to{left:130%}}
+.nv svg{width:22px;height:22px;stroke:var(--y);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nv b{display:block;font:900 italic 13px/1 -apple-system,"Arial Black",sans-serif;letter-spacing:.06em;color:#fff}
+.nv small{display:block;font-size:10.5px;color:var(--mute);margin-top:3px;font-weight:600}
+.nv i{position:absolute;right:10px;top:10px;font-style:normal;font-size:11px;color:#55534d;transition:transform .3s var(--ease),color .3s}
+.nv:active{transform:scale(.96)}
+.nv.on{border-color:var(--y);box-shadow:0 0 0 3px rgba(255,235,59,.12),0 8px 24px rgba(255,235,59,.12)}
+.nv.on i{color:var(--y)}
+@media(hover:hover){.nv:hover{border-color:rgba(255,235,59,.5);transform:translateY(-2px)}.nv:hover i{transform:translate(2px,-2px);color:var(--y)}}
 /* ===== 表示切替 ===== */
 .vw{background:var(--card)!important;border:1px solid var(--line)}.vw a{color:var(--mute)!important}.vw a.on{background:var(--y)!important;color:#000!important}
 #view{transition:opacity .25s ease,transform .35s var(--ease)}
@@ -116,7 +124,7 @@ function reveal(root){dates(root);var els=root.querySelectorAll('.day,.tp-hero,.
     else if(io)io.observe(el);else el.classList.add('in')})}
 function tabs(){var h='<span class="pill" id="pill"></span>'+D.months.map(function(x){return '<button data-k="'+x.key+'">'+x.m+'月</button>'}).join('');$('tabs').innerHTML=h;
   [].forEach.call($('tabs').querySelectorAll('button'),function(b){b.onclick=function(){go(b.dataset.k)}});
-  var u=D.url||'';$('sub2').innerHTML='<button id="tp3">🏀 3P</button><a href="'+u+'?mode=roster">👥 選手</a><a href="'+u+'?mode=album">📸 アルバム</a>';
+  var u=D.url||'';$('sub2').innerHTML='<button class="nv" id="tp3"><i>›</i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5.6 5.6c3.2 3 3.2 9.8 0 12.8M18.4 5.6c-3.2 3-3.2 9.8 0 12.8"/></svg><span><b>3POINT</b><small>3Pシュート記録</small></span></button><a class="nv" href="'+u+'?mode=roster"><i>↗</i><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 19c.6-3.3 3-5 6-5s5.4 1.7 6 5"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14.2c2.5.1 4.3 1.6 4.8 4.3"/></svg><span><b>ROSTER</b><small>選手名簿</small></span></a><a class="nv" href="'+u+'?mode=album"><i>↗</i><svg viewBox="0 0 24 24"><path d="M4 8h3l1.6-2.2h6.8L17 8h3v11H4z"/><circle cx="12" cy="13.3" r="3.6"/></svg><span><b>ALBUM</b><small>チームアルバム</small></span></a>';
   $('tp3').onclick=function(){go('3p')};$('links').innerHTML=D.links||'';reveal($('links'))}
 function pill(){var on=$('tabs').querySelector('button.on'),p=$('pill');if(!p)return;if(!on){p.style.opacity=0;return}
   p.style.opacity=1;p.style.width=on.offsetWidth+'px';p.style.transform='translateX('+on.offsetLeft+'px)'}
