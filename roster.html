@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Jr.CLUB市原 ROSTER</title>
+<link rel="icon" href="logo.jpg">
+<link rel="apple-touch-icon" href="logo.jpg">
+<link rel="stylesheet" href="common.css">
+<style>
+.filters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:relative;margin-bottom:14px}
+.filters button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 8px}
+.filters button b{font:900 italic 14px/1 var(--disp);letter-spacing:.06em;color:#bdbbb4}
+.filters button small{font-size:10px;font-weight:700;color:var(--mute)}
+.filters button.on{border-color:var(--y);box-shadow:0 0 0 3px rgba(255,235,59,.1),0 8px 22px rgba(255,235,59,.14);background:linear-gradient(160deg,#25230f,#121210)}
+.filters button.on b{color:#fff}.filters button.on small{color:var(--y)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}}
+.pc{padding:0;cursor:default}
+.ph{position:relative;aspect-ratio:1/1;background:linear-gradient(150deg,#262624,#111);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.08);transition:transform 1.2s var(--ease)}
+.pc.in .ph img{transform:none}
+.ph:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 50%,rgba(0,0,0,.8))}
+.ini{font:900 54px/1 var(--disp);color:#2e2e2b}
+.no{position:absolute;left:10px;bottom:4px;z-index:1;font:900 italic 46px/1 var(--disp);color:var(--y);letter-spacing:-.02em;text-shadow:3px 3px 0 rgba(0,0,0,.5)}
+.pos{position:absolute;right:8px;top:8px;z-index:1;background:rgba(0,0,0,.75);color:var(--y);font-size:10px;font-weight:800;letter-spacing:.1em;padding:3px 7px;border-radius:5px;border:1px solid rgba(255,235,59,.35)}
+.bd{padding:10px 11px 12px}.kn{font-size:10px;color:var(--mute);letter-spacing:.06em}.nm{font-size:16px;font-weight:800;margin:2px 0 7px;color:#fff}
+.meta{display:flex;gap:4px;flex-wrap:wrap}.meta span{font-size:10px;font-weight:700;border:1px solid #33322e;color:#bdbbb4;border-radius:5px;padding:2px 6px}
+.fr{font-size:11px;color:#ddd;margin-top:8px;font-weight:700}.fr small{display:inline-block;font-size:9px;letter-spacing:.2em;color:var(--y);margin-right:6px}
+.cm{font-size:11px;color:#9a9893;margin-top:8px;line-height:1.5}
+.ft{text-align:center;margin-top:26px;font-size:10px;color:#4a4944;letter-spacing:.3em}
+</style>
+</head>
+<body>
+<header class="hero"><div class="big">ROSTER</div><div class="rush"></div><div class="in">
+  <img src="logo.jpg" alt="ICHIHARA">
+  <div><h1 data-split>ROSTER</h1><p id="cnt">JR.CLUB ICHIHARA</p><div class="tg">POUNDING THE ROCK</div></div>
+</div></header>
+<main>
+  <div class="topnav"><a class="tile back" href="./">‹ <b>SCHEDULE</b><small>予定表にもどる</small></a></div>
+  <div id="gate" class="tile gate" style="display:none"><b>TEAM ONLY</b><p>チームのパスコードを入れてください（チームのLINEでお知らせしています）</p><input id="pw" type="password" inputmode="numeric" autocomplete="off"><button id="go" class="btn">開く</button></div>
+  <div id="body" style="display:none">
+    <div class="filters" id="flt"></div>
+    <div class="grid" id="grid"></div>
+    <div class="ft">POUNDING THE ROCK</div>
+  </div>
+  <div id="load"><div class="sk"></div><div class="sk"></div></div>
+</main>
+<script src="common.js"></script>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)},D=null,F='ALL',KEY='jrclub_roster_v1';
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function draw(){
+  var all=D.players,cnt=function(t){return all.filter(function(p){return t==='ALL'||p.team===t}).length};
+  $('cnt').textContent='2026 SEASON　'+all.length+' PLAYERS';
+  $('flt').innerHTML=[['ALL','ALL','全員'],['A','A TEAM','Aチーム'],['2nd','2ND','2nd']].map(function(t){return '<button class="tile'+(F===t[0]?' on':'')+'" data-f="'+t[0]+'"><b>'+t[1]+'</b><small>'+t[2]+'・'+cnt(t[0])+'人</small></button>'}).join('');
+  [].forEach.call($('flt').querySelectorAll('button'),function(b){b.onclick=function(){F=b.dataset.f;draw()}});
+  var list=all.filter(function(p){return F==='ALL'||p.team===F});
+  $('grid').innerHTML=list.map(function(p){
+    var meta=[p.grade,p.height?p.height+(/cm$/.test(p.height)?'':'cm'):'',p.team?(p.team==='A'?'A TEAM':'2ND'):''].filter(Boolean);
+    return '<div class="tile pc"><div class="ph">'+(p.photo?'<img src="'+p.photo+'" alt="">':'<span class="ini">'+esc(p.name.replace(/\s/g,'').slice(0,1))+'</span>')+
+      '<span class="no">'+esc(p.no||'-')+'</span>'+(p.pos?'<span class="pos">'+esc(p.pos)+'</span>':'')+'</div>'+
+      '<div class="bd"><div class="kn">'+esc(p.kana)+'</div><div class="nm">'+esc(p.name)+'</div><div class="meta">'+meta.map(function(x){return '<span>'+esc(x)+'</span>'}).join('')+'</div>'+
+      (p.from?'<div class="fr"><small>FROM</small>'+esc(p.from)+'</div>':'')+(p.comment?'<div class="cm">“'+esc(p.comment)+'”</div>':'')+'</div></div>'}).join('')||'<div class="msg">選手がいません</div>';
+  JR.reveal($('grid'),'.pc');
+}
+function show(d){D=d;$('load').style.display='none';$('gate').style.display='none';$('body').style.display='block';draw()}
+var c=JR.load(KEY);if(c&&c.players)show(c);
+function fetchIt(pass){JR.rpc('getRosterData',[pass]).then(function(d){
+    if(d.needPass){JR.pass('');$('load').style.display='none';$('body').style.display='none';$('gate').style.display='block';return}
+    JR.pass(pass);JR.save(KEY,d);if(!c||JSON.stringify(c.players)!==JSON.stringify(d.players))show(d);c=d})
+  .catch(function(e){$('load').style.display='none';if(!c)$('gate').insertAdjacentHTML('beforebegin','<div class="err">読み込めませんでした（'+esc(e.message||e)+'）</div>')})}
+$('go').onclick=function(){$('gate').style.display='none';$('load').style.display='block';fetchIt($('pw').value.trim())};
+$('pw').onkeydown=function(e){if(e.key==='Enter')$('go').click()};
+fetchIt(JR.pass());
+})();
+</script>
+</body>
+</html>

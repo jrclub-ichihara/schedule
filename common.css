@@ -1,0 +1,33 @@
+:root{--ink:#0b0b0a;--card:#161614;--line:#2a2a26;--y:#ffeb3b;--txt:#f3f3ef;--mute:#8f8d86;--ease:cubic-bezier(.2,.75,.2,1);--disp:-apple-system,"Arial Black",sans-serif}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;font-size:15px;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+.hero{position:relative;overflow:hidden;background:#000;padding:22px 16px 20px;padding-top:max(22px,env(safe-area-inset-top));border-bottom:1px solid #222}
+.hero .big{position:absolute;right:-10px;bottom:-14px;font:900 italic 74px/1 Impact,"Arial Black",sans-serif;color:transparent;-webkit-text-stroke:1.5px rgba(255,235,59,.22);transform:skewX(-8deg);white-space:nowrap;animation:drift 12s ease-in-out infinite alternate;pointer-events:none}
+@keyframes drift{to{transform:skewX(-8deg) translateX(-30px)}}
+.hero .rush{position:absolute;left:-20%;top:0;bottom:0;width:60%;background:repeating-linear-gradient(115deg,transparent 0 14px,rgba(255,235,59,.06) 14px 16px);animation:rush 2.4s var(--ease) .2s both;pointer-events:none}
+@keyframes rush{from{transform:translateX(-60%);opacity:0}to{transform:none;opacity:1}}
+.hero .in{position:relative;display:flex;align-items:center;gap:14px;max-width:720px;margin:0 auto}
+.hero img{width:56px;height:62px;border-radius:6px;flex:none;opacity:0;transform:scale(.8) rotate(-6deg);animation:pop .7s var(--ease) .1s forwards}
+.hero h1{margin:0;font:900 italic 30px/1 var(--disp);letter-spacing:.03em;color:var(--y);text-shadow:3px 3px 0 rgba(255,235,59,.18)}
+.hero h1 span{display:inline-block;opacity:0;filter:blur(8px);transform:translateY(14px) scale(.9);animation:soft .8s var(--ease) forwards}
+.hero p{margin:6px 0 0;font-size:12px;color:#fff;opacity:0;transform:translateY(6px);animation:fade .8s var(--ease) .7s forwards}
+.hero .tg{font-size:10px;letter-spacing:.3em;color:var(--y);opacity:0;margin-top:4px;animation:fade 1s ease 1s forwards}
+@keyframes soft{to{opacity:1;filter:blur(0);transform:none}}@keyframes pop{to{opacity:1;transform:none}}@keyframes fade{to{opacity:.9;transform:none}}
+main{padding:12px 16px 56px;max-width:720px;margin:0 auto}
+.tile{position:relative;overflow:hidden;background:linear-gradient(160deg,#1c1c19,#121210);border:1px solid var(--line);border-radius:14px;color:var(--txt);text-decoration:none;font-family:inherit;transition:transform .25s var(--ease),border-color .3s,box-shadow .3s;-webkit-appearance:none}
+button.tile{cursor:pointer}
+.tile:active{transform:scale(.97)}
+@media(hover:hover){a.tile:hover,button.tile:hover{border-color:rgba(255,235,59,.5)}}
+.topnav{display:flex;margin:2px 0 12px}
+.back{display:inline-flex;align-items:baseline;gap:8px;padding:10px 14px;color:var(--y);font-weight:900}
+.back b{font:900 italic 13px/1 var(--disp);letter-spacing:.06em;color:#fff}.back small{font-size:11px;color:var(--mute)}
+.gate{padding:18px 16px}.gate b{font:900 italic 16px/1 var(--disp);letter-spacing:.08em;color:var(--y)}.gate p{font-size:13px;color:var(--mute);line-height:1.6}
+.gate input{width:100%;box-sizing:border-box;font-size:18px;padding:12px;border-radius:10px;border:1px solid var(--line);background:#0e0e0d;color:#fff}
+.btn{margin-top:10px;width:100%;border:0;border-radius:12px;background:var(--y);color:#000;font-weight:900;font-size:16px;padding:12px;font-family:inherit}
+.sk{height:72px;border-radius:16px;margin-bottom:10px;background:linear-gradient(90deg,#161614 25%,#22221f 50%,#161614 75%);background-size:200% 100%;animation:sh 1.2s infinite}
+@keyframes sh{to{background-position:-200% 0}}
+.err{background:#2a1513;color:#ff8a7a;border-radius:12px;padding:12px;font-size:13px;margin-bottom:10px}
+.msg{text-align:center;color:var(--mute);padding:30px 10px;font-size:13px}
+.rv{opacity:0;transform:translateY(26px) scale(.97);filter:blur(4px);transition:opacity .7s var(--ease),transform .8s var(--ease),filter .7s var(--ease)}
+.rv.in{opacity:1;transform:none;filter:none}
+@media (prefers-reduced-motion:reduce){.rv{transform:none!important;filter:none!important;transition:opacity .5s ease!important}}

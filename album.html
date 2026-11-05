@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Jr.CLUB市原 TEAM ALBUM</title>
+<link rel="icon" href="logo.jpg">
+<link rel="apple-touch-icon" href="logo.jpg">
+<style>body{margin:0;background:#0c0c0c;color:#f2f2f2;font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;font-size:15px}header{padding:14px 16px;border-bottom:1px solid #222;display:flex;gap:12px;align-items:center;position:sticky;top:0;background:#0c0c0c;z-index:5}header img{width:40px;border-radius:6px}header h1{margin:0;font-size:17px;color:#ffeb3b;letter-spacing:.04em}header p{margin:2px 0 0;font-size:11px;color:#888}main{padding:12px 14px 60px;max-width:760px;margin:0 auto}.card{background:#151515;border:1px solid #232323;border-radius:14px;padding:14px;margin-bottom:12px}label{font-size:12px;color:#888;display:block;margin:0 0 6px}input[type=password],input[type=text],input[type=date],select{width:100%;box-sizing:border-box;font-size:16px;padding:10px;border-radius:10px;border:1px solid #333;background:#0c0c0c;color:#fff}.help{font-size:12px;color:#9a9a9a;line-height:1.7;margin:0 0 10px}.btn{display:block;width:100%;box-sizing:border-box;text-align:center;border:0;border-radius:10px;padding:13px;font-size:15px;font-weight:700;margin-top:8px}.b1{background:#ffeb3b;color:#0c0c0c}.b2{background:#0c0c0c;border:1px solid #333;color:#fff}.btn:disabled{opacity:.35}.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#ffeb3b;color:#0c0c0c;font-weight:700;padding:10px 18px;border-radius:999px;font-size:14px;display:none;z-index:99}
+  .yrs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px}.yrs button{flex:none;border:1px solid #2a2a2a;background:none;color:#888;border-radius:999px;padding:8px 14px;font-weight:800;font-size:13px}
+  .yrs button.on{background:#ffeb3b;color:#0c0c0c;border-color:#ffeb3b}
+  .tabs{display:flex;border-bottom:1px solid #222;margin-bottom:12px}.tabs button{flex:1;border:0;background:none;color:#777;padding:10px;font-weight:800;font-size:14px;border-bottom:3px solid transparent}.tabs button.on{color:#ffeb3b;border-color:#ffeb3b}
+  .albs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(min-width:600px){.albs{grid-template-columns:repeat(3,1fr)}}
+  .alb{background:#151515;border:1px solid #232323;border-radius:12px;overflow:hidden;cursor:pointer}.alb .cv{aspect-ratio:4/3;background:#1d1d1d;overflow:hidden}.alb .cv img{width:100%;height:100%;object-fit:cover;display:block}
+  .alb .tt{padding:8px 10px 10px}.alb b{display:block;font-size:13px;line-height:1.35}.alb small{font-size:11px;color:#888}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}.chips button{border:1px solid #2a2a2a;background:#151515;color:#ddd;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:700}.chips button i{font-style:normal;color:#ffeb3b;margin-left:4px;font-size:11px}
+  .chips button.on{background:#ffeb3b;color:#0c0c0c}.chips button.on i{color:#0c0c0c}.chips button:disabled{opacity:.35}
+  .hd{display:flex;align-items:center;gap:8px;margin:4px 0 10px}.hd button{border:1px solid #333;background:none;color:#fff;border-radius:999px;padding:6px 12px;font-size:13px}.hd b{font-size:15px}.hd small{color:#888;margin-left:auto;font-size:12px}
+  .ph{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}@media(min-width:600px){.ph{grid-template-columns:repeat(4,1fr)}}
+  .ph div{aspect-ratio:1/1;background:#1a1a1a;overflow:hidden;cursor:pointer}.ph img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .3s}.ph img.ld{opacity:1}
+  .more{margin:14px auto;display:block;border:1px solid #333;background:none;color:#fff;border-radius:999px;padding:10px 22px}
+  .lb{position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:200;display:none;flex-direction:column}.lb.on{display:flex}
+  .lb .top{display:flex;align-items:center;gap:8px;padding:10px 12px;color:#bbb;font-size:12px}.lb .top button{margin-left:auto;border:0;background:#222;color:#fff;border-radius:999px;width:38px;height:38px;font-size:18px}
+  .lb .im{flex:1;display:flex;align-items:center;justify-content:center;position:relative;touch-action:pan-y}.lb .im img{max-width:100%;max-height:100%;object-fit:contain}
+  .lb .nav{position:absolute;top:50%;transform:translateY(-50%);border:0;background:rgba(255,255,255,.12);color:#fff;width:42px;height:42px;border-radius:50%;font-size:20px}.lb .pv{left:8px}.lb .nx{right:8px}
+  .lb .bt{padding:10px 14px 18px;font-size:12px;color:#999;display:flex;gap:8px;align-items:center;flex-wrap:wrap}.lb .bt span{background:#222;border-radius:999px;padding:3px 10px;color:#ffeb3b}
+  .lb .cvr{margin-left:auto;border:1px solid #6b5a00;background:none;color:#ffeb3b;border-radius:999px;padding:6px 12px;font-size:12px}
+  .lb .cvr+.hide{margin-left:0}
+.lb .fc{padding:0 12px}.lb .fl{display:flex;gap:10px;overflow-x:auto;padding:6px 2px}
+  .lb .fx{flex:none;border:0;background:none;color:#ddd;display:flex;flex-direction:column;align-items:center;gap:3px;width:60px;padding:0}
+  .lb .fx img,.lb .fx .nf{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #ffeb3b;display:flex;align-items:center;justify-content:center;background:#222;font-size:18px;box-sizing:border-box}
+  .lb .fx em{font-style:normal;font-size:10.5px;line-height:1.2;max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lb .fx.q img{border-color:#777}.lb .fx.out img{opacity:.35;border-color:#444}.lb .fx.add .nf{border-style:dashed;color:#ffeb3b}
+  .lb .fh{margin:2px 2px 0;font-size:11px;color:#777}
+  .pk{position:fixed;inset:0;z-index:260;background:rgba(0,0,0,.6);display:none;align-items:flex-end}.pk.on{display:flex}
+  .pkin{background:#141414;border-top:2px solid #ffeb3b;border-radius:16px 16px 0 0;width:100%;max-height:78vh;overflow:auto;padding:14px 14px 22px;box-sizing:border-box}
+  .pkh{display:flex;align-items:center;gap:10px;margin-bottom:10px}.pkh img{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #ffeb3b}.pkh b{font-size:15px}
+  .pkl{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}.pkl button{border:1px solid #2a2a2a;background:#1c1c1c;color:#eee;border-radius:10px;padding:11px 8px;font-size:13px;font-weight:700;text-align:left}
+  .pkl button.cur{background:#ffeb3b;color:#111}.pkl button.sub{color:#ff8a65;grid-column:span 1}
+  .pkc{margin-top:12px;width:100%;border:1px solid #333;background:none;color:#bbb;border-radius:999px;padding:11px;font-size:14px}
+  .lb .hide{margin-left:auto;border:1px solid #4a2522;background:none;color:#ff6b5e;border-radius:999px;padding:6px 12px;font-size:12px}
+  .empty{text-align:center;color:#777;padding:40px 10px;font-size:13px;line-height:1.8}
+  .addAlb{display:block;text-align:center;text-decoration:none;background:#ffeb3b;color:#0c0c0c;font-weight:900;font-size:15px;border-radius:12px;padding:13px;margin:0 0 12px}
+  .addAlb.add2{background:none;color:#ffeb3b;border:1.5px dashed #ffeb3b;padding:11px}
+  </style>
+<link rel="stylesheet" href="common.css">
+<style>
+body{background:var(--ink)!important}
+main{padding:12px 16px 56px!important}
+.lb{background:#050505!important;z-index:300!important}.pk{z-index:320!important}
+.card{background:linear-gradient(160deg,#1c1c19,#121210)!important;border:1px solid var(--line)!important;border-radius:14px!important}
+.yrs button{border-radius:12px!important;border:1px solid var(--line)!important;background:linear-gradient(160deg,#1c1c19,#121210)!important;color:#bdbbb4!important;font:900 italic 13px/1 var(--disp)!important;letter-spacing:.05em;padding:10px 14px!important}
+.yrs button.on{border-color:var(--y)!important;color:#fff!important;box-shadow:0 0 0 3px rgba(255,235,59,.1)}
+.tabs{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;border:0!important;margin-bottom:14px!important}
+.tabs button{border:1px solid var(--line)!important;border-radius:12px!important;background:linear-gradient(160deg,#1c1c19,#121210)!important;color:var(--mute)!important;padding:10px!important;font-size:12px!important;transition:transform .25s var(--ease)}
+.tabs button:before{display:block;font:900 italic 13px/1 var(--disp);letter-spacing:.06em;color:#bdbbb4;margin-bottom:4px}
+.tabs button[data-v=a]:before{content:"ALBUMS"}.tabs button[data-v=p]:before{content:"PLAYERS"}
+.tabs button.on{border-color:var(--y)!important;color:var(--y)!important;box-shadow:0 0 0 3px rgba(255,235,59,.1);background:linear-gradient(160deg,#25230f,#121210)!important}.tabs button.on:before{color:#fff}
+.tabs button:active,.alb:active,.chips button:active{transform:scale(.97)}
+.alb{border-radius:14px!important;border:1px solid var(--line)!important;background:linear-gradient(160deg,#1c1c19,#121210)!important;transition:transform .25s var(--ease),border-color .3s}
+.alb .cv img{transition:transform 1.2s var(--ease)}.alb.in .cv img{transform:scale(1.04)}
+.alb b{color:#fff}
+.addAlb{border-radius:14px!important;font:900 italic 14px/1 var(--disp)!important;letter-spacing:.04em;padding:15px!important;box-shadow:0 8px 24px rgba(255,235,59,.18)}
+.addAlb.add2{box-shadow:none}
+.chips button{border-radius:12px!important;border:1px solid var(--line)!important;background:linear-gradient(160deg,#1c1c19,#121210)!important;transition:transform .25s var(--ease)}
+.chips button.on{background:var(--y)!important;color:#000!important}
+.hd button{border-radius:12px!important;border:1px solid var(--line)!important;background:linear-gradient(160deg,#1c1c19,#121210)!important;font-weight:800}
+.ph div{border-radius:6px}
+.help a{font-weight:800}
+@media(hover:hover){.alb:hover,.chips button:hover,.tabs button:hover{border-color:rgba(255,235,59,.5)!important}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="big">ALBUM</div><div class="rush"></div><div class="in">
+  <img src="logo.jpg" alt="ICHIHARA">
+  <div><h1 data-split>TEAM ALBUM</h1><p>Jr.CLUB市原の思い出</p><div class="tg">POUNDING THE ROCK</div></div>
+</div></header>
+<div style="max-width:720px;margin:0 auto;padding:12px 16px 0"><div class="topnav" style="margin:0"><a class="tile back" href="./">‹ <b>SCHEDULE</b><small>予定表にもどる</small></a></div></div>
+<script src="common.js"></script>
+<script>JR.shim();</script>
+
+  
+  <main>
+    <div class="card" id="login" style="display:none"><label>チームのパスコード</label><input type="password" id="pass" inputmode="numeric"><button class="btn b1" id="go">開く</button></div>
+    <div id="body" style="display:none"><div class="yrs" id="yrs"></div><div class="tabs"><button data-v="a" class="on">アルバム</button><button data-v="p">選手で探す</button></div><div id="view"></div></div>
+  </main>
+  <div class="lb" id="lb"><div class="top"><span id="lbT"></span><button id="lbX">×</button></div><div class="im" id="lbI"><img id="lbImg"><button class="nav pv" id="lbP">‹</button><button class="nav nx" id="lbN">›</button></div><div class="fc" id="lbF"></div><div class="bt" id="lbB"></div></div>
+  <div class="pk" id="pk"><div class="pkin"><div class="pkh" id="pkH"></div><div class="pkl" id="pkL"></div><button class="pkc" id="pkC">やめる</button></div></div>
+  <div class="toast" id="toast"></div>
+  <script>
+  var PRE=(function(){var q=new URLSearchParams(location.search);return {a:(q.get("a")||"").replace(/\D/g,"").slice(0,8),t:(q.get("t")||"").slice(0,60),n:q.get("new")?1:0}})(),PASS='',ADMIN='',D=null,FY=0,V='a',CUR=null,LIST=[],SHOWN=0,IDX=0,TH={},$=function(i){return document.getElementById(i)};
+  function upUrl(q){return (D&&D.url?D.url:'')+'?mode=up'+q}
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function toast(t){var e=$('toast');e.textContent=t;e.style.display='block';setTimeout(function(){e.style.display='none'},1800)}
+  try{PASS=localStorage.getItem('jrclub_team_pass')||'';ADMIN=localStorage.getItem('jrclub_plan_pass')||''}catch(e){}
+  function md(k){return (+k.slice(4,6))+'/'+(+k.slice(6,8))}
+  function init(){google.script.run.withSuccessHandler(function(d){
+    if(d.needPass){$('login').style.display='block';return}
+    try{localStorage.setItem('jrclub_team_pass',PASS)}catch(e){}
+    D=d;if(!d.isAdmin)ADMIN='';$('login').style.display='none';$('body').style.display='block';
+    var ys={};d.photos.forEach(function(p){ys[p.fy]=1});var yl=Object.keys(ys).map(Number).sort(function(a,b){return b-a});
+    if(!yl.length){$('view').innerHTML='<a class="addAlb" href="'+upUrl('&new=1')+'" target="_top">＋ 新しいアルバム</a><div class="empty">まだ写真がありません。<br>上の「＋ 新しいアルバム」から入れてください📸</div>';return}
+    FY=yl[0];
+    if(PRE.a){var hit=d.photos.filter(function(p){return p.ymd===PRE.a&&(!PRE.t||p.t===PRE.t)});
+      if(hit.length){FY=hit[0].fy;var t0=hit[0].t;CUR={t:t0,sub:md(PRE.a),list:d.photos.filter(function(p){return p.ymd===PRE.a&&p.t===t0}),alb:{a:PRE.a,t:t0}}}}
+    $('yrs').innerHTML=yl.map(function(y){return '<button data-y="'+y+'"'+(y===FY?' class="on"':'')+'>'+y+'年度</button>'}).join('');render();
+  }).withFailureHandler(function(e){alert(e.message||e)}).getAlbumIndex(PASS,ADMIN)}
+  $('go').onclick=function(){PASS=$('pass').value.trim();init()};
+  $('yrs').onclick=function(e){var b=e.target.closest('button');if(!b)return;FY=+b.dataset.y;[].forEach.call(this.children,function(x){x.classList.toggle('on',x===b)});CUR=null;render()};
+  [].forEach.call(document.querySelectorAll('.tabs button'),function(b){b.onclick=function(){V=b.dataset.v;CUR=null;[].forEach.call(document.querySelectorAll('.tabs button'),function(x){x.classList.toggle('on',x===b)});render()}});
+  function inYear(){return D.photos.filter(function(p){return p.fy===FY})}
+  function albums(){var m={};inYear().forEach(function(p){var k=p.ymd+'|'+p.t;(m[k]=m[k]||{ymd:p.ymd,t:p.t,list:[]}).list.push(p)});
+    return Object.keys(m).map(function(k){var a=m[k];a.cover=a.list.slice().sort(function(x,y){return (y.c||0)-(x.c||0)||y.s-x.s})[0];return a}).sort(function(a,b){return a.ymd<b.ymd?1:-1})}
+  function render(){
+    if(CUR){showList();return}
+    if(V==='a'){var al=albums();
+      $('view').innerHTML='<a class="addAlb" href="'+upUrl('&new=1')+'" target="_top">＋ 新しいアルバム</a>'+(al.length?'<div class="albs">'+al.map(function(a,i){return '<div class="alb" data-i="'+i+'"><div class="cv"><img data-id="'+a.cover.id+'"></div><div class="tt"><b>'+esc(a.t)+'</b><small>'+md(a.ymd)+'・'+a.list.length+'枚</small></div></div>'}).join('')+'</div>':'<div class="empty">この年度の写真はまだありません</div>');
+      [].forEach.call($('view').querySelectorAll('.alb'),function(el){el.onclick=function(){var a=al[+el.dataset.i];CUR={t:a.t,sub:md(a.ymd),list:a.list,alb:{a:a.ymd,t:a.t}};render()}});
+    }else{var cnt={};inYear().forEach(function(p){p.n.forEach(function(n){cnt[n]=(cnt[n]||0)+1})});
+      var names=D.roster.map(function(r){return r.name});Object.keys(cnt).forEach(function(n){if(names.indexOf(n)<0)names.push(n)});
+      $('view').innerHTML='<p class="help">名前を押すと、その子が写っている写真が見られます（顔で自動に見分けているので、たまに間違いもあります。写真を開いて顔を押すと、その場で直せます）<br><a href="'+(D.url||'')+'?mode=faces" target="_top" style="color:#ffeb3b">まとめて名前を付ける（顔の名前付けページ）›</a></p><div class="chips">'+names.map(function(n){var r=D.roster.filter(function(x){return x.name===n})[0];
+        return '<button data-n="'+esc(n)+'"'+(cnt[n]?'':' disabled')+'>'+(r?'#'+esc(r.no)+' ':'')+esc(n)+'<i>'+(cnt[n]||0)+'</i></button>'}).join('')+'</div>';
+      [].forEach.call($('view').querySelectorAll('.chips button'),function(b){b.onclick=function(){var n=b.dataset.n;CUR={t:n,sub:FY+'年度',list:inYear().filter(function(p){return p.n.indexOf(n)>=0}).sort(function(a,b){return a.ymd<b.ymd?1:-1})};render()}});
+    }
+    loadThumbs();
+  }
+  function showList(){LIST=CUR.list;SHOWN=0;
+    $('view').innerHTML='<div class="hd"><button id="bk">‹ もどる</button><b>'+esc(CUR.t)+'</b><small>'+esc(CUR.sub)+'・'+LIST.length+'枚</small></div>'+(CUR.alb?'<a class="addAlb add2" href="'+upUrl('&a='+CUR.alb.a+'&t='+encodeURIComponent(CUR.alb.t))+'" target="_top">＋ このアルバムに写真を追加</a>':'')+'<div class="ph" id="ph"></div><button class="more" id="more" style="display:none">もっと見る</button>';
+    $('bk').onclick=function(){CUR=null;render();window.scrollTo(0,0)};$('more').onclick=more;more();window.scrollTo(0,0)}
+  function more(){var add=LIST.slice(SHOWN,SHOWN+60);SHOWN+=add.length;
+    $('ph').insertAdjacentHTML('beforeend',add.map(function(p,i){return '<div data-k="'+(SHOWN-add.length+i)+'"><img data-id="'+p.id+'"></div>'}).join(''));
+    $('more').style.display=SHOWN<LIST.length?'block':'none';loadThumbs()}
+  $('view').addEventListener('click',function(e){var c=e.target.closest('.ph div');if(c)openLb(+c.dataset.k)});
+  function loadThumbs(){var imgs=[].slice.call($('view').querySelectorAll('img[data-id]:not([src])'));var need=[];
+    imgs.forEach(function(im){var id=im.dataset.id;if(TH[id]){im.src=TH[id];im.classList.add('ld')}else if(need.indexOf(id)<0)need.push(id)});
+    for(var i=0;i<need.length;i+=30)(function(ids){google.script.run.withSuccessHandler(function(m){Object.keys(m).forEach(function(k){TH[k]=m[k]});
+      imgs.forEach(function(im){if(m[im.dataset.id]){im.src=m[im.dataset.id];im.classList.add('ld')}})}).getAlbumThumbs(PASS,ids)})(need.slice(i,i+30))}
+  function openLb(k){IDX=k;$('lb').classList.add('on');showLb()}
+  function showLb(){var p=LIST[IDX];if(!p)return;$('lbT').textContent=(IDX+1)+' / '+LIST.length+'　'+md(p.ymd)+' '+p.t;
+    $('lbImg').src=TH[p.id]||'';loadFaces(p);$('lbB').innerHTML='<em style="font-style:normal">長押しで保存できます</em>'+(ADMIN?'<button class="cvr" id="cv">'+(p.c?'★ 表紙になっています':'☆ アルバムの表紙にする')+'</button><button class="hide" id="hd">この写真を非表示</button>':'');
+    if(ADMIN&&!p.c)$('cv').onclick=function(){google.script.run.withSuccessHandler(function(){toast('表紙にしました');D.photos.forEach(function(x){if(x.ymd===p.ymd&&x.t===p.t)x.c=0});p.c=1;showLb()}).withFailureHandler(function(e){alert(e.message||e)}).setAlbumCover(ADMIN,p.id)};
+    if(ADMIN)$('hd').onclick=function(){if(!confirm('この写真をアルバムに出さないようにしますか？'))return;google.script.run.withSuccessHandler(function(){toast('非表示にしました');
+      D.photos=D.photos.filter(function(x){return x.id!==p.id});LIST.splice(IDX,1);CUR.list=LIST;$('lb').classList.remove('on');showList()}).withFailureHandler(function(e){alert(e.message||e)}).hideAlbumPhoto(ADMIN,p.id)};
+    var id=p.id;google.script.run.withSuccessHandler(function(d){if(LIST[IDX]&&LIST[IDX].id===id)$('lbImg').src=d}).getAlbumFull(PASS,id)}
+  var FACES={};
+  function loadFaces(p){var id=p.id;if(FACES[id]){drawFaces(p);return}$('lbF').innerHTML='<p class="fh">写っている子を確認中…</p>';
+    google.script.run.withSuccessHandler(function(fs){FACES[id]=fs;if(LIST[IDX]&&LIST[IDX].id===id)drawFaces(p)}).withFailureHandler(function(){$('lbF').innerHTML=''}).getPhotoFaces(PASS,id)}
+  function drawFaces(p){var fs=FACES[p.id]||[];
+    $('lbF').innerHTML='<div class="fl">'+fs.map(function(f,i){var out=f.n==='対象外';
+      return '<button class="fx'+(out?' out':f.n?'':' q')+'" data-i="'+i+'">'+(f.c?'<img src="'+f.c+'">':'<span class="nf">🏀</span>')+'<em>'+(out?'チーム外':f.n?esc(f.n.split(/\s/)[0]):'だれ？')+'</em></button>'}).join('')+
+      '<button class="fx add" id="fAdd"><span class="nf">＋</span><em>子を追加</em></button></div><p class="fh">名前がちがう時は、顔を押すとその場で直せます</p>';
+    [].forEach.call($('lbF').querySelectorAll('.fx[data-i]'),function(b){b.onclick=function(){pickFace(p,fs[+b.dataset.i])}});
+    $('fAdd').onclick=function(){pickAdd(p)}}
+  function syncNames(p){var m={};(FACES[p.id]||[]).forEach(function(f){if(f.n&&f.n!=='対象外')m[f.n]=1});p.n=Object.keys(m)}
+  function closePk(){$('pk').classList.remove('on')}
+  $('pkC').onclick=closePk;$('pk').onclick=function(e){if(e.target===this)closePk()};
+  function openPk(head,cur,extra,cb){$('pkH').innerHTML=head;
+    $('pkL').innerHTML=D.roster.map(function(r){return '<button data-n="'+esc(r.name)+'"'+(r.name===cur?' class="cur"':'')+'>#'+esc(r.no)+' '+esc(r.name)+'</button>'}).join('')+
+      extra.map(function(x){return '<button class="sub" data-n="'+esc(x[0])+'">'+esc(x[1])+'</button>'}).join('');
+    [].forEach.call($('pkL').querySelectorAll('button'),function(b){b.onclick=function(){closePk();cb(b.dataset.n)}});
+    $('pk').classList.add('on')}
+  function pickFace(p,f){openPk((f.c?'<img src="'+f.c+'">':'')+'<b>この顔はだれ？</b>',f.n,[['対象外','チームの子じゃない'],['','名前を外す']],function(n){
+    if(n===f.n)return;toast('保存中…');
+    google.script.run.withSuccessHandler(function(){if(n===''&&/-T\d+$/.test(f.id)){FACES[p.id]=FACES[p.id].filter(function(x){return x!==f})}else{f.n=n;f.how='手'}
+      syncNames(p);drawFaces(p);toast(n&&n!=='対象外'?n+' にしました':'直しました')}).withFailureHandler(function(e){alert(e.message||e)}).fixPhotoFace(PASS,f.id,n)})}
+  function pickAdd(p){openPk('<b>この写真に写っている子を追加</b>','',[],function(n){toast('保存中…');
+    google.script.run.withSuccessHandler(function(r){if(r&&r.id)(FACES[p.id]=FACES[p.id]||[]).push({id:r.id,n:n,c:'',how:'手'});syncNames(p);drawFaces(p);toast(n+' を追加しました')})
+      .withFailureHandler(function(e){alert(e.message||e)}).addPhotoTag(PASS,p.id,n)})}
+  function closeLb(){$('lb').classList.remove('on')}
+  window.__jrBackHook=function(){if($('pk').classList.contains('on')){closePk();return true}if($('lb').classList.contains('on')){closeLb();return true}return false};
+  $('lbX').onclick=closeLb;
+  $('lbImg').addEventListener('dblclick',closeLb);
+  $('lbI').addEventListener('click',function(e){if(e.target===this)closeLb()});
+  $('lbP').onclick=function(){if(IDX>0){IDX--;showLb()}};$('lbN').onclick=function(){if(IDX<LIST.length-1){IDX++;showLb()}};
+  var sx=null,sy=null,lastTap=0;$('lbI').addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+  $('lbI').addEventListener('touchend',function(e){if(sx===null)return;var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;sx=null;
+    if(dy>90&&Math.abs(dy)>Math.abs(dx)){closeLb();return}
+    if(Math.abs(dx)>50){dx<0?$('lbN').click():$('lbP').click();return}
+    if(Math.abs(dx)<12&&Math.abs(dy)<12&&e.target.id==='lbImg'){var now=Date.now();if(now-lastTap<350){lastTap=0;e.preventDefault();closeLb()}else lastTap=now}});
+  init();
+  </script>
+<script>
+/* 表示後のふわっと（アルバム一覧・写真が描かれるたびに） */
+(function(){var v=document.getElementById('view');if(!v)return;new MutationObserver(function(){JR.reveal(v,'.alb,.chips button,.ph div,.addAlb')}).observe(v,{childList:true,subtree:true})})();
+</script>
+</body>
+</html>
