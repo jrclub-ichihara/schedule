@@ -54,6 +54,7 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){retur
 function draw(){
   var all=D.players,cnt=function(t){return all.filter(function(p){return t==='ALL'||p.team===t}).length};
   $('cnt').textContent='2026 SEASON　'+all.length+' PLAYERS';
+  var useT=cnt('A')+cnt('2nd')>0;$('flt').style.display=useT?'':'none';if(!useT)F='ALL';
   $('flt').innerHTML=[['ALL','ALL','全員'],['A','A TEAM','Aチーム'],['2nd','2ND','2nd']].map(function(t){return '<button class="tile'+(F===t[0]?' on':'')+'" data-f="'+t[0]+'"><b>'+t[1]+'</b><small>'+t[2]+'・'+cnt(t[0])+'人</small></button>'}).join('');
   [].forEach.call($('flt').querySelectorAll('button'),function(b){b.onclick=function(){F=b.dataset.f;draw()}});
   var list=all.filter(function(p){return F==='ALL'||p.team===F});
