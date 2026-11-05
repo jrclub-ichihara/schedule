@@ -36,11 +36,33 @@ body{margin:0;background:var(--ink)!important;color:var(--txt)!important;font-fa
 @keyframes fade{to{opacity:.9;transform:none}}
 main{padding:12px 16px 56px;max-width:560px;margin:0 auto;background:none!important}
 /* ===== 月タブ ===== */
-.mtabs{position:sticky;top:0;z-index:20;background:rgba(11,11,10,.82);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);margin:0 -16px 12px;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.05)}
-.mt-in{position:relative;display:flex;gap:6px;max-width:560px;margin:0 auto}
-.mt-in button{flex:1;position:relative;z-index:1;border:0;background:none;border-radius:10px;padding:10px 0;font-weight:900;font-size:15px;color:#77756f;transition:color .35s var(--ease);font-family:inherit}
-.mt-in button.on{color:#000}
-.mt-in .pill{position:absolute;top:0;bottom:0;left:0;border-radius:10px;background:var(--y);transition:transform .5s var(--ease),width .5s var(--ease);box-shadow:0 0 22px rgba(255,235,59,.35)}
+.mtabs{position:sticky;top:0;z-index:20;background:rgba(11,11,10,.84);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);margin:0 -16px 12px;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.05)}
+.mt-in{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:560px;margin:0 auto}
+.mt-in button{position:relative;z-index:1;border:1px solid var(--line);background:linear-gradient(160deg,#1c1c19,#121210);border-radius:12px;padding:8px 0 7px;color:var(--mute);font-family:inherit;transition:color .35s var(--ease),transform .25s var(--ease),border-color .35s;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+.mt-in button b{font:900 italic 15px/1 -apple-system,"Arial Black",sans-serif;letter-spacing:.06em;color:#bdbbb4;transition:color .35s}
+.mt-in button small{font-size:10px;font-weight:700}
+.mt-in button:active{transform:scale(.95)}
+.mt-in button.on{border-color:transparent;color:var(--y)}.mt-in button.on b{color:#fff}
+.mt-in .pill{position:absolute;top:0;bottom:0;left:0;z-index:2;pointer-events:none;border-radius:12px;border:1.5px solid var(--y);background:rgba(255,235,59,.06);transition:transform .5s var(--ease),width .5s var(--ease);box-shadow:0 0 0 3px rgba(255,235,59,.1),0 8px 22px rgba(255,235,59,.16)}
+/* ===== 共通タイル ===== */
+.tile,.vw a,.lk2 a,.tp-teaser{position:relative;overflow:hidden;background:linear-gradient(160deg,#1c1c19,#121210)!important;border:1px solid var(--line)!important;border-radius:14px!important;color:var(--txt)!important;text-decoration:none;transition:transform .25s var(--ease),border-color .3s,box-shadow .3s}
+.vw a:active,.lk2 a:active,.tp-teaser:active{transform:scale(.97)}
+.vw{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;background:none!important;border:0!important;padding:0!important;margin-bottom:14px!important}
+.vw a{display:flex!important;align-items:center;gap:8px;padding:10px 12px!important;font-size:12px!important;color:var(--mute)!important;border-radius:12px!important;text-align:left!important}
+.vw a:before{font:900 italic 13px/1 -apple-system,"Arial Black",sans-serif;letter-spacing:.06em;color:#bdbbb4}
+.vw a[data-vw=card]:before{content:"CARD"}.vw a[data-vw=table]:before{content:"TABLE"}
+.vw a.on{border-color:var(--y)!important;box-shadow:0 0 0 3px rgba(255,235,59,.1);background:linear-gradient(160deg,#25230f,#121210)!important;color:var(--y)!important}.vw a.on:before{color:#fff}
+.lk2{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin-top:16px!important}
+.lk2 a{display:flex!important;flex-direction:column;align-items:flex-start;gap:7px;padding:13px 12px 12px!important}
+.lk2 a svg,.tp-teaser svg{width:22px;height:22px;stroke:var(--y);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.lk2 a b{display:block;font:900 italic 13px/1 -apple-system,"Arial Black",sans-serif!important;letter-spacing:.06em;color:#fff!important}
+.lk2 a span{display:block;font-size:10.5px!important;color:var(--mute)!important;line-height:1.45;margin-top:3px}
+.lk2 a em{display:block;font-style:normal;font-size:12px;font-weight:800;color:var(--y);margin-top:4px}
+.lk2 a i,.tp-teaser i{position:absolute;right:11px;top:10px;font-style:normal;font-size:11px;color:#55534d}
+.tp-teaser{display:flex!important;align-items:center;gap:12px;padding:14px!important;margin-top:16px!important}
+.tp-teaser b{font:900 italic 14px/1 -apple-system,"Arial Black",sans-serif!important;letter-spacing:.06em;color:#fff!important;display:block;margin-bottom:4px}
+.tp-teaser span{font-size:12px;color:var(--mute)}
+@media(hover:hover){.vw a:hover,.lk2 a:hover,.tp-teaser:hover,.mt-in button:hover{border-color:rgba(255,235,59,.5)!important}}
 .sub{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 16px}
 .nv{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:12px 12px 11px;border-radius:14px;background:linear-gradient(160deg,#1c1c19,#121210);border:1px solid var(--line);color:var(--txt);text-decoration:none;font-family:inherit;text-align:left;transition:transform .25s var(--ease),border-color .3s,box-shadow .3s;-webkit-appearance:none;cursor:pointer}
 .nv:before{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,235,59,.14),transparent);transform:skewX(-20deg);animation:shine 3.2s var(--ease) 1.4s 1 both}
@@ -54,7 +76,6 @@ main{padding:12px 16px 56px;max-width:560px;margin:0 auto;background:none!import
 .nv.on i{color:var(--y)}
 @media(hover:hover){.nv:hover{border-color:rgba(255,235,59,.5);transform:translateY(-2px)}.nv:hover i{transform:translate(2px,-2px);color:var(--y)}}
 /* ===== 表示切替 ===== */
-.vw{background:var(--card)!important;border:1px solid var(--line)}.vw a{color:var(--mute)!important}.vw a.on{background:var(--y)!important;color:#000!important}
 #view{transition:opacity .25s ease,transform .35s var(--ease)}
 #view.out{opacity:0;transform:translateY(8px)}
 /* ===== 日付カード ===== */
@@ -79,9 +100,7 @@ details .dt{animation:open .4s var(--ease)}
 .day.today{border:2px solid var(--y)!important;box-shadow:0 0 0 4px rgba(255,235,59,.15),0 10px 30px rgba(255,235,59,.12)!important}
 .day.past{filter:none!important}
 .pre{background:rgba(255,235,59,.1)!important;color:var(--y)!important;border:1px solid rgba(255,235,59,.25)}.msg{color:var(--mute)!important}
-.tp-teaser{background:linear-gradient(110deg,#000,#1d1b0c)!important;border:1px solid rgba(255,235,59,.3)}
 .tp-goal div,.tp-r,.tp-rw div{background:var(--card)!important;border-color:var(--line)!important;color:var(--txt)}.tp-r.top{background:rgba(255,235,59,.12)!important;border-color:var(--y)!important}
-.lk2 a{background:var(--card)!important;border:1px solid var(--line)}
 .mt-wrap{background:#fff;color:#1d1d1b}.mt-cap{color:var(--txt)}
 /* ===== ふわっと出る ===== */
 .rv{opacity:0;transform:translateY(26px) scale(.97);filter:blur(4px);transition:opacity .7s var(--ease),transform .8s var(--ease),filter .7s var(--ease)}
@@ -110,19 +129,29 @@ details .dt{animation:open .4s var(--ease)}
 <script>
 (function(){
 var API='https://script.google.com/macros/s/AKfycbwB-_TuXQhHCfWU0GYXXQq9Fm8mdG7bFzOEHE3CJLB3LoYam0eGmSPQlHNJHY49stKs/exec?api=schedule';
-var KEY='jrclub_sched_v1',D=null,CUR='',VIEW='card',$=function(i){return document.getElementById(i)};
+var MON=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];var KEY='jrclub_sched_v1',D=null,CUR='',VIEW='card',$=function(i){return document.getElementById(i)};
 // タイトルを1文字ずつふわっと
 var t='Jr.CLUB市原 予定表';$('ttl').innerHTML=t.split('').map(function(c,i){return '<span style="animation-delay:'+(0.12+i*0.04)+'s">'+(c===' '?'&nbsp;':c)+'</span>'}).join('');
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}}
 function save(d){try{localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}}
 var io='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -6% 0px'}):null;
+var IC={album:'<svg viewBox="0 0 24 24"><path d="M4 8h3l1.6-2.2h6.8L17 8h3v11H4z"/><circle cx="12" cy="13.3" r="3.6"/></svg>',
+ up:'<svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 15v4h16v-4"/></svg>',
+ yasumi:'<svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M9.5 13.5l5 4M14.5 13.5l-5 4"/></svg>',
+ ball:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5.6 5.6c3.2 3 3.2 9.8 0 12.8M18.4 5.6c-3.2 3-3.2 9.8 0 12.8"/></svg>'};
+var EN={album:'ALBUM',up:'UPLOAD',yasumi:'ABSENCE'};
+function tiles(root){[].forEach.call(root.querySelectorAll('.lk2 a'),function(a){if(a.dataset.ok)return;a.dataset.ok=1;var m=(a.getAttribute('href')||'').match(/mode=(\w+)/),k=m&&m[1];if(!IC[k])return;
+    var b=a.querySelector('b'),sp=a.querySelector('span'),jp=(b?b.textContent:'').replace(/^[^぀-ヿ一-龯]+/,'').trim();
+    a.innerHTML='<i>↗</i>'+IC[k]+'<div><b>'+EN[k]+'</b><em>'+jp+'</em><span>'+(sp?sp.textContent:'')+'</span></div>'});
+  [].forEach.call(root.querySelectorAll('a.tp-teaser'),function(a){if(a.dataset.ok)return;a.dataset.ok=1;var t=a.textContent.replace(/^.*?3Pチャレンジ/,'').trim();
+    a.innerHTML='<i>›</i>'+IC.ball+'<div><b>3POINT CHALLENGE</b><span>'+t+'</span></div>'})}
 function dates(root){[].forEach.call(root.querySelectorAll('.dh'),function(h){if(h.dataset.ok)return;h.dataset.ok=1;var now=h.querySelector('.now');var m=(h.firstChild&&h.firstChild.textContent||'').match(/(\d+)\/(\d+)（([^）]+)）/);if(!m)return;
     h.innerHTML='<span class="dn">'+m[2]+'</span><span class="dw">'+m[3]+'</span>';if(now)h.appendChild(now)})}
-function reveal(root){dates(root);var els=root.querySelectorAll('.day,.tp-hero,.tp-goal,.tp-r,.tp-rw,.tp-teaser,.pre,.mt-wrap,.lk2 a'),n=0;
+function reveal(root){dates(root);tiles(root);var els=root.querySelectorAll('.day,.tp-hero,.tp-goal,.tp-r,.tp-rw,.tp-teaser,.pre,.mt-wrap,.lk2 a'),n=0;
   [].forEach.call(els,function(el){el.classList.add('rv');var r=el.getBoundingClientRect();
     if(r.top<innerHeight){el.style.transitionDelay=Math.min(n++*70,560)+'ms';requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('in')})});setTimeout(function(){el.style.transitionDelay=''},1200)}
     else if(io)io.observe(el);else el.classList.add('in')})}
-function tabs(){var h='<span class="pill" id="pill"></span>'+D.months.map(function(x){return '<button data-k="'+x.key+'">'+x.m+'月</button>'}).join('');$('tabs').innerHTML=h;
+function tabs(){var h='<span class="pill" id="pill"></span>'+D.months.map(function(x){return '<button data-k="'+x.key+'"><b>'+MON[x.m-1]+'</b><small>'+x.m+'月</small></button>'}).join('');$('tabs').innerHTML=h;
   [].forEach.call($('tabs').querySelectorAll('button'),function(b){b.onclick=function(){go(b.dataset.k)}});
   var u=D.url||'';$('sub2').innerHTML='<button class="nv" id="tp3"><i>›</i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5.6 5.6c3.2 3 3.2 9.8 0 12.8M18.4 5.6c-3.2 3-3.2 9.8 0 12.8"/></svg><span><b>3POINT</b><small>3Pシュート記録</small></span></button><a class="nv" href="'+u+'?mode=roster"><i>↗</i><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 19c.6-3.3 3-5 6-5s5.4 1.7 6 5"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14.2c2.5.1 4.3 1.6 4.8 4.3"/></svg><span><b>ROSTER</b><small>選手名簿</small></span></a><a class="nv" href="'+u+'?mode=album"><i>↗</i><svg viewBox="0 0 24 24"><path d="M4 8h3l1.6-2.2h6.8L17 8h3v11H4z"/><circle cx="12" cy="13.3" r="3.6"/></svg><span><b>ALBUM</b><small>チームアルバム</small></span></a>';
   $('tp3').onclick=function(){go('3p')};$('links').innerHTML=D.links||'';reveal($('links'))}
