@@ -142,7 +142,7 @@ var IC={album:'<svg viewBox="0 0 24 24"><path d="M4 8h3l1.6-2.2h6.8L17 8h3v11H4z
 var EN={album:'ALBUM',up:'UPLOAD',yasumi:'ABSENCE'};
 function tiles(root){[].forEach.call(root.querySelectorAll('.lk2 a'),function(a){if(a.dataset.ok)return;a.dataset.ok=1;var m=(a.getAttribute('href')||'').match(/mode=(\w+)/),k=m&&m[1];if(!IC[k])return;
     var b=a.querySelector('b'),sp=a.querySelector('span'),jp=(b?b.textContent:'').replace(/^[^぀-ヿ一-龯]+/,'').trim();
-    if(k==='album')a.setAttribute('href','album.html');a.removeAttribute('target');a.innerHTML='<i>'+(k==='album'?'›':'↗')+'</i>'+IC[k]+'<div><b>'+EN[k]+'</b><em>'+jp+'</em><span>'+(sp?sp.textContent:'')+'</span></div>'});
+    a.setAttribute('href',{album:'album.html',up:'upload.html',yasumi:'absence.html'}[k]);a.removeAttribute('target');a.innerHTML='<i>›</i>'+IC[k]+'<div><b>'+EN[k]+'</b><em>'+jp+'</em><span>'+(sp?sp.textContent:'')+'</span></div>'});
   [].forEach.call(root.querySelectorAll('a.tp-teaser'),function(a){if(a.dataset.ok)return;a.dataset.ok=1;var t=a.textContent.replace(/^.*?3Pチャレンジ/,'').trim();
     a.innerHTML='<i>›</i>'+IC.ball+'<div><b>3POINT CHALLENGE</b><span>'+t+'</span></div>'})}
 function dates(root){[].forEach.call(root.querySelectorAll('.dh'),function(h){if(h.dataset.ok)return;h.dataset.ok=1;var now=h.querySelector('.now');var m=(h.firstChild&&h.firstChild.textContent||'').match(/(\d+)\/(\d+)（([^）]+)）/);if(!m)return;

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Jr.CLUB市原 写真をアップ</title>
+<link rel="icon" href="logo.jpg">
+<link rel="apple-touch-icon" href="logo.jpg">
+<style>body{margin:0;background:#0c0c0c;color:#f2f2f2;font-family:-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;font-size:15px}header{padding:14px 16px;border-bottom:1px solid #222;display:flex;gap:12px;align-items:center;position:sticky;top:0;background:#0c0c0c;z-index:5}header img{width:40px;border-radius:6px}header h1{margin:0;font-size:17px;color:#ffeb3b;letter-spacing:.04em}header p{margin:2px 0 0;font-size:11px;color:#888}main{padding:12px 14px 60px;max-width:760px;margin:0 auto}.card{background:#151515;border:1px solid #232323;border-radius:14px;padding:14px;margin-bottom:12px}label{font-size:12px;color:#888;display:block;margin:0 0 6px}input[type=password],input[type=text],input[type=date],select{width:100%;box-sizing:border-box;font-size:16px;padding:10px;border-radius:10px;border:1px solid #333;background:#0c0c0c;color:#fff}.help{font-size:12px;color:#9a9a9a;line-height:1.7;margin:0 0 10px}.btn{display:block;width:100%;box-sizing:border-box;text-align:center;border:0;border-radius:10px;padding:13px;font-size:15px;font-weight:700;margin-top:8px}.b1{background:#ffeb3b;color:#0c0c0c}.b2{background:#0c0c0c;border:1px solid #333;color:#fff}.btn:disabled{opacity:.35}.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#ffeb3b;color:#0c0c0c;font-weight:700;padding:10px 18px;border-radius:999px;font-size:14px;display:none;z-index:99}
+  .prog{height:10px;background:#222;border-radius:99px;overflow:hidden;margin:10px 0 6px}.prog i{display:block;height:100%;width:0;background:#ffeb3b;transition:width .3s}
+  .st{font-size:13px;color:#ccc}.st b{color:#ffeb3b}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:10px}.grid div{position:relative;aspect-ratio:1/1;background:#1a1a1a;border-radius:6px;overflow:hidden}
+  .grid img{width:100%;height:100%;object-fit:cover;display:block}.grid span{position:absolute;right:3px;bottom:3px;font-size:10px;background:rgba(0,0,0,.7);border-radius:4px;padding:1px 5px}
+  .grid .ok span{color:#ffeb3b}.grid .dup{opacity:.35}.grid .ng span{color:#ff6b5e}
+  .row{display:flex;gap:8px}.row>*{flex:1}
+  </style>
+<link rel="stylesheet" href="common.css">
+<style>
+body{background:var(--ink)!important}
+main{padding:12px 16px 56px!important}
+.lb{background:#050505!important;z-index:300!important}.pk{z-index:320!important}
+.card{background:linear-gradient(160deg,#1c1c19,#121210)!important;border:1px solid var(--line)!important;border-radius:14px!important}
+.yrs button{border-radius:12px!important;border:1px solid var(--line)!important;background:linear-gradient(160deg,#1c1c19,#121210)!important;color:#bdbbb4!important;font:900 italic 13px/1 var(--disp)!important;letter-spacing:.05em;padding:10px 14px!important}
+.yrs button.on{border-color:var(--y)!important;color:#fff!important;box-shadow:0 0 0 3px rgba(255,235,59,.1)}
+.tabs{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;border:0!important;margin-bottom:14px!important}
+.tabs button{border:1px solid var(--line)!important;border-radius:12px!important;background:linear-gradient(160deg,#1c1c19,#121210)!important;color:var(--mute)!important;padding:10px!important;font-size:12px!important;transition:transform .25s var(--ease)}
+.tabs button:before{display:block;font:900 italic 13px/1 var(--disp);letter-spacing:.06em;color:#bdbbb4;margin-bottom:4px}
+.tabs button[data-v=a]:before{content:"ALBUMS"}.tabs button[data-v=p]:before{content:"PLAYERS"}
+.tabs button.on{border-color:var(--y)!important;color:var(--y)!important;box-shadow:0 0 0 3px rgba(255,235,59,.1);background:linear-gradient(160deg,#25230f,#121210)!important}.tabs button.on:before{color:#fff}
+.tabs button:active,.alb:active,.chips button:active{transform:scale(.97)}
+.alb{border-radius:14px!important;border:1px solid var(--line)!important;background:linear-gradient(160deg,#1c1c19,#121210)!important;transition:transform .25s var(--ease),border-color .3s}
+.alb .cv img{transition:transform 1.2s var(--ease)}.alb.in .cv img{transform:scale(1.04)}
+.alb b{color:#fff}
+.addAlb{border-radius:14px!important;font:900 italic 14px/1 var(--disp)!important;letter-spacing:.04em;padding:15px!important;box-shadow:0 8px 24px rgba(255,235,59,.18)}
+.addAlb.add2{box-shadow:none}
+.chips button{border-radius:12px!important;border:1px solid var(--line)!important;background:linear-gradient(160deg,#1c1c19,#121210)!important;transition:transform .25s var(--ease)}
+.chips button.on{background:var(--y)!important;color:#000!important}
+.hd button{border-radius:12px!important;border:1px solid var(--line)!important;background:linear-gradient(160deg,#1c1c19,#121210)!important;font-weight:800}
+.ph div{border-radius:6px}
+.help a{font-weight:800}
+@media(hover:hover){.alb:hover,.chips button:hover,.tabs button:hover{border-color:rgba(255,235,59,.5)!important}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="big">UPLOAD</div><div class="rush"></div><div class="in">
+  <img src="logo.jpg" alt="ICHIHARA">
+  <div><h1 data-split>PHOTO UPLOAD</h1><p>撮った写真をみんなと共有</p><div class="tg">POUNDING THE ROCK</div></div>
+</div></header>
+<div style="max-width:720px;margin:0 auto;padding:12px 16px 0"><div class="topnav" style="margin:0"><a class="tile back" href="./">‹ <b>SCHEDULE</b><small>予定表にもどる</small></a></div></div>
+<script src="common.js"></script>
+<script>JR.shim();</script>
+
+  
+  <main>
+    <div class="card" id="login" style="display:none"><label>チームのパスコード</label><input type="password" id="pass" inputmode="numeric"><button class="btn b1" id="go">開く</button></div>
+    <div id="body" style="display:none">
+      <div class="card">
+        <label>どのアルバムに入れますか？</label>
+        <select id="alb"></select>
+        <div id="fbBox" style="margin-top:8px"><label>撮影日がわからない写真（LINEから保存した写真など）の入れ先</label><select id="fb"></select></div>
+        <div id="newAlb" style="display:none;margin-top:8px"><div class="row"><div><label>日付</label><input type="date" id="nd"></div></div><label style="margin-top:8px">アルバムの名前</label><input type="text" id="nt" placeholder="例）練習試合 vs ○○"></div>
+        <label style="margin-top:12px">あなたの名前（任意・アルバムに「○○さんの写真」と出ます）</label><input type="text" id="who" placeholder="例）本田">
+        <input type="file" id="file" accept="image/*" multiple style="display:none">
+        <button class="btn b1" id="pick">写真を選ぶ（何枚でもOK）</button>
+        <p class="help" style="margin-top:10px">・同じ写真は自動で飛ばします。LINEのアルバムからまとめて保存した写真もそのままどうぞ。<br>・写っている子の顔をこのスマホの中で見分けて、選手ごとに探せるようにします（顔や写真を外のサービスに送ることはありません）。<br>・アップが終わるまで、このページを開いたままにしてください。</p>
+      </div>
+      <div class="card" id="pc" style="display:none"><div class="st" id="st"></div><div class="prog"><i id="bar"></i></div><div class="st" id="st2"></div><div class="grid" id="grid"></div><div id="doneBox" style="display:none"></div></div>
+    </div>
+  </main><div class="toast" id="toast"></div>
+  <script>
+  var PRE=(function(){var q=new URLSearchParams(location.search);return {a:(q.get("a")||"").replace(/\D/g,"").slice(0,8),t:(q.get("t")||"").slice(0,60),n:q.get("new")?1:0}})(),PASS='',INIT=null,FA=false,FAREADY=null,HASH={},Q=[],DONE=0,TOTAL=0,DUP=0,NG=0,FACES=0,RUN=0,$=function(i){return document.getElementById(i)};
+  var DEST=null; /* アップした先のアルバム（終わったら「アルバムを見る」に使う） */
+  function toast(t){var e=$('toast');e.textContent=t;e.style.display='block';setTimeout(function(){e.style.display='none'},2000)}
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  try{PASS=localStorage.getItem('jrclub_team_pass')||'';$('who').value=localStorage.getItem('jrclub_up_who')||''}catch(e){}
+  function md(k){return (+k.slice(4,6))+'/'+(+k.slice(6,8))}
+  function today(){var d=new Date();return d.getFullYear()+('0'+(d.getMonth()+1)).slice(-2)+('0'+d.getDate()).slice(-2)}
+  function init(){google.script.run.withSuccessHandler(function(d){
+    if(d.needPass){$('login').style.display='block';return}
+    try{localStorage.setItem('jrclub_team_pass',PASS)}catch(e){}
+    INIT=d;d.hashes.forEach(function(h){HASH[h]=1});
+    $('login').style.display='none';$('body').style.display='block';
+    $('alb').innerHTML='<option value="auto">撮影日で自動に分ける（おすすめ）</option>'+d.sugg.map(function(s){return '<option value="'+s.ymd+'">'+md(s.ymd)+' '+esc(s.title)+'</option>'}).join('')+'<option value="new">新しくアルバムを作る</option>';
+    $('fb').innerHTML='<option value="">今日の日付</option>'+d.sugg.map(function(s){return '<option value="'+s.ymd+'">'+md(s.ymd)+' '+esc(s.title)+'</option>'}).join('');
+    var t=new Date();$('nd').value=t.getFullYear()+'-'+('0'+(t.getMonth()+1)).slice(-2)+'-'+('0'+t.getDate()).slice(-2);
+    if(PRE.a){ /* アルバムの「＋ 写真を追加」から来たとき：そのアルバムを最初から選んでおく */
+      $('alb').insertAdjacentHTML('afterbegin','<option value="pre">'+esc(PRE.t||md(PRE.a))+'（このアルバムに追加）</option>');
+      $('alb').value='pre';$('fbBox').style.display='none';
+      $('upTitle').textContent='「'+(PRE.t||md(PRE.a))+'」に写真を追加';
+    }else if(PRE.n){ /* 「＋ 新しいアルバム」から来たとき */
+      $('alb').value='new';$('newAlb').style.display='block';$('fbBox').style.display='none';$('upTitle').textContent='新しいアルバムを作る';
+      setTimeout(function(){$('nt').focus()},100);
+    }
+    loadFaceApi(d.faceapi);
+  }).withFailureHandler(function(e){alert(e.message||e)}).getUpInit(PASS)}
+  $('go').onclick=function(){PASS=$('pass').value.trim();init()};
+  $('alb').onchange=function(){$('newAlb').style.display=this.value==='new'?'block':'none';$('fbBox').style.display=this.value==='auto'?'block':'none'};
+  $('who').onchange=function(){try{localStorage.setItem('jrclub_up_who',this.value.trim())}catch(e){}};
+  function loadFaceApi(v){
+    FAREADY=new Promise(function(res){
+      var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@vladmandic/face-api@'+v+'/dist/face-api.js';
+      s.onload=function(){var M='https://cdn.jsdelivr.net/npm/@vladmandic/face-api@'+v+'/model/';
+        Promise.all([faceapi.nets.tinyFaceDetector.loadFromUri(M),faceapi.nets.faceLandmark68Net.loadFromUri(M),faceapi.nets.faceRecognitionNet.loadFromUri(M)])
+          .then(function(){FA=true;res()}).catch(function(){res()})};
+      s.onerror=function(){res()};document.head.appendChild(s);
+    });
+  }
+  /* 撮影日（EXIF）を読む */
+  function exifDate(buf){try{var v=new DataView(buf);if(v.getUint16(0)!==0xFFD8)return '';var o=2;
+    while(o<v.byteLength-4){var mk=v.getUint16(o);if(mk===0xFFE1){var st=o+10;if(v.getUint32(o+4)!==0x45786966)return '';
+      var le=v.getUint16(st)===0x4949;var g16=function(p){return v.getUint16(p,le)},g32=function(p){return v.getUint32(p,le)};
+      var found='';function ifd(p,depth){var n=g16(p);for(var i=0;i<n;i++){var e=p+2+i*12,tag=g16(e);
+        if((tag===0x9003||tag===0x0132)&&!found){var off=st+g32(e+8),s='';for(var j=0;j<10;j++)s+=String.fromCharCode(v.getUint8(off+j));if(/^\d{4}:\d{2}:\d{2}/.test(s)&&s.slice(0,4)!=='0000')found=s.replace(/:/g,'')}
+        if(tag===0x8769&&depth<2)ifd(st+g32(e+8),depth+1)}}
+      ifd(st+g32(st+4),0);return found.slice(0,8)}
+      if((mk&0xFF00)!==0xFF00)return '';o+=2+v.getUint16(o+2)}}catch(e){}return ''}
+  function canvasOf(im,max){var k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);return c}
+  function jpeg(c,limit,q){q=q||0.82;var d=c.toDataURL('image/jpeg',q);while(limit&&d.length>limit&&q>0.3){q-=0.08;d=c.toDataURL('image/jpeg',q)}return d}
+  function aHash(im){var W=17,H=16,c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d');x.drawImage(im,0,0,W,H);var p=x.getImageData(0,0,W,H).data,h='',b=0,n=0,R=0,G=0,B=0;
+    for(var y=0;y<H;y++)for(var i=0;i<W;i++){var a=(y*W+i)*4;R+=p[a];G+=p[a+1];B+=p[a+2];if(i===W-1)continue;var l=p[a]+p[a+1]+p[a+2],r=p[a+4]+p[a+5]+p[a+6];b=(b<<1)|(l>r?1:0);if(++n%4===0){h+=b.toString(16);b=0}}
+    var q=function(v){return Math.floor(v/(W*H)/32).toString(8)};return h+q(R)+q(G)+q(B)}
+  function sharp(im){var c=canvasOf(im,220),x=c.getContext('2d'),W=c.width,H=c.height,p=x.getImageData(0,0,W,H).data,g=new Float32Array(W*H),s=0,s2=0,n=0;
+    for(var i=0;i<W*H;i++)g[i]=p[i*4]*.3+p[i*4+1]*.59+p[i*4+2]*.11;
+    for(var y=1;y<H-1;y++)for(var i=1;i<W-1;i++){var k=y*W+i,l=4*g[k]-g[k-1]-g[k+1]-g[k-W]-g[k+W];s+=l;s2+=l*l;n++}
+    var m=s/n;return s2/n-m*m}
+  function dist(a,b){var s=0;for(var i=0;i<128;i++){var d=a[i]-b[i];s+=d*d}return Math.sqrt(s)}
+  function loadImg(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){var buf=r.result,url=URL.createObjectURL(f),im=new Image();
+    im.onload=function(){res({im:im,ex:exifDate(buf),url:url})};im.onerror=function(){rej(new Error('読めない写真'))};im.src=url};r.onerror=rej;r.readAsArrayBuffer(f)})}
+  async function work(f,cell){
+    var o=await loadImg(f),im=o.im,h=aHash(im);
+    if(HASH[h]){DUP++;cell.className='dup';cell.querySelector('span').textContent='同じ写真';URL.revokeObjectURL(o.url);return}
+    HASH[h]=1;
+    var full=canvasOf(im,1600),thumb=canvasOf(im,420),faces=[],score=Math.min(60,Math.round(Math.sqrt(sharp(im))*2));
+    if(FA){try{
+      var det=await faceapi.detectAllFaces(canvasOf(im,800),new faceapi.TinyFaceDetectorOptions({inputSize:512,scoreThreshold:.5})).withFaceLandmarks().withFaceDescriptors();
+      var sc=Math.max(im.width,im.height)>800?Math.max(im.width,im.height)/800:1;
+      det.forEach(function(r){var b=r.detection.box;if(b.width<28)return;
+        var cx=(b.x+b.width/2)*sc,cy=(b.y+b.height/2)*sc,sz=Math.max(b.width,b.height)*sc*1.6,c=document.createElement('canvas');c.width=96;c.height=96;
+        c.getContext('2d').drawImage(im,cx-sz/2,cy-sz/2,sz,sz,0,0,96,96);
+        var d=Array.prototype.map.call(r.descriptor,function(x){return Math.round(x*1000)/1000}),nm='',best=0.5;
+        (INIT.refs||[]).forEach(function(p){var e=dist(d,p.d);if(e<best){best=e;nm=p.n}});
+        faces.push({d:d.join(','),c:jpeg(c,9000,0.75),n:nm});score+=Math.min(15,Math.round(b.width/12))});
+      score+=faces.length?15:0;FACES+=faces.length;
+    }catch(e){}}
+    var sel=$('alb').value,ymd,title='';
+    if(sel==='pre'){ymd=PRE.a;title=PRE.t||''}
+    else if(sel==='new'){ymd=$('nd').value.replace(/-/g,'');title=$('nt').value.trim()}
+    else if(sel==='auto'){ymd=o.ex||$('fb').value||today();var s=INIT.sugg.filter(function(x){return x.ymd===ymd})[0];title=s?md(ymd)+' '+s.title:''}
+    else{ymd=sel;var s2=INIT.sugg.filter(function(x){return x.ymd===sel})[0];title=s2?md(sel)+' '+s2.title:''}
+    if(sel!=='auto')DEST={a:ymd,t:title};
+    var fullData=jpeg(full,2600000,0.82).split(',')[1];
+    var r=await new Promise(function(res,rej){google.script.run.withSuccessHandler(res).withFailureHandler(rej)
+      .saveAlbumPhoto(PASS,{ymd:ymd,title:title,who:$('who').value.trim(),score:score,hash:h},fullData,jpeg(thumb,40000,0.72),faces)});
+    URL.revokeObjectURL(o.url);
+    if(r&&r.dup){DUP++;cell.className='dup';cell.querySelector('span').textContent='同じ写真';return}
+    cell.className='ok';cell.querySelector('span').textContent=faces.length?'顔'+faces.length:'OK';
+  }
+  function draw(){$('st').innerHTML='<b>'+DONE+'</b> / '+TOTAL+' 枚 完了'+(DONE<TOTAL?'　アップ中…':'　おわりました🎉');
+    var dn=$('doneBox');if(dn){if(TOTAL&&DONE>=TOTAL){var u='album.html?x=1'+(DEST&&DEST.a?'&a='+DEST.a+'&t='+encodeURIComponent(DEST.t||''):'');
+      dn.innerHTML='<a class="btn b1" href="'+u+'" target="_top" style="display:block;text-align:center;text-decoration:none;margin-top:12px">📸 アルバムを見る ›</a>';dn.style.display='block'}else dn.style.display='none'}
+    $('st2').textContent=(FA?'見つけた顔 '+FACES+'　':'（顔の見分けは使えませんでした）　')+(DUP?'同じ写真 '+DUP+'枚は飛ばしました　':'')+(NG?'失敗 '+NG+'枚':'');
+    $('bar').style.width=(TOTAL?DONE/TOTAL*100:0)+'%'}
+  function pump(){while(RUN<2&&Q.length){var it=Q.shift();RUN++;
+    work(it.f,it.cell).catch(function(e){NG++;it.cell.className='ng';it.cell.querySelector('span').textContent='失敗'}).then(function(){RUN--;DONE++;draw();pump()})}}
+  $('pick').onclick=function(){if($('alb').value==='new'&&!$('nt').value.trim()){alert('アルバムの名前を入れてください');return}$('file').click()};
+  $('file').onchange=async function(){var fs=[].slice.call(this.files);this.value='';if(!fs.length)return;
+    $('pc').style.display='block';$('st').textContent='準備中…';await FAREADY;
+    fs.forEach(function(f){var cell=document.createElement('div');cell.innerHTML='<span>待ち</span>';
+      var u=URL.createObjectURL(f),im=document.createElement('img');im.src=u;im.onload=function(){URL.revokeObjectURL(u)};cell.insertBefore(im,cell.firstChild);
+      $('grid').insertBefore(cell,$('grid').firstChild);Q.push({f:f,cell:cell})});
+    TOTAL+=fs.length;draw();pump()};
+  window.addEventListener('beforeunload',function(e){if(DONE<TOTAL){e.preventDefault();e.returnValue=''}});
+  init();
+  </script>
+<script>
+/* 表示後のふわっと */
+(function(){var v=document.getElementById('view')||document.querySelector('.w')||document.querySelector('main');if(!v)return;new MutationObserver(function(){JR.reveal(v,'.alb,.chips button,.ph div,.addAlb,.card')}).observe(v,{childList:true,subtree:true})})();
+</script>
+</body>
+</html>

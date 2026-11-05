@@ -90,7 +90,7 @@ main{padding:12px 16px 56px!important}
   <div class="toast" id="toast"></div>
   <script>
   var PRE=(function(){var q=new URLSearchParams(location.search);return {a:(q.get("a")||"").replace(/\D/g,"").slice(0,8),t:(q.get("t")||"").slice(0,60),n:q.get("new")?1:0}})(),PASS='',ADMIN='',D=null,FY=0,V='a',CUR=null,LIST=[],SHOWN=0,IDX=0,TH={},$=function(i){return document.getElementById(i)};
-  function upUrl(q){return (D&&D.url?D.url:'')+'?mode=up'+q}
+  function upUrl(q){return 'upload.html?x=1'+q}
   function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function toast(t){var e=$('toast');e.textContent=t;e.style.display='block';setTimeout(function(){e.style.display='none'},1800)}
   try{PASS=localStorage.getItem('jrclub_team_pass')||'';ADMIN=localStorage.getItem('jrclub_plan_pass')||''}catch(e){}
@@ -181,8 +181,8 @@ main{padding:12px 16px 56px!important}
   init();
   </script>
 <script>
-/* 表示後のふわっと（アルバム一覧・写真が描かれるたびに） */
-(function(){var v=document.getElementById('view');if(!v)return;new MutationObserver(function(){JR.reveal(v,'.alb,.chips button,.ph div,.addAlb')}).observe(v,{childList:true,subtree:true})})();
+/* 表示後のふわっと */
+(function(){var v=document.getElementById('view')||document.querySelector('.w')||document.querySelector('main');if(!v)return;new MutationObserver(function(){JR.reveal(v,'.alb,.chips button,.ph div,.addAlb,.card')}).observe(v,{childList:true,subtree:true})})();
 </script>
 </body>
 </html>

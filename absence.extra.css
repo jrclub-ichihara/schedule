@@ -1,0 +1,7 @@
+body{background:var(--ink)!important}
+.w{padding-top:8px!important}
+.card{background:linear-gradient(160deg,#1c1c19,#121210)!important;border:1px solid var(--line)!important;border-radius:14px!important}
+.tabs button{border:1px solid var(--line)!important;background:linear-gradient(160deg,#1c1c19,#121210)!important;color:#bdbbb4!important;border-radius:12px!important;font-weight:800;transition:transform .25s var(--ease)}
+.tabs button.on{border-color:var(--y)!important;color:#fff!important;box-shadow:0 0 0 3px rgba(255,235,59,.1);background:linear-gradient(160deg,#25230f,#121210)!important}
+.tabs button:active,.chips button:active{transform:scale(.97)}
+.chips button{border-radius:12px!important;transition:transform .25s var(--ease)}
