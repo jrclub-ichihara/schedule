@@ -133,7 +133,7 @@ main{padding:12px 16px 56px!important}
   async function work(f,cell){
     var o=await loadImg(f),im=o.im,h=aHash(im);
     if(HASH[h]){DUP++;cell.className='dup';cell.querySelector('span').textContent='同じ写真';URL.revokeObjectURL(o.url);return}
-    HASH[h]=1;
+    HASH[h]=1;try{
     var full=canvasOf(im,1600),thumb=canvasOf(im,420),faces=[],score=Math.min(60,Math.round(Math.sqrt(sharp(im))*2));
     if(FA){try{
       var det=await faceapi.detectAllFaces(canvasOf(im,800),new faceapi.TinyFaceDetectorOptions({inputSize:512,scoreThreshold:.5})).withFaceLandmarks().withFaceDescriptors();
@@ -155,7 +155,7 @@ main{padding:12px 16px 56px!important}
     var fullData=jpeg(full,2600000,0.82).split(',')[1];
     var r=await new Promise(function(res,rej){google.script.run.withSuccessHandler(res).withFailureHandler(rej)
       .saveAlbumPhoto(PASS,{ymd:ymd,title:title,who:$('who').value.trim(),score:score,hash:h},fullData,jpeg(thumb,40000,0.72),faces)});
-    URL.revokeObjectURL(o.url);
+    URL.revokeObjectURL(o.url);}catch(err){delete HASH[h];throw err}
     if(r&&r.dup){DUP++;cell.className='dup';cell.querySelector('span').textContent='同じ写真';return}
     if(r&&r.id){MINE.push(r.id);cell.dataset.id=r.id}
     cell.className='ok';cell.querySelector('span').textContent=faces.length?'顔'+faces.length:'OK';
@@ -165,10 +165,12 @@ main{padding:12px 16px 56px!important}
     var ub=$('undo');ub.style.display=MINE.length?'':'none';ub.textContent='↩ 今アップした'+MINE.length+'枚を取り消す';
     var dn=$('doneBox');if(dn){if(TOTAL&&DONE>=TOTAL){var u='album.html?x=1'+(DEST&&DEST.a?'&a='+DEST.a+'&t='+encodeURIComponent(DEST.t||''):'');
       dn.innerHTML='<a class="btn b1" href="'+u+'" target="_top" style="display:block;text-align:center;text-decoration:none;margin-top:12px">📸 アルバムを見る ›</a>';dn.style.display='block'}else dn.style.display='none'}
-    $('st2').textContent=(FA?'見つけた顔 '+FACES+'　':'（顔の見分けは使えませんでした）　')+(DUP?'同じ写真 '+DUP+'枚は飛ばしました　':'')+(NG?'失敗 '+NG+'枚':'');
+    $('st2').textContent=(FA?'見つけた顔 '+FACES+'　':'（顔の見分けは使えませんでした）　')+(DUP?'同じ写真 '+DUP+'枚は飛ばしました　':'')+(NG?'失敗 '+NG+'枚'+(LASTERR?'（理由：'+LASTERR+'）':''):'');
     $('bar').style.width=(TOTAL?DONE/TOTAL*100:0)+'%'}
+  var LASTERR='';
   function pump(){while(RUN<2&&Q.length){var it=Q.shift();RUN++;
-    work(it.f,it.cell).catch(function(e){NG++;it.cell.className='ng';it.cell.querySelector('span').textContent='失敗'}).then(function(){RUN--;DONE++;draw();pump()})}}
+    work(it.f,it.cell).catch(function(e){return new Promise(function(r){setTimeout(r,3000)}).then(function(){return work(it.f,it.cell)})})
+      .catch(function(e){NG++;LASTERR=String(e&&e.message||e).slice(0,120);it.cell.className='ng';it.cell.title=LASTERR;it.cell.querySelector('span').textContent='失敗'}).then(function(){RUN--;DONE++;draw();pump()})}}
   $('pick').onclick=function(){if($('alb').value==='new'&&!$('nt').value.trim()){alert('アルバムの名前を入れてください');return}$('file').click()};
   $('file').onchange=async function(){var fs=[].slice.call(this.files);this.value='';if(!fs.length)return;
     $('pc').style.display='block';$('st').textContent='準備中…';await FAREADY;
