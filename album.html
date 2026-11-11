@@ -77,7 +77,7 @@ main{padding:12px 16px 56px!important}
   <div><h1 data-split>TEAM ALBUM</h1><p>Jr.CLUB市原の思い出</p><div class="tg">POUNDING THE ROCK</div></div>
 </div></header>
 <div style="max-width:720px;margin:0 auto;padding:12px 16px 0"><div class="topnav" style="margin:0"><a class="tile back" href="./">‹ <b>SCHEDULE</b><small>予定表にもどる</small></a></div></div>
-<script src="common.js?v=4"></script>
+<script src="common.js?v=5"></script>
 <script>JR.shim();</script>
 
   
@@ -135,7 +135,7 @@ main{padding:12px 16px 56px!important}
   function loadThumbs(){var imgs=[].slice.call($('view').querySelectorAll('img[data-id]:not([src])'));var need=[];
     imgs.forEach(function(im){var id=im.dataset.id;if(TH[id]){im.src=TH[id];im.classList.add('ld')}else if(need.indexOf(id)<0)need.push(id)});
     for(var i=0;i<need.length;i+=30)(function(ids){google.script.run.withSuccessHandler(function(m){Object.keys(m).forEach(function(k){TH[k]=m[k]});
-      imgs.forEach(function(im){if(m[im.dataset.id]){im.src=m[im.dataset.id];im.classList.add('ld')}})}).getAlbumThumbs(PASS,ids)})(need.slice(i,i+30))}
+      imgs.forEach(function(im){if(m[im.dataset.id]){im.src=m[im.dataset.id];im.classList.add('ld')}})}).withFailureHandler(function(e){var b=document.getElementById('thErr');if(!b){b=document.createElement('div');b.id='thErr';b.style.cssText='position:fixed;left:12px;right:12px;bottom:12px;z-index:300;background:#300;color:#fff;font-size:12px;padding:10px 12px;border-radius:10px';document.body.appendChild(b)}b.textContent='写真を読み込めませんでした：'+(e&&e.message||e)}).getAlbumThumbs(PASS,ids)})(need.slice(i,i+30))}
   function openLb(k){IDX=k;$('lb').classList.add('on');showLb()}
   function showLb(){var p=LIST[IDX];if(!p)return;$('lbT').textContent=(IDX+1)+' / '+LIST.length+'　'+md(p.ymd)+' '+p.t;
     $('lbImg').src=TH[p.id]||'';loadFaces(p);$('lbB').innerHTML='<em style="font-style:normal">長押しで保存できます</em>'+(ADMIN?'<button class="cvr" id="cv">'+(p.c?'★ 表紙になっています':'☆ アルバムの表紙にする')+'</button><button class="hide" id="hd">この写真を非表示</button>':'');
