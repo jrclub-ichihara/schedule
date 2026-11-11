@@ -132,10 +132,13 @@ main{padding:12px 16px 56px!important}
     $('ph').insertAdjacentHTML('beforeend',add.map(function(p,i){return '<div data-k="'+(SHOWN-add.length+i)+'"><img data-id="'+p.id+'"></div>'}).join(''));
     $('more').style.display=SHOWN<LIST.length?'block':'none';loadThumbs()}
   $('view').addEventListener('click',function(e){var c=e.target.closest('.ph div');if(c)openLb(+c.dataset.k)});
-  function loadThumbs(){var imgs=[].slice.call($('view').querySelectorAll('img[data-id]:not([src])'));var need=[];
-    imgs.forEach(function(im){var id=im.dataset.id;if(TH[id]){im.src=TH[id];im.classList.add('ld')}else if(need.indexOf(id)<0)need.push(id)});
-    for(var i=0;i<need.length;i+=30)(function(ids){google.script.run.withSuccessHandler(function(m){Object.keys(m).forEach(function(k){TH[k]=m[k]});
-      imgs.forEach(function(im){if(m[im.dataset.id]){im.src=m[im.dataset.id];im.classList.add('ld')}})}).withFailureHandler(function(e){var b=document.getElementById('thErr');if(!b){b=document.createElement('div');b.id='thErr';b.style.cssText='position:fixed;left:12px;right:12px;bottom:12px;z-index:300;background:#300;color:#fff;font-size:12px;padding:10px 12px;border-radius:10px';document.body.appendChild(b)}b.textContent='写真を読み込めませんでした：'+(e&&e.message||e)}).getAlbumThumbs(PASS,ids)})(need.slice(i,i+30))}
+  var THQ=[],THT=null,THIO='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){THIO.unobserve(e.target);thAsk(e.target)}})},{rootMargin:'600px 0px'}):null;
+  function thAsk(im){var id=im.dataset.id;if(TH[id]){im.src=TH[id];im.classList.add('ld');return}if(THQ.indexOf(id)<0)THQ.push(id);clearTimeout(THT);THT=setTimeout(thFlush,40)}
+  function thFlush(){while(THQ.length){thGet(THQ.splice(0,12))}}
+  function loadThumbs(){[].slice.call($('view').querySelectorAll('img[data-id]:not([src])')).forEach(function(im){if(TH[im.dataset.id]){im.src=TH[im.dataset.id];im.classList.add('ld')}else if(THIO)THIO.observe(im);else thAsk(im)})}
+  function thGet(ids){var imgs=[].slice.call($('view').querySelectorAll('img[data-id]:not([src])'));
+    (function(ids){google.script.run.withSuccessHandler(function(m){Object.keys(m).forEach(function(k){TH[k]=m[k]});
+      [].slice.call($('view').querySelectorAll('img[data-id]:not([src])')).forEach(function(im){if(m[im.dataset.id]){im.src=m[im.dataset.id];im.classList.add('ld')}})}).withFailureHandler(function(e){var b=document.getElementById('thErr');if(!b){b=document.createElement('div');b.id='thErr';b.style.cssText='position:fixed;left:12px;right:12px;bottom:12px;z-index:300;background:#300;color:#fff;font-size:12px;padding:10px 12px;border-radius:10px';document.body.appendChild(b)}b.textContent='写真を読み込めませんでした：'+(e&&e.message||e)}).getAlbumThumbs(PASS,ids)})(ids)}
   function openLb(k){IDX=k;$('lb').classList.add('on');showLb()}
   function showLb(){var p=LIST[IDX];if(!p)return;$('lbT').textContent=(IDX+1)+' / '+LIST.length+'　'+md(p.ymd)+' '+p.t;
     $('lbImg').src=TH[p.id]||'';loadFaces(p);$('lbB').innerHTML='<em style="font-style:normal">長押しで保存できます</em>'+(ADMIN?'<button class="cvr" id="cv">'+(p.c?'★ 表紙になっています':'☆ アルバムの表紙にする')+'</button><button class="hide" id="hd">この写真を非表示</button>':'');
