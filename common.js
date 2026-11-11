@@ -7,16 +7,16 @@ var JR=(function(){
   // GASの関数を呼ぶ（POSTはtext/plainで送るのでCORSの事前確認が不要）
   function rpc(fn,args){return fetch(EXEC,{method:'POST',body:JSON.stringify({rpc:fn,args:args||[]})}).then(function(r){return r.json()}).then(function(d){if(!d.ok)throw new Error(d.e||'エラー');return d.r})}
   // 写真の小さい画像を端末に保存（2回目からすぐ出る）
-  var dbp=null;function db(){if(dbp)return dbp;dbp=new Promise(function(res){try{var r=indexedDB.open('jrclub',1);r.onupgradeneeded=function(){r.result.createObjectStore('th')};r.onsuccess=function(){res(r.result)};r.onerror=function(){res(null)}}catch(e){res(null)}});return dbp}
-  function idbGet(ids){return db().then(function(d){if(!d)return {};return new Promise(function(res){var out={},t=d.transaction('th','readonly'),st=t.objectStore('th'),n=ids.length;if(!n)return res(out);
+  var dbp=null;function db(){if(dbp)return dbp;dbp=new Promise(function(res){try{var r=indexedDB.open('jrclub',2);r.onupgradeneeded=function(){var d=r.result;if(d.objectStoreNames.contains('th'))d.deleteObjectStore('th');if(!d.objectStoreNames.contains('th2'))d.createObjectStore('th2')};r.onsuccess=function(){res(r.result)};r.onerror=function(){res(null)}}catch(e){res(null)}});return dbp}
+  function idbGet(ids){return db().then(function(d){if(!d)return {};return new Promise(function(res){var out={},t=d.transaction('th2','readonly'),st=t.objectStore('th2'),n=ids.length;if(!n)return res(out);
     ids.forEach(function(id){var q=st.get(id);q.onsuccess=function(){if(q.result)out[id]=q.result;if(--n===0)res(out)};q.onerror=function(){if(--n===0)res(out)}})})}).catch(function(){return {}})}
-  function idbPut(map){db().then(function(d){if(!d)return;try{var t=d.transaction('th','readwrite'),st=t.objectStore('th');Object.keys(map).forEach(function(k){if(map[k])st.put(map[k],k)})}catch(e){}})}
+  function idbPut(map){db().then(function(d){if(!d)return;try{var t=d.transaction('th2','readwrite'),st=t.objectStore('th2');Object.keys(map).forEach(function(k){if(map[k])st.put(map[k],k)})}catch(e){}})}
   // 開いた瞬間に前回の中身を出して、裏で新しいのを取り直す
   var SWR={getAlbumIndex:{key:'jrc_albidx',again:function(){var lb=document.getElementById('lb');return !window.CUR&&!(lb&&lb.classList.contains('on'))}},
     getUpInit:{key:'jrc_upinit',again:function(){return false}},getRosterData:{key:'jrc_roster2',again:function(){return true}}};
   function call(k,a,s,f){
     if(k==='getAlbumThumbs'){var ids=(a[1]||[]).map(String);idbGet(ids).then(function(have){var miss=ids.filter(function(i){return !have[i]});
-        if(!miss.length)return s&&s(have);rpc(k,[a[0],miss]).then(function(r){idbPut(r||{});s&&s(Object.assign(have,r||{}))},function(e){if(Object.keys(have).length)s&&s(have);else f?f(e):console.error(e)})});return}
+        if(!miss.length)return s&&s(have);rpc(k,[a[0],miss]).then(function(r){r=r||{};var lq=r._lq||[];delete r._lq;var keep={};Object.keys(r).forEach(function(i){if(lq.indexOf(i)<0)keep[i]=r[i]});idbPut(keep);s&&s(Object.assign(have,r||{}))},function(e){if(Object.keys(have).length)s&&s(have);else f?f(e):console.error(e)})});return}
     var w=SWR[k];if(w){var c=load(w.key);var sk=JSON.stringify(a);var hit=c&&c.a===sk?c.r:null;if(hit&&!hit.needPass)setTimeout(function(){s&&s(hit)},0);
       rpc(k,a).then(function(r){save(w.key,{a:sk,r:r});if(!hit||hit.needPass)return s&&s(r);if(JSON.stringify(r)!==JSON.stringify(hit)&&w.again())s&&s(r)},function(e){if(!hit)f?f(e):console.error(e)});return}
     rpc(k,a).then(function(r){s&&s(r)},function(e){f?f(e):console.error(e)})}
