@@ -136,7 +136,7 @@ main{padding:12px 16px 56px!important}
     var o=await loadImg(f),im=o.im,h=aHash(im);
     if(HASH[h]){DUP++;cell.className='dup';cell.querySelector('span').textContent='同じ写真';URL.revokeObjectURL(o.url);return}
     HASH[h]=1;try{
-    var full=canvasOf(im,2400),thumb=canvasOf(im,640),faces=[],score=Math.min(60,Math.round(Math.sqrt(sharp(im))*2));
+    var full=canvasOf(im,2400),thumb=canvasOf(im,480),faces=[],score=Math.min(60,Math.round(Math.sqrt(sharp(im))*2));
     if(FA){try{
       var det=await faceapi.detectAllFaces(canvasOf(im,800),new faceapi.TinyFaceDetectorOptions({inputSize:512,scoreThreshold:.5})).withFaceLandmarks().withFaceDescriptors();
       var sc=Math.max(im.width,im.height)>800?Math.max(im.width,im.height)/800:1;
@@ -156,7 +156,7 @@ main{padding:12px 16px 56px!important}
     if(sel!=='auto')DEST={a:ymd,t:title};
     var fullData=jpeg(full,3900000,0.88).split(',')[1];
     var r=await new Promise(function(res,rej){google.script.run.withSuccessHandler(res).withFailureHandler(rej)
-      .saveAlbumPhoto(PASS,{ymd:ymd,title:title,who:$('who').value.trim(),score:score,hash:h},fullData,jpeg(thumb,95000,0.85),faces)});
+      .saveAlbumPhoto(PASS,{ymd:ymd,title:title,who:$('who').value.trim(),score:score,hash:h},fullData,jpeg(thumb,60000,0.8),faces)});
     URL.revokeObjectURL(o.url);}catch(err){delete HASH[h];throw err}
     if(r&&r.dup){DUP++;cell.className='dup';cell.querySelector('span').textContent='同じ写真';return}
     if(r&&r.id){MINE.push(r.id);cell.dataset.id=r.id}
