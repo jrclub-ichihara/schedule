@@ -28,6 +28,7 @@
 .meta{display:flex;gap:4px;flex-wrap:wrap}.meta span{font-size:10px;font-weight:700;border:1px solid #33322e;color:#bdbbb4;border-radius:5px;padding:2px 6px}
 .fr{font-size:11px;color:#ddd;margin-top:8px;font-weight:700}.fr small{display:inline-block;font-size:9px;letter-spacing:.2em;color:var(--y);margin-right:6px}
 .cm{font-size:11px;color:#9a9893;margin-top:8px;line-height:1.5}
+.sth{grid-column:1/-1;margin:18px 0 2px;font:900 italic 18px/1 var(--disp);letter-spacing:.08em;color:var(--y)}
 .ft{text-align:center;margin-top:26px;font-size:10px;color:#4a4944;letter-spacing:.3em}
 </style>
 </head>
@@ -51,19 +52,21 @@
 (function(){
 var $=function(i){return document.getElementById(i)},D=null,F='ALL',KEY='jrclub_roster_v1';
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function isSt(p){return /^(HC|AC)$/i.test(p.no||'')||p.grade==='コーチ'}
+function card(p){
+    var meta=[p.grade,p.height?p.height+(/cm$/.test(p.height)?'':'cm'):'',p.team?(p.team==='A'?'A TEAM':'2ND'):''].filter(Boolean);
+    return '<div class="tile pc"><div class="ph">'+(p.photo?'<img src="'+p.photo+'" alt="">':'<span class="ini">'+esc(p.name.replace(/\s/g,'').slice(0,1))+'</span>')+
+      '<span class="no">'+esc(p.no||'-')+'</span>'+(p.pos?'<span class="pos">'+esc(p.pos)+'</span>':'')+'</div>'+
+      '<div class="bd"><div class="kn">'+esc(p.kana)+'</div><div class="nm">'+esc(p.name)+'</div><div class="meta">'+meta.map(function(x){return '<span>'+esc(x)+'</span>'}).join('')+'</div>'+
+      (p.from?'<div class="fr"><small>FROM</small>'+esc(p.from)+'</div>':'')+(p.comment?'<div class="cm">“'+esc(p.comment)+'”</div>':'')+'</div></div>'}
 function draw(){
-  var all=D.players,cnt=function(t){return all.filter(function(p){return t==='ALL'||p.team===t}).length};
+  var staff=D.players.filter(isSt),all=D.players.filter(function(p){return !isSt(p)}),cnt=function(t){return all.filter(function(p){return t==='ALL'||p.team===t}).length};
   $('cnt').textContent='2026 SEASON　'+all.length+' PLAYERS';
   var useT=cnt('A')+cnt('2nd')>0;$('flt').style.display=useT?'':'none';if(!useT)F='ALL';
   $('flt').innerHTML=[['ALL','ALL','全員'],['A','A TEAM','Aチーム'],['2nd','2ND','2nd']].map(function(t){return '<button class="tile'+(F===t[0]?' on':'')+'" data-f="'+t[0]+'"><b>'+t[1]+'</b><small>'+t[2]+'・'+cnt(t[0])+'人</small></button>'}).join('');
   [].forEach.call($('flt').querySelectorAll('button'),function(b){b.onclick=function(){F=b.dataset.f;draw()}});
   var list=all.filter(function(p){return F==='ALL'||p.team===F});
-  $('grid').innerHTML=list.map(function(p){
-    var meta=[p.grade,p.height?p.height+(/cm$/.test(p.height)?'':'cm'):'',p.team?(p.team==='A'?'A TEAM':'2ND'):''].filter(Boolean);
-    return '<div class="tile pc"><div class="ph">'+(p.photo?'<img src="'+p.photo+'" alt="">':'<span class="ini">'+esc(p.name.replace(/\s/g,'').slice(0,1))+'</span>')+
-      '<span class="no">'+esc(p.no||'-')+'</span>'+(p.pos?'<span class="pos">'+esc(p.pos)+'</span>':'')+'</div>'+
-      '<div class="bd"><div class="kn">'+esc(p.kana)+'</div><div class="nm">'+esc(p.name)+'</div><div class="meta">'+meta.map(function(x){return '<span>'+esc(x)+'</span>'}).join('')+'</div>'+
-      (p.from?'<div class="fr"><small>FROM</small>'+esc(p.from)+'</div>':'')+(p.comment?'<div class="cm">“'+esc(p.comment)+'”</div>':'')+'</div></div>'}).join('')||'<div class="msg">選手がいません</div>';
+  $('grid').innerHTML=(list.map(card).join('')||'<div class="msg">選手がいません</div>')+(staff.length?'<div class="sth">COACHING STAFF</div>'+staff.map(card).join(''):'');
   JR.reveal($('grid'),'.pc');
 }
 function show(d){D=d;$('load').style.display='none';$('gate').style.display='none';$('body').style.display='block';draw()}
