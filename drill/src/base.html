@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#16204a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="送迎ドリル">
+<title>送迎ドリル</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#16204a;--bg2:#1f2c5f;--card:#243369;--ink:#fff;--sub:#b9c3e6;--or:#ff7a1a;--or2:#ffb14a;--ok:#35d07f;--ng:#ff5a6a;--line:#3a4a86;
+ --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'M PLUS Rounded 1c','Hiragino Maru Gothic ProN','Hiragino Sans',sans-serif;-webkit-tap-highlight-color:transparent}
+button{font-family:inherit;cursor:pointer;color:inherit}
+.hidden{display:none!important}
+.wrap{max-width:520px;margin:0 auto;padding:calc(14px + var(--st)) 16px calc(30px + var(--sb))}
+.top{display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:900;font-size:20px;letter-spacing:.04em}.logo span{color:var(--or)}
+.sm{background:var(--bg2);border:1px solid var(--line);border-radius:999px;font-size:12px;padding:6px 11px;font-weight:800}
+.hello{color:var(--sub);font-size:13px;margin:8px 0 0}
+.hero{margin:12px 0 14px;padding:16px 18px;border-radius:22px;background:linear-gradient(135deg,var(--or),var(--or2));color:#2a1300;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-30px;top:-30px;width:140px;height:140px;border-radius:50%;border:16px solid rgba(255,255,255,.25)}
+.heroT{font-weight:900;font-size:clamp(34px,10vw,46px);line-height:1.05}
+.heroS{font-weight:800;font-size:13px;margin-top:4px}
+.card{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:2px solid transparent;border-radius:18px;padding:14px;margin:10px 0;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+.card:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.card.main{border-color:var(--or);background:linear-gradient(90deg,#3a2f5a,var(--card) 70%)}
+.ic{font-size:30px;width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex:none}
+.card h3{margin:0;font-size:18px;font-weight:900}.card p{margin:2px 0 0;font-size:12px;color:var(--sub)}
+.st{margin-left:auto;flex:none;font-size:12px;font-weight:900;color:var(--sub);text-align:right}
+.st.done{background:var(--ok);color:#06301a;border-radius:999px;padding:4px 10px}
+.sec{margin:18px 0 6px;font-weight:900;font-size:14px;display:flex;align-items:baseline;gap:8px}.sec small{font-weight:500;color:var(--sub);font-size:11px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--bg2);border:2px solid var(--line);border-radius:14px;padding:8px 12px;font-weight:800;font-size:13px;line-height:1.3}
+.chip small{display:block;font-weight:500;color:var(--sub);font-size:11px}
+.chip.on{border-color:var(--or);background:#3a2b2a}
+.chip.off{opacity:.45}
+.week{display:flex;gap:5px}
+.week div{flex:1;text-align:center;background:var(--bg2);border-radius:12px;padding:5px 0 7px;font-size:11px;color:var(--sub)}
+.week b{display:block;font-size:17px;height:22px;line-height:22px}
+.week .today{outline:2px solid var(--or);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stats div{background:var(--bg2);border-radius:14px;padding:8px;text-align:center}
+.stats b{display:block;font-size:22px;color:var(--or2)}.stats span{font-size:11px;color:var(--sub)}
+.btn{display:block;width:100%;border:0;border-radius:999px;padding:14px;font-size:16px;font-weight:900;background:var(--or);color:#2a1300;box-shadow:0 4px 0 #b44f00;margin-top:10px}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #b44f00}
+.btn.sub{background:var(--bg2);color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.3);border:2px solid var(--line)}
+.note{font-size:11px;color:var(--sub);line-height:1.6}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.links button{flex:1;min-width:46%;background:none;border:1px dashed var(--line);border-radius:12px;padding:10px;font-size:12px;font-weight:800;color:var(--sub)}
+/* modal */
+#modal{position:fixed;inset:0;z-index:20;background:rgba(5,8,25,.7);display:flex;align-items:flex-end;justify-content:center}
+.mbox{width:min(560px,100%);max-height:92vh;overflow:auto;background:var(--bg);border-radius:24px 24px 0 0;padding:16px 16px calc(24px + var(--sb));border-top:3px solid var(--or)}
+.mhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.mhead h2{margin:0;font-size:18px;font-weight:900}
+.x{background:var(--bg2);border:0;border-radius:50%;width:36px;height:36px;font-size:16px;font-weight:900}
+.bar{display:flex;gap:4px}.bar i{flex:1;height:7px;border-radius:4px;background:var(--line)}.bar .ok{background:var(--ok)}.bar .ng{background:var(--ng)}.bar .cur{background:var(--or)}
+.q{font-size:clamp(38px,12vw,56px);font-weight:900;text-align:center;margin:18px 0 6px;word-break:break-word}
+.q.ja{font-size:clamp(26px,8vw,36px)}
+.q.long{font-size:19px;line-height:1.6;text-align:left;background:var(--card);border-radius:16px;padding:14px}
+.qs{text-align:center;color:var(--sub);font-size:13px}
+.ch{display:block;width:100%;margin:9px 0;padding:15px 12px;border-radius:16px;font-size:18px;font-weight:900;background:var(--card);border:2px solid var(--line)}
+.ch.ok{border-color:var(--ok);background:#173d33}.ch.ng{border-color:var(--ng);background:#46202d}
+.box{background:var(--card);border-radius:14px;padding:10px 12px;margin:8px 0}
+.box.ng{border-left:5px solid var(--ng)}
+label.f{display:block;font-size:12px;color:var(--sub);margin:10px 0 4px;font-weight:800}
+input,select,textarea{font-family:inherit;font-size:16px;width:100%;background:var(--bg2);color:#fff;border:2px solid var(--line);border-radius:12px;padding:10px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--or)}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.stars button{background:none;border:0;font-size:32px;color:var(--line);padding:0 2px}.stars button.on{color:var(--or2)}
+.mono{white-space:pre-wrap;word-break:break-all;background:#0e1534;border:1px dashed var(--line);border-radius:12px;padding:10px;font:13px/1.6 ui-monospace,Menlo,monospace;user-select:text;-webkit-user-select:text}
+table{width:100%;border-collapse:collapse;font-size:12px}td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--or2)}
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.badge{background:var(--bg2);border-radius:14px;padding:10px 6px;text-align:center;font-size:11px;font-weight:800}
+.badge b{display:block;font-size:28px}.badge.lock{opacity:.3;filter:grayscale(1)}
+/* listen */
+#listen{position:fixed;inset:0;z-index:30;background:#05081a;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
+#lsW{font-size:clamp(44px,13vw,80px);font-weight:900;color:var(--or2);min-height:1.3em}
+#lsJ{font-size:clamp(24px,7vw,36px);font-weight:900;min-height:1.5em}
+#lsI{color:var(--sub);font-size:13px;margin-top:16px}
+#lsC{display:flex;gap:10px;margin-top:26px;width:min(340px,100%)}
+#lsC .btn{margin:0}
+/* gate */
+#gate{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
+#gate .in{width:min(360px,100%);text-align:center}
+#toasts{position:fixed;left:50%;top:calc(18px + var(--st));transform:translateX(-50%);z-index:50;display:flex;flex-direction:column;gap:6px;align-items:center;pointer-events:none}
+.toast{background:#fff;color:#16204a;font-weight:900;border-radius:999px;padding:8px 16px;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.35);animation:t 2.6s ease forwards;white-space:nowrap}
+@keyframes t{0%{opacity:0;transform:translateY(-8px)}10%,80%{opacity:1;transform:none}100%{opacity:0}}
+
+#w3{position:fixed;inset:0;z-index:15;background:#8fd3ff}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.w3top{position:absolute;left:calc(10px);top:calc(10px + var(--st));right:10px;display:flex;justify-content:space-between;align-items:center;pointer-events:none}
+.w3top>*{pointer-events:auto}
+.w3coin{background:rgba(22,32,74,.85);border:2px solid var(--or2);border-radius:999px;padding:6px 14px;font-weight:900;font-size:16px}
+#joy{position:absolute;left:22px;bottom:calc(22px + var(--sb));width:124px;height:124px;border-radius:50%;background:rgba(22,32,74,.35);border:3px solid rgba(255,255,255,.7);touch-action:none}
+#knob{position:absolute;left:50%;top:50%;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;background:var(--or);border:3px solid #fff}
+#bJump{position:absolute;right:22px;bottom:calc(26px + var(--sb));width:84px;height:84px;border-radius:50%;background:var(--or);border:4px solid #fff;font-weight:900;font-size:15px;color:#2a1300;touch-action:none}
+#bAct{position:absolute;right:118px;bottom:calc(40px + var(--sb));min-width:90px;height:58px;padding:0 14px;border-radius:29px;background:#fff;color:#16204a;border:3px solid var(--or);font-weight:900;font-size:15px;touch-action:none}
+#bAct small{display:block;font-size:10px;font-weight:800;color:#5a6aa8;line-height:1}
+.w3hint{position:absolute;left:50%;bottom:calc(10px + var(--sb));transform:translateX(-50%);font-size:11px;background:rgba(0,0,0,.45);padding:3px 10px;border-radius:999px;white-space:nowrap}
+body.touch .w3hint{display:none}
+body:not(.touch) #joy,body:not(.touch) #bJump{display:none}
+body:not(.touch) #bAct{right:22px}
+#modal{z-index:25}
+</style>
+</head>
+<body>
+<div id="gate" class="hidden"><div class="in">
+ <div class="logo" style="font-size:30px">送迎<span>ドリル</span></div>
+ <p class="note" style="font-size:13px">部活・習いごとで忙しい子へ。<br>送迎の車の中・待ち時間の5分で、1セット。<br>小1〜高校・5教科</p>
+ <label class="f" style="text-align:left">パスワード（記事に書いてあります）</label>
+ <input type="password" id="pw" autocomplete="off" placeholder="パスワード">
+ <button class="btn" id="pwGo">はじめる</button>
+ <p class="note" id="pwMsg" style="margin-top:10px"></p>
+</div></div>
+
+<div class="wrap" id="home"></div>
+
+<div id="modal" class="hidden"><div class="mbox"><div class="mhead"><h2 id="mT"></h2><button class="x" id="mX">✕</button></div><div id="mB"></div></div></div>
+
+<div id="listen" class="hidden"><p class="note" style="font-size:13px;margin-bottom:18px">🎧 画面は見なくてOK。音を聞いて、頭の中で答えよう</p>
+ <div id="lsW"></div><div id="lsJ"></div><div id="lsI"></div>
+ <div id="lsC"><button class="btn sub" id="lsP">⏸ 一時停止</button><button class="btn" id="lsS">■ おわる</button></div></div>
+<div id="w3" class="hidden"><canvas id="gl"></canvas>
+ <div class="w3top"><button class="sm" id="bExit">🏠 もどる</button><div class="w3coin">🪙 <span id="w3coin">0</span></div></div>
+ <div id="joy"><div id="knob"></div></div><button id="bJump">JUMP</button><button id="bAct" class="hidden"></button>
+ <div class="w3hint">WASD・矢印：移動　ドラッグ：カメラ　Space：ジャンプ　E：話す</div></div>
+<div id="toasts"></div>
+
+<script>
+'use strict';
+/* ====== 設定 ====== */
+const PW_HASH='';
+const STORE='sougei_drill_v1';
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const dstr=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=()=>dstr(new Date());
+function weekStart(){const d=new Date();d.setDate(d.getDate()-(d.getDay()+6)%7);return d}
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+function toast(t){const e=document.createElement('div');e.className='toast';e.textContent=t;$('#toasts').appendChild(e);setTimeout(()=>e.remove(),2700)}
+
+/* ====== データ（この端末の中だけに保存） ====== */
+let D;
+function blank(){return{v:1,unlocked:false,name:'',act:'',settings:{sound:true,grade:'中1',subj:'en'},vocab:{},hist:[],practice:[],badges:{},lastBackup:null,created:today()}}
+function load(){try{D=JSON.parse(localStorage.getItem(STORE)||'null')}catch(e){D=null}if(!D||D.v!==1)D=blank();D.settings=Object.assign({sound:true,grade:'中1',subj:'en'},D.settings);if(D.settings.set){D.settings.grade=D.settings.set==='B'?'中2':'中1';delete D.settings.set}if(!GRADES.includes(D.settings.grade))D.settings.grade='中1';if(!avail(D.settings.subj,D.settings.grade))D.settings.subj='ma'}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(D))}catch(e){}}
+
+/* ====== 学年・教科 ====== */
+const GRADES=['小1','小2','小3','小4','小5','小6','中1','中2','中3','高校'];
+const SUBJ={en:{n:'英語',ic:'🔤'},ja:{n:'国語',ic:'✏️'},ma:{n:'算数・数学',ic:'➗'},sc:{n:'理科',ic:'🔬'},so:{n:'社会',ic:'🗾'}};
+const gi=g=>GRADES.indexOf(g);
+const band=g=>{const i=gi(g);return i<=1?'e12':i<=3?'e34':i<=5?'e56':i<=8?'jh':'hs'};
+const BAND_N={e34:'小3・4',e56:'小5・6',jh:'中学',hs:'高校'};
+const avail=(s,g)=>!((s==='sc'||s==='so')&&band(g)==='e12');
+const subjName=(s,g)=>s==='ma'?(gi(g)<=5?'算数':'数学'):SUBJ[s].n;
+function enKey(g){const i=gi(g);return i<=5?'E':g==='中1'?'A':g==='中2'?'B':g==='中3'?'C':'H'}
+function kanjiKey(g){const i=gi(g);return i<=5?g:i<=8?'中学':'高校'}
+function topic(s,g){if(s==='en')return EN[enKey(g)].name;if(s==='ja')return`漢字の読み（${kanjiKey(g)}）`;if(s==='ma')return`計算（${g}）`;return`${SUBJ[s].n}（${BAND_N[band(g)]}）`}
+
+/* ====== 英単語 ====== */
+const EN={
+ E:{name:'英単語（小学生）',w:[['dog','犬'],['cat','ねこ'],['bird','鳥'],['fish','魚'],['apple','りんご'],['milk','牛乳'],['water','水'],['book','本'],['desk','つくえ'],['sun','太陽'],
+  ['red','赤'],['blue','青'],['big','大きい'],['small','小さい'],['happy','うれしい'],['run','走る'],['swim','泳ぐ'],['eat','食べる'],['Monday','月曜日'],['Sunday','日曜日']]},
+ A:{name:'英単語（中1レベル）',w:[['school','学校'],['friend','友だち'],['family','家族'],['morning','朝'],['evening','夕方'],['week','週'],['weekend','週末'],['library','図書館'],['hospital','病院'],['station','駅'],
+  ['favorite','お気に入りの'],['practice','練習する'],['study','勉強する'],['teach','教える'],['learn','学ぶ'],['begin','始める'],['cold','寒い・冷たい'],['hungry','おなかがすいた'],['tired','つかれた'],['busy','いそがしい'],
+  ['often','よく・しばしば'],['usually','ふつうは・たいてい'],['sometimes','ときどき'],['always','いつも'],['early','早く・早い'],['tomorrow','明日'],['yesterday','昨日'],['country','国'],['language','言語・ことば'],['winter','冬']]},
+ B:{name:'英単語（中2レベル）',w:[['decide','決める'],['remember','覚えている・思い出す'],['forget','忘れる'],['borrow','借りる'],['lend','貸す'],['arrive','到着する'],['believe','信じる'],['change','変える・変わる'],['grow','育つ・育てる'],['invite','招待する'],
+  ['visit','訪れる'],['understand','理解する'],['important','大切な'],['popular','人気のある'],['dangerous','危険な'],['difficult','難しい'],['easy','簡単な'],['useful','役に立つ'],['interesting','おもしろい・興味深い'],['famous','有名な'],
+  ['future','未来・将来'],['history','歴史'],['culture','文化'],['experience','経験'],['information','情報'],['example','例'],['problem','問題'],['museum','博物館・美術館'],['dream','夢'],['team','チーム']]},
+ C:{name:'英単語（中3レベル）',w:[['although','〜だけれども'],['during','〜の間（ずっと）'],['among','（3つ以上）の間で'],['environment','環境'],['society','社会'],['government','政府'],['opinion','意見'],['communicate','意思を伝え合う'],['discover','発見する'],['increase','増える・増やす'],
+  ['decrease','減る・減らす'],['protect','守る'],['receive','受け取る'],['explain','説明する'],['solve','解決する'],['develop','発達させる・開発する'],['peace','平和'],['war','戦争'],['foreign','外国の'],['either','（2つのうち）どちらか']]},
+ H:{name:'英単語（高校基礎）',w:[['achieve','達成する'],['require','必要とする'],['maintain','維持する'],['consider','よく考える'],['reduce','減らす'],['provide','提供する'],['affect','影響を与える'],['recognize','認める・それとわかる'],['efficient','効率的な'],['significant','重要な・かなりの'],
+  ['essential','不可欠な'],['previous','以前の'],['approximately','およそ'],['consequence','結果'],['evidence','証拠'],['opportunity','機会'],['resource','資源'],['attitude','態度'],['obtain','得る'],['contribute','貢献する']]}};
+
+/* ====== 漢字の読み [ことば, 正しい読み, まちがい3つ] ====== */
+const KANJI={
+ '小1':[['花火','はなび',['かび','はなひ','かか']],['青空','あおぞら',['あおくう','あおそら','せいぞら']],['大雨','おおあめ',['おおう','だいあめ','おおあま']],['森林','しんりん',['もりりん','しんばやし','しんもり']],
+  ['入学','にゅうがく',['いりがく','にゅうまな','はいりがく']],['先生','せんせい',['さきせい','せんしょう','さきうまれ']],['天気','てんき',['てんけ','あまき','てんぎ']],['足音','あしおと',['そくおん','あしね','たりおと']],
+  ['小石','こいし',['しょうせき','こせき','おいし']],['王子','おうじ',['おうこ','きみこ','おうし']],['十円','じゅうえん',['とうえん','じゅえん','じゅうまる']],['手足','てあし',['てそく','しゅあし','てたり']]],
+ '小2':[['公園','こうえん',['こうその','おおやけえん','こえん']],['汽車','きしゃ',['きぐるま','きじゃ','きくるま']],['晴天','せいてん',['はれてん','せいあま','はれぞら']],['遠足','えんそく',['とおあし','えんあし','とおそく']],
+  ['新聞','しんぶん',['あたらきく','しんもん','にいぶん']],['電話','でんわ',['でんはなし','てんわ','でんご']],['親友','しんゆう',['おやとも','しんとも','おやゆう']],['牛肉','ぎゅうにく',['うしにく','ぎゅうじく','ごにく']],
+  ['昼食','ちゅうしょく',['ひるしょく','ちゅうじき','ひるたべ']],['歌声','うたごえ',['かせい','うたこえ','かごえ']],['毎週','まいしゅう',['まいしゅ','ごとしゅう','まいじゅう']],['朝日','あさひ',['ちょうにち','あさび','あさにち']]],
+ '小3':[['水泳','すいえい',['みずおよぎ','すいおう','すいえ']],['鉄橋','てっきょう',['てつばし','てっぱし','てつきょう']],['宿題','しゅくだい',['やどだい','しゅくてい','しゅくたい']],['温度','おんど',['あたたかど','おんたび','おんと']],
+  ['野球','やきゅう',['のきゅう','やだま','のだま']],['練習','れんしゅう',['ねりしゅう','れんならい','れんじゅう']],['坂道','さかみち',['はんどう','さかどう','はんみち']],['旅行','りょこう',['たびこう','りょぎょう','たびいき']],
+  ['植物','しょくぶつ',['うえもの','しょくもつ','しょくもの']],['港町','みなとまち',['こうちょう','みなとちょう','こうまち']],['美化','びか',['みか','うつくしか','びけ']],['悲鳴','ひめい',['かなしめい','ひなき','ひみょう']]],
+ '小4':[['試合','しあい',['しごう','こころあい','しがっ']],['卒業','そつぎょう',['そつごう','そつぎょ','そつわざ']],['給食','きゅうしょく',['きゅうじき','たまわりしょく','きゅうしょ']],['景色','けしき',['けいいろ','かげいろ','けいしき']],
+  ['協力','きょうりょく',['きょうりき','きょうりょ','かなりょく']],['健康','けんこう',['けんきょう','すこやこう','けんご']],['努力','どりょく',['ぬりょく','どりき','つとりょく']],['関係','かんけい',['かんかかり','せきけい','かんげ']],
+  ['連続','れんぞく',['れんしょく','つらぞく','れんそく']],['願い','ねがい',['がんい','のぞい','おがい']],['笑顔','えがお',['しょうがん','わらがお','えかお']]],
+ '小5':[['夢中','むちゅう',['ゆめなか','むなか','ぼうちゅう']],['準備','じゅんび',['じゅんぴ','じゅんそな','しゅんび']],['貿易','ぼうえき',['ぼうい','ぼういき','ぼうやく']],['規則','きそく',['きのり','きぞく','けそく']],
+  ['留守','るす',['りゅうしゅ','とめもり','るしゅ']],['久しぶり','ひさしぶり',['きゅうしぶり','くしぶり','ひさぶり']],['移動','いどう',['うつどう','いうご','いとう']],['増える','ふえる',['ぞうえる','まえる','そえる']],
+  ['示す','しめす',['じす','しょうす','さす']],['眼科','がんか',['めか','げんか','がんが']],['団結','だんけつ',['だんむすび','とんけつ','だんげつ']]],
+ '小6':[['宇宙','うちゅう',['うそら','うじゅう','そらちゅう']],['誕生','たんじょう',['たんせい','えんじょう','たんしょう']],['牛乳','ぎゅうにゅう',['うしちち','ぎゅうちち','ごにゅう']],['忘れ物','わすれもの',['ぼうれもの','わすれぶつ','ぼうぶつ']],
+  ['背中','せなか',['はいちゅう','せちゅう','せいなか']],['秘密','ひみつ',['ひめみつ','ひびつ','ひみち']],['郵便','ゆうびん',['ゆうべん','ゆびん','ゆうたより']],['演奏','えんそう',['えんかな','えんそ','いんそう']],
+  ['机','つくえ',['つぐえ','たくえ','かくえ']],['届ける','とどける',['かいける','とどろける','とまける']],['尊敬','そんけい',['そんきょう','とうとけい','そんげい']]],
+ '中学':[['継続','けいぞく',['けいしょく','つぎぞく','けいそく']],['抽象','ちゅうしょう',['ゆうしょう','ちゅうぞう','ちゅうしょ']],['依頼','いらい',['えらい','いたより','いだい']],['普及','ふきゅう',['ふおよ','ふっきゅう','ふぎゅう']],
+  ['貢献','こうけん',['こうこん','みつけん','こうげん']],['矛盾','むじゅん',['ほこたて','むたて','ぼうじゅん']],['克服','こくふく',['かつふく','こくぶく','こっぷく']],['傾向','けいこう',['かたむこう','けいきょう','けいごう']],
+  ['雰囲気','ふんいき',['ふいんき','ふんいけ','ぶんいき']],['披露','ひろう',['ひつゆ','ひろ','ひろく']],['曖昧','あいまい',['あいみ','あいばい','かいまい']],['頻繁','ひんぱん',['ひんはん','びんぱん','ひんばん']]],
+ '高校':[['漸次','ぜんじ',['ざんじ','せんじ','ぜんし']],['遵守','じゅんしゅ',['そんしゅ','じゅんもり','そんしゅう']],['逐一','ちくいち',['ついいち','ちくいつ','しゅくいち']],['蓋然性','がいぜんせい',['ふたぜんせい','けいぜんせい','がいねんせい']],
+  ['恣意的','しいてき',['じいてき','ししてき','ほしいてき']],['脆弱','ぜいじゃく',['きじゃく','もろじゃく','ぜいにゃく']],['凡例','はんれい',['ぼんれい','はんぷく','ぼんぷく']],['相殺','そうさい',['そうさつ','あいさつ','そうせつ']],
+  ['示唆','しさ',['じさ','しさく','じしゃ']],['懸念','けねん',['けんねん','かけねん','けいねん']],['進捗','しんちょく',['しんぽ','しんしょう','しんちょう']]]};
+
+/* ====== 理科 [問題, 正解, まちがい3つ, 解説] ====== */
+const SCI={
+ e34:[['こん虫のあしは何本？','6本',['4本','8本','10本'],'こん虫のあしは6本で、むねについています。'],
+  ['こん虫の体は、頭・むね・あと1つは？','はら',['しっぽ','こし','せなか'],'こん虫の体は「頭・むね・はら」の3つに分かれています。'],
+  ['じしゃくにつくものはどれ？','鉄のくぎ',['アルミニウムのかん','10円玉（銅）','ガラスのコップ'],'じしゃくにつくのは鉄などです。アルミニウムや銅はつきません。'],
+  ['水がこおり始める温度は？','0℃',['10℃','−10℃','4℃'],'水は0℃でこおり始めます。'],
+  ['太陽がのぼってくる方位は？','東',['西','南','北'],'太陽は東からのぼり、南の空を通って西にしずみます。'],
+  ['とじこめた空気をおすと、体積はどうなる？','小さくなる',['大きくなる','変わらない','なくなる'],'空気はおしちぢめることができ、体積が小さくなります。'],
+  ['あたためられた空気は、どちらへ動く？','上',['下','横だけ','動かない'],'あたためられた空気は軽くなり、上へ動きます。'],
+  ['夏の大三角にふくまれない星は？','シリウス',['ベガ','デネブ','アルタイル'],'夏の大三角はベガ・デネブ・アルタイル。シリウスは冬に見える星です。'],
+  ['うでを曲げるとき、ちぢんで動かしているのは？','筋肉',['骨','つめ','皮ふ'],'筋肉がちぢんだりゆるんだりして、関節のところで体が曲がります。'],
+  ['かん電池と豆電球で、明かりがつくのは？','1つの輪のようにつながったとき',['どう線を1本だけつないだとき','電池の＋極どうしをつないだとき','どう線を切ったとき'],'電気の通り道が1つの輪（回路）になると、明かりがつきます。']],
+ e56:[['メダカで、せびれに切れこみがあるのは？','おす',['めす','子ども','両方'],'せびれに切れこみがあり、しりびれが平行四辺形に近いのがおすです。'],
+  ['ものが燃えるのに必要な気体は？','酸素',['ちっ素','二酸化炭素','水素'],'ものが燃えるには酸素が必要です。'],
+  ['ふりこが1往復する時間を変えるのは？','ふりこの長さ',['おもりの重さ','ふれはば','おもりの色'],'1往復の時間は、ふりこの長さで決まります。'],
+  ['電磁石を強くする方法は？','コイルのまき数をふやす',['電流を小さくする','鉄しんをぬく','どう線を短く切る'],'コイルのまき数をふやしたり、電流を大きくしたりすると強くなります。'],
+  ['ヨウ素液をでんぷんにつけると、何色になる？','青むらさき色',['赤色','黄色','白色'],'でんぷんがあると、ヨウ素液は青むらさき色に変わります。'],
+  ['植物の葉から水が水蒸気になって出ていくことを何という？','蒸散',['光合成','呼吸','消化'],'葉の気こうから水が水蒸気として出ていくことを蒸散といいます。'],
+  ['酸性の水よう液をつけると赤くなるのは？','青色リトマス紙',['赤色リトマス紙','ヨウ素液','石灰水'],'酸性の水よう液は、青色リトマス紙を赤く変えます。'],
+  ['流れる水が地面をけずるはたらきは？','しん食',['運ぱん','たい積','ふっとう'],'けずる＝しん食、運ぶ＝運ぱん、つもらせる＝たい積です。'],
+  ['てこで、力をくわえるところを何という？','力点',['支点','作用点','中心点'],'支える所が支点、力をくわえる所が力点、ものにはたらく所が作用点です。'],
+  ['人の赤ちゃんは、母親の体内でおよそ何週間育つ？','約38週',['約10週','約20週','約60週'],'人は受精してからおよそ38週で生まれてきます。']],
+ jh:[['水の化学式は？','H₂O',['CO₂','O₂','NaCl'],'水は水素原子2個と酸素原子1個が結びついた H₂O です。'],
+  ['二酸化炭素の化学式は？','CO₂',['H₂O','CO','O₂'],'二酸化炭素は炭素原子1個と酸素原子2個で CO₂ です。'],
+  ['10Ωの抵抗に2Aの電流が流れている。電圧は？','20V',['5V','12V','0.2V'],'オームの法則：電圧＝抵抗×電流＝10×2＝20V。'],
+  ['植物の細胞にあって、動物の細胞にないつくりは？','細胞壁',['核','細胞膜','細胞質'],'細胞壁は植物の細胞だけにあります（葉緑体も植物だけ）。'],
+  ['マグマが地表や地表付近で急に冷えてできた岩石は？','火山岩',['深成岩','たい積岩','変成岩'],'急に冷えると火山岩、地下深くでゆっくり冷えると深成岩になります。'],
+  ['地震で、はじめに来る小さなゆれは？','初期微動',['主要動','余震','津波'],'はじめの小さなゆれが初期微動、あとの大きなゆれが主要動です。'],
+  ['遺伝子の本体である物質は？','DNA',['ATP','でんぷん','たんぱく質'],'遺伝子の本体は DNA（デオキシリボ核酸）です。'],
+  ['力の大きさを表す単位は？','N（ニュートン）',['J（ジュール）','W（ワット）','Pa（パスカル）'],'力の単位はN（ニュートン）です。'],
+  ['酸とアルカリが中和すると、水と何ができる？','塩（えん）',['酸素','水素','でんぷん'],'中和では水と塩（えん）ができます。'],
+  ['太陽系の惑星で、いちばん大きいのは？','木星',['土星','地球','海王星'],'太陽系でいちばん大きい惑星は木星です。'],
+  ['植物が光合成でとり入れる気体は？','二酸化炭素',['酸素','ちっ素','水素'],'光合成では二酸化炭素と水から養分をつくり、酸素を出します。']],
+ hs:[['原子番号が表しているのは？','陽子の数',['中性子の数','電子殻の数','質量数'],'原子番号は原子核の中の陽子の数です。'],
+  ['物質量の単位は？','mol',['g','L','K'],'物質量の単位は mol（モル）です。'],
+  ['真空中の光の速さは、およそ秒速何km？','約30万km',['約3万km','約300km','約300万km'],'光の速さは秒速約30万km（約3.0×10⁸ m/s）です。'],
+  ['外から力がはたらかなければ、静止した物体は静止し続ける。この法則は？','慣性の法則',['作用・反作用の法則','フックの法則','オームの法則'],'慣性の法則（運動の第一法則）です。'],
+  ['細胞内でエネルギーのやりとりに使われる物質は？','ATP',['DNA','RNA','グルコース'],'ATP（アデノシン三リン酸）がエネルギーの受けわたしをします。'],
+  ['DNAにふくまれない塩基は？','U（ウラシル）',['A（アデニン）','G（グアニン）','C（シトシン）'],'DNAの塩基はA・T・G・C。UはRNAにふくまれます。'],
+  ['25℃で中性の水溶液のpHは？','7',['0','1','14'],'25℃では、pH7が中性、7より小さいと酸性、大きいと塩基性です。'],
+  ['地球の大気で、いちばん多い気体は？','窒素',['酸素','二酸化炭素','アルゴン'],'大気の約78%が窒素、約21%が酸素です。'],
+  ['周期表で、同じ縦の列の元素をまとめて何という？','族',['周期','殻','群'],'縦の列が「族」、横の行が「周期」です。'],
+  ['電力の単位W（ワット）は、何をかけたもの？','電圧×電流',['電圧×抵抗','電流×時間','抵抗×時間'],'電力(W)＝電圧(V)×電流(A)です。']]};
+
+/* ====== 社会 ====== */
+const SOC={
+ e34:[['地図記号「文」は何を表す？','小・中学校',['図書館','病院','神社'],'「文」は小・中学校を表す地図記号です。'],
+  ['地図記号「〒」は何を表す？','郵便局',['銀行','交番','役所'],'「〒」は郵便局の地図記号です。'],
+  ['地図記号「卍」は何を表す？','寺院',['神社','城あと','畑'],'「卍」は寺院、「⛩」の形が神社です。'],
+  ['日本の都道府県はいくつ？','47',['43','45','50'],'1都・1道・2府・43県で、あわせて47です。'],
+  ['日本でいちばん面積が大きい都道府県は？','北海道',['岩手県','長野県','東京都'],'いちばん面積が大きいのは北海道です。'],
+  ['日本でいちばん高い山は？','富士山',['北岳','浅間山','阿蘇山'],'富士山（3776m）が日本でいちばん高い山です。'],
+  ['日本でいちばん長い川は？','信濃川',['利根川','石狩川','淀川'],'いちばん長いのは信濃川です。'],
+  ['火事や救急のときにかける電話番号は？','119',['110','117','177'],'火事・救急は119、事件・事故は110です。'],
+  ['事件や事故のときにかける電話番号は？','110',['119','104','171'],'事件・事故は110番です。'],
+  ['方位で、北の反対は？','南',['東','西','北東'],'北の反対は南、東の反対は西です。']],
+ e56:[['日本の国土のおよそ何分の何が山地？','約4分の3',['約4分の1','約2分の1','約10分の1'],'日本の国土の約4分の3は山地です。'],
+  ['鎌倉幕府を開いた人物は？','源頼朝',['足利尊氏','平清盛','徳川家康'],'源頼朝が鎌倉に幕府を開きました。'],
+  ['聖徳太子が定めた、役人の心がまえを示したものは？','十七条の憲法',['大宝律令','御成敗式目','武家諸法度'],'聖徳太子は十七条の憲法を定めました。'],
+  ['大化の改新を始めた中心人物は、中臣鎌足と？','中大兄皇子',['聖武天皇','藤原道長','卑弥呼'],'中大兄皇子と中臣鎌足が大化の改新を進めました。'],
+  ['1543年に種子島に伝わったものは？','鉄砲',['キリスト教','仏教','漢字'],'1543年、ポルトガル人によって鉄砲が伝わりました。'],
+  ['日本国憲法の三つの原則に入らないものは？','三権分立',['国民主権','基本的人権の尊重','平和主義'],'三つの原則は国民主権・基本的人権の尊重・平和主義です。'],
+  ['国会は、衆議院ともう1つは？','参議院',['貴族院','元老院','内閣'],'国会は衆議院と参議院の二院制です。'],
+  ['縄文土器が使われた時代は？','縄文時代',['弥生時代','古墳時代','奈良時代'],'縄目のもようがある土器が使われたのが縄文時代です。'],
+  ['江戸幕府を開いた人物は？','徳川家康',['織田信長','豊臣秀吉','徳川家光'],'徳川家康が1603年に江戸幕府を開きました。'],
+  ['日本の標準時の基準になる経線が通る都市は？','兵庫県明石市',['東京都','千葉県','福岡県'],'東経135度の経線が兵庫県明石市を通っています。']],
+ jh:[['経度0度の本初子午線が通る国は？','イギリス',['フランス','日本','アメリカ'],'本初子午線はイギリスのロンドン（旧グリニッジ天文台）を通ります。'],
+  ['日本の標準時子午線は？','東経135度',['東経140度','東経120度','西経135度'],'日本の標準時は東経135度の経線が基準です。'],
+  ['1867年、政権を朝廷に返した（大政奉還）将軍は？','徳川慶喜',['徳川家康','徳川吉宗','徳川家茂'],'15代将軍・徳川慶喜が大政奉還を行いました。'],
+  ['大日本帝国憲法が発布された年は？','1889年',['1868年','1912年','1946年'],'大日本帝国憲法は1889年に発布されました。'],
+  ['三権分立で、法律をつくる立法権をもつのは？','国会',['内閣','裁判所','都道府県'],'立法権は国会、行政権は内閣、司法権は裁判所です。'],
+  ['需要が供給より多いとき、価格は一般にどうなる？','上がる',['下がる','変わらない','ゼロになる'],'買いたい量が売りたい量より多いと、価格は上がりやすくなります。'],
+  ['日本の選挙権は何歳以上？','18歳以上',['16歳以上','20歳以上','25歳以上'],'2016年から選挙権は18歳以上になりました。'],
+  ['衆議院議員の任期は？','4年',['2年','6年','8年'],'衆議院議員の任期は4年（解散あり）、参議院議員は6年です。'],
+  ['関ヶ原の戦いが起きた年は？','1600年',['1582年','1603年','1615年'],'1600年、徳川家康が関ヶ原の戦いで勝利しました。'],
+  ['世界で最も面積が大きい大陸は？','ユーラシア大陸',['アフリカ大陸','北アメリカ大陸','南極大陸'],'いちばん大きいのはユーラシア大陸です。']],
+ hs:[['日本がポツダム宣言を受け入れた年は？','1945年',['1941年','1947年','1951年'],'1945年8月にポツダム宣言を受け入れました。'],
+  ['日本国憲法が施行された日は？','1947年5月3日',['1946年11月3日','1945年8月15日','1951年9月8日'],'公布は1946年11月3日、施行は1947年5月3日です。'],
+  ['サンフランシスコ平和条約が結ばれた年は？','1951年',['1945年','1956年','1972年'],'1951年に調印し、翌1952年に日本は主権を回復しました。'],
+  ['産業革命が最初に起こった国は？','イギリス',['フランス','ドイツ','アメリカ'],'18世紀後半、イギリスで産業革命が始まりました。'],
+  ['国際連合の本部がある都市は？','ニューヨーク',['ジュネーブ','パリ','ワシントンD.C.'],'国際連合の本部はニューヨークにあります。'],
+  ['参議院議員の任期は？','6年',['4年','3年','8年'],'参議院議員の任期は6年で、3年ごとに半数を改選します。'],
+  ['ベルリンの壁が崩壊した年は？','1989年',['1961年','1975年','1991年'],'1989年にベルリンの壁が崩壊しました。'],
+  ['日本の内閣の長は？','内閣総理大臣',['衆議院議長','最高裁判所長官','天皇'],'内閣の長は内閣総理大臣です。'],
+  ['1858年、アメリカと結んだ不平等な通商条約は？','日米修好通商条約',['日米和親条約','下関条約','ポーツマス条約'],'1858年の日米修好通商条約は、領事裁判権を認めるなど不平等な条約でした。'],
+  ['鎌倉幕府が1232年に定めた武家の法律は？','御成敗式目',['武家諸法度','大宝律令','建武式目'],'北条泰時が御成敗式目（貞永式目）を定めました。']]};
+
+/* ====== 算数・数学（自動で問題をつくる＝答えがまちがわない） ====== */
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a||1};
+const M='−';
+const sn=n=>n<0?M+(-n):String(n);
+const pn=n=>n<0?`(${M}${-n})`:String(n);
+function fr(n,d){if(d<0){n=-n;d=-d}const g=gcd(n,d);n/=g;d/=g;return d===1?sn(n):`${n<0?M:''}${Math.abs(n)}/${d}`}
+const ten=n=>n%10===0?String(n/10):(n/10).toFixed(1);
+function near(ans,k=3,spread=5,allowNeg=false){const s=new Set([ans]);let t=0;while(s.size<k+1&&t++<200){let v=ans+ri(-spread,spread);if(!allowNeg&&v<0)continue;s.add(v)}s.delete(ans);return[...s].slice(0,k)}
+function uniq(ans,ws){const out=[];for(const w of ws)if(w!==ans&&!out.includes(w))out.push(w);return out.slice(0,3)}
+function exprLin(a,b,v='x'){const t1=a===1?v:a===-1?M+v:sn(a)+v;if(b===0)return t1;return t1+(b>0?' ＋ ':' '+M+' ')+Math.abs(b)}
+function quadStr(p,q){let s='x²';if(p)s+=(p>0?' ＋ ':' '+M+' ')+(Math.abs(p)===1?'':Math.abs(p))+'x';if(q)s+=(q>0?' ＋ ':' '+M+' ')+Math.abs(q);return s}
+const fac=(a)=>a===0?'x':a>0?`(x ＋ ${a})`:`(x ${M} ${-a})`;
+const MATH={
+ '小1':[()=>{const a=ri(1,9),b=ri(1,9);return[`${a} ＋ ${b} ＝ ？`,String(a+b),near(a+b).map(String),`${a}＋${b}＝${a+b}`]},
+  ()=>{const a=ri(6,18),b=ri(1,Math.min(9,a-1));return[`${a} ${M} ${b} ＝ ？`,String(a-b),near(a-b,3,4).map(String),`${a}${M}${b}＝${a-b}`]}],
+ '小2':[()=>{const a=ri(2,9),b=ri(1,9);return[`${a} × ${b} ＝ ？`,String(a*b),uniq(a*b,[a*(b+1),a*(b-1),(a+1)*b,a+b,(a-1)*b,a*b+1,a*b-1]).map(String),`九九：${a}×${b}＝${a*b}`]},
+  ()=>{const a=ri(12,68),b=ri(11,99-a);return[`${a} ＋ ${b} ＝ ？`,String(a+b),uniq(a+b,[a+b+10,a+b-10,a+b+1,a+b-1]).map(String),`${a}＋${b}＝${a+b}`]},
+  ()=>{const a=ri(41,98),b=ri(12,a-10);return[`${a} ${M} ${b} ＝ ？`,String(a-b),uniq(a-b,[a-b+10,a-b-10,a-b+1,a-b-1]).map(String),`${a}${M}${b}＝${a-b}`]}],
+ '小3':[()=>{const b=ri(2,9),q=ri(2,9),a=b*q;return[`${a} ÷ ${b} ＝ ？`,String(q),uniq(q,[q+1,q-1,q+2,b]).map(String),`${b}×${q}＝${a} だから、${a}÷${b}＝${q}`]},
+  ()=>{const b=ri(3,9),q=ri(2,9),r=ri(1,b-1),a=b*q+r;const A=`${q} あまり ${r}`;return[`${a} ÷ ${b} ＝ ？`,A,uniq(A,[`${q} あまり ${r<b-1?r+1:r-1}`,`${q+1} あまり ${r}`,`${q-1} あまり ${r}`,`${q} あまり ${r>1?r-1:r+1}`]),`${b}×${q}＝${b*q}、${a}${M}${b*q}＝${r} なので ${A}`]},
+  ()=>{const a=ri(123,489),b=ri(111,499);return[`${a} ＋ ${b} ＝ ？`,String(a+b),uniq(a+b,[a+b+100,a+b-10,a+b+10,a+b-1]).map(String),`${a}＋${b}＝${a+b}`]}],
+ '小4':[()=>{const A=ri(11,89),B=ri(11,89);return[`${ten(A)} ＋ ${ten(B)} ＝ ？`,ten(A+B),uniq(ten(A+B),[ten(A+B+10),ten(A+B-1),ten(A+B+1),String(A+B)]),`小数点の位置をそろえて計算：${ten(A)}＋${ten(B)}＝${ten(A+B)}`]},
+  ()=>{const b=ri(2,9),q=ri(11,40),a=b*q;return[`${a} ÷ ${b} ＝ ？`,String(q),uniq(q,[q+1,q-1,q+10,q-10]).map(String),`${b}×${q}＝${a}`]},
+  ()=>{const a=ri(3,15),b=ri(3,15);return[`たて${a}cm、よこ${b}cmの長方形の面積は？`,`${a*b}cm²`,uniq(`${a*b}cm²`,[`${(a+b)*2}cm²`,`${a+b}cm²`,`${a*b+a}cm²`,`${a*b-b}cm²`,`${a*b+1}cm²`]),`長方形の面積＝たて×よこ＝${a}×${b}＝${a*b}cm²`]}],
+ '小5':[()=>{let d1=ri(2,6),d2=ri(2,6);while(d2===d1)d2=ri(2,6);const n1=ri(1,d1-1),n2=ri(1,d2-1);const N=n1*d2+n2*d1,Dn=d1*d2;const A=fr(N,Dn);const val=N/Dn;
+   const ws=[[n1+n2,d1+d2],[N+d1,Dn],[N-1,Dn],[n1*n2,d1*d2],[N+Dn,Dn]].filter(([a,b])=>a>0&&Math.abs(a/b-val)>1e-9).map(([a,b])=>fr(a,b));return[`${n1}/${d1} ＋ ${n2}/${d2} ＝ ？`,A,uniq(A,ws),`通分して ${n1*d2}/${Dn}＋${n2*d1}/${Dn}＝${N}/${Dn}${A!==`${N}/${Dn}`?'＝'+A+'（約分）':''}`]},
+  ()=>{const A=ri(11,49),k=ri(2,9);return[`${ten(A)} × ${k} ＝ ？`,ten(A*k),uniq(ten(A*k),[ten(A*k+k),ten(A*k-10),String(A*k),ten(A*k+10)]),`${ten(A)}×${k}＝${ten(A*k)}`]},
+  ()=>{const m=ri(5,20),d=ri(1,4),xs=[m-d,m,m+d].sort(()=>Math.random()-.5);return[`${xs.join('、')} の平均は？`,String(m),uniq(m,[m+1,m-1,m+d,xs[0]+xs[1]]).map(String),`平均＝合計÷個数＝${3*m}÷3＝${m}`]}],
+ '小6':[()=>{const d1=ri(2,7),d2=ri(2,7),n1=ri(1,d1-1),n2=ri(1,d2-1);const A=fr(n1*n2,d1*d2),v=n1*n2/(d1*d2);const ws=[[n1*d2,d1*n2],[n1+n2,d1+d2],[n1*n2,d1+d2],[n1*n2+1,d1*d2],[n1*n2,d1*d2+1],[n1+1,d1*d2]].filter(([a,b])=>Math.abs(a/b-v)>1e-9).map(([a,b])=>fr(a,b));
+   return[`${n1}/${d1} × ${n2}/${d2} ＝ ？`,A,uniq(A,ws),`分子どうし・分母どうしをかけて ${n1*n2}/${d1*d2}${A!==`${n1*n2}/${d1*d2}`?'＝'+A:''}`]},
+  ()=>{const d1=ri(2,7),d2=ri(2,7),n1=ri(1,d1-1),n2=ri(1,d2-1);const A=fr(n1*d2,d1*n2),v=n1*d2/(d1*n2);const ws=[[n1*n2,d1*d2],[d1*n2,n1*d2],[n1*d2+1,d1*n2],[n1+d2,d1+n2],[n1*d2,d1*n2+1]].filter(([a,b])=>Math.abs(a/b-v)>1e-9).map(([a,b])=>fr(a,b));
+   return[`${n1}/${d1} ÷ ${n2}/${d2} ＝ ？`,A,uniq(A,ws),`わる数を逆数にしてかける：${n1}/${d1}×${d2}/${n2}＝${A}`]},
+  ()=>{let x=ri(1,6),y=ri(1,7);while(gcd(x,y)!==1||x===y){x=ri(1,6);y=ri(1,7)}const k=ri(2,6);const A=`${x}:${y}`;return[`${x*k}:${y*k} をかんたんな比にすると？`,A,uniq(A,[`${y}:${x}`,`${x+1}:${y}`,`${x}:${y+1}`,`${x*2}:${y}`]),`両方を${k}でわると ${A}`]}],
+ '中1':[()=>{let a=ri(-9,9)||3,b=ri(-9,9)||-4;const op=ri(0,2);const r=op===0?a+b:op===1?a-b:a*b;const o=['＋',M,'×'][op];return[`${pn(a)} ${o} ${pn(b)} ＝ ？`,sn(r),uniq(sn(r),near(r,4,6,true).map(sn).concat([sn(-r)])),`${pn(a)}${o}${pn(b)}＝${sn(r)}`]},
+  ()=>{const x=ri(-6,9),a=ri(2,9),b=ri(-9,9)||5,c=a*x+b;return[`${exprLin(a,b)} ＝ ${sn(c)}　x ＝ ？`,`x ＝ ${sn(x)}`,uniq(`x ＝ ${sn(x)}`,[x+1,x-1,-x,x+2].map(v=>`x ＝ ${sn(v)}`)),`${a}x ＝ ${sn(c)}${b>0?M:'＋'}${Math.abs(b)} ＝ ${sn(c-b)}、x ＝ ${sn(c-b)}÷${a} ＝ ${sn(x)}`]},
+  ()=>{const x=ri(-5,5),a=ri(2,6),b=ri(-8,8);const r=a*x+b;return[`x ＝ ${sn(x)} のとき、${exprLin(a,b)} の値は？`,sn(r),uniq(sn(r),near(r,4,5,true).map(sn).concat([sn(-r)])),`${a}×${pn(x)}${b>=0?'＋':M}${Math.abs(b)}＝${sn(r)}`]}],
+ '中2':[()=>{const x=ri(-4,9),y=ri(-4,9);const s=x+y,d=x-y;const A=`x＝${sn(x)}, y＝${sn(y)}`;return[`連立方程式　x ＋ y ＝ ${sn(s)}、x ${M} y ＝ ${sn(d)}`,A,uniq(A,[`x＝${sn(y)}, y＝${sn(x)}`,`x＝${sn(x+1)}, y＝${sn(y-1)}`,`x＝${sn(-x)}, y＝${sn(-y)}`,`x＝${sn(x)}, y＝${sn(y+1)}`]),`2つの式をたすと 2x＝${sn(s+d)}、x＝${sn(x)}。代入して y＝${sn(y)}`]},
+  ()=>{const a=ri(-4,5)||2,b=ri(-6,6),k=ri(-4,4);const r=a*k+b;return[`一次関数 y ＝ ${exprLin(a,b)} で、x ＝ ${sn(k)} のときの y は？`,`y ＝ ${sn(r)}`,uniq(`y ＝ ${sn(r)}`,near(r,4,5,true).concat([-r]).map(v=>`y ＝ ${sn(v)}`)),`y＝${a}×${pn(k)}${b>=0?'＋':M}${Math.abs(b)}＝${sn(r)}`]},
+  ()=>{const a=ri(30,80),b=ri(20,150-a-10);const c=180-a-b;return[`三角形の2つの角が ${a}°と${b}°のとき、残りの角は？`,`${c}°`,uniq(`${c}°`,[`${c+10}°`,`${c-10}°`,`${360-a-b}°`,`${a+b}°`]),`三角形の内角の和は180°：180${M}${a}${M}${b}＝${c}°`]}],
+ '中3':[()=>{let a=ri(-7,7)||2,b=ri(-7,7)||-3;const A=quadStr(a+b,a*b);return[`${fac(a)}${fac(b)} を展開すると？`,A,uniq(A,[quadStr(a+b,-(a*b)),quadStr(a*b,a+b),quadStr(-(a+b),a*b),quadStr(a+b+1,a*b)]),`(x＋a)(x＋b)＝x²＋(a＋b)x＋ab を使う`]},
+  ()=>{let a=ri(-7,7)||2,b=ri(-7,7)||-3;if(a>b)[a,b]=[b,a];const A=fac(a)+fac(b);return[`${quadStr(a+b,a*b)} を因数分解すると？`,A,uniq(A,[fac(-a)+fac(-b),fac(a)+fac(-b),fac(-a)+fac(b),fac(a+1)+fac(b-1)]),`たして${sn(a+b)}、かけて${sn(a*b)}になる2数は ${sn(a)} と ${sn(b)}`]},
+  ()=>{const k=ri(2,5),m=[2,3,5,6,7][ri(0,4)];const A=`${k}√${m}`;return[`√${k*k*m} をかんたんにすると？`,A,uniq(A,[`${m}√${k}`,`${k+1}√${m}`,`${k*k}√${m}`,`${k}√${m+1}`]),`√${k*k*m}＝√(${k}²×${m})＝${k}√${m}`]},
+  ()=>{let r1=ri(-6,6),r2=ri(-6,6);while(r1===r2||!r1||!r2){r1=ri(-6,6);r2=ri(-6,6)}const lo=Math.min(r1,r2),hi=Math.max(r1,r2);const S=(a,b)=>`x ＝ ${sn(a)}, ${sn(b)}`;
+   return[`二次方程式 ${quadStr(-(r1+r2),r1*r2)} ＝ 0 を解くと？`,S(lo,hi),uniq(S(lo,hi),[S(-hi,-lo),S(lo,-hi),S(-lo,hi),S(lo+1,hi)]),`${fac(-r1)}${fac(-r2)}＝0 より x＝${sn(r1)}, ${sn(r2)}`]}],
+ '高校':[()=>{const p=ri(-5,5)||2,q=ri(-6,6)||-3;const b=-2*p,c=p*p+q;const V=(x,y)=>`(${sn(x)}, ${sn(y)})`;return[`y ＝ ${quadStr(b,c)} の頂点の座標は？`,V(p,q),uniq(V(p,q),[V(-p,q),V(p,-q),V(-p,-q),V(p,c)]),`y＝(x${p>0?M:'＋'}${Math.abs(p)})²${q>0?'＋':M}${Math.abs(q)} と変形できるので、頂点は${V(p,q)}`]},
+  ()=>{const b=ri(-6,6),c=ri(-5,9);const D=b*b-4*c;const A=D>0?'2個':D===0?'1個':'0個（実数解なし）';return[`${quadStr(b,c)} ＝ 0 の実数解の個数は？`,A,['2個','1個','0個（実数解なし）','3個'].filter(x=>x!==A),`判別式 D＝b²${M}4ac＝${sn(b*b)}${M}${4*c<0?'('+sn(4*c)+')':4*c}＝${sn(D)}`]},
+  ()=>{const T=[['sin30°','1/2'],['cos60°','1/2'],['sin45°','√2/2'],['cos45°','√2/2'],['cos30°','√3/2'],['sin60°','√3/2'],['tan45°','1'],['tan60°','√3'],['tan30°','√3/3'],['sin90°','1'],['cos0°','1']];
+   const[t,v]=T[ri(0,T.length-1)];return[`${t} の値は？`,v,uniq(v,['1/2','√2/2','√3/2','1','√3','√3/3','0'].sort(()=>Math.random()-.5)),`${t}＝${v}（三角比の基本の値）`]},
+  ()=>{const b=[2,3,5,10][ri(0,3)],n=ri(-1,4);const x=n<0?`1/${b}`:String(b**n);const sub={2:'₂',3:'₃',5:'₅',10:'₁₀'}[b];return[`log${sub} ${x} の値は？`,sn(n),uniq(sn(n),near(n,4,2,true).map(sn).concat([x])),`${b}^${n<0?'('+M+'1)':n}＝${x} だから ${sn(n)}`]}]};
+function mathQ(g){const gens=MATH[g];const[q,a,ws,e]=gens[ri(0,gens.length-1)]();return{id:null,q,a,ws:ws.slice(0,3),e}}
+
+/* ====== 問題をつくる ====== */
+function bankFor(s,g){if(s==='en'){const k=enKey(g);return EN[k].w.map(([en,ja])=>({id:en,en,ja}))}
+ if(s==='ja')return KANJI[kanjiKey(g)].map(([w,r,ws])=>({id:'ja:'+w,q:w,a:r,ws,sub:'この漢字の読みは？',e:`${w}（${r}）`}));
+ const B=(s==='sc'?SCI:SOC)[band(g)];return B.map(([q,a,ws,e])=>({id:s+':'+q,q,a,ws,e,long:true}))}
+function buildQuiz(s,g,n){if(s==='ma'){const out=[],seen=new Set();let t=0;while(out.length<n&&t++<200){const x=mathQ(g);if(seen.has(x.q))continue;seen.add(x.q);if(x.ws.length===3)out.push(x)}return out}
+ const V=D.vocab,sc=it=>{const v=V[it.id];return v?(v.ng*2-v.ok)+Math.random()*1.5:1+Math.random()};
+ const pool=bankFor(s,g).sort((a,b)=>sc(b)-sc(a)).slice(0,n).sort(()=>Math.random()-.5);
+ if(s==='en'){const all=bankFor(s,g);return pool.map((w,i)=>{const toJa=i%2===0;const others=all.filter(o=>o.id!==w.id).sort(()=>Math.random()-.5).slice(0,3);
+   return{id:w.id,q:toJa?w.en:w.ja,a:toJa?w.ja:w.en,ws:others.map(o=>toJa?o.ja:o.en),sub:toJa?'この英単語の意味は？':'この意味の英単語は？',e:`${w.en} ＝ ${w.ja}`,speak:w.en,speakNow:toJa,ja:!toJa}})}
+ return pool}
+
+const QN=10,LN=20;
+/* ====== 練習メニュー ====== */
+const ACTS={
+ basket:{n:'バスケ',ic:'🏀',m:['ドリブル','シュート','レイアップ','フリースロー','ディフェンス・フットワーク','パス']},
+ soccer:{n:'サッカー',ic:'⚽',m:['リフティング','ドリブル','パス・トラップ','シュート','ダッシュ・ランニング']},
+ baseball:{n:'野球・ソフト',ic:'⚾',m:['素振り','キャッチボール','守備・ゴロ捕り','ピッチング','ダッシュ・ランニング']},
+ volley:{n:'バレー',ic:'🏐',m:['パス','サーブ','レシーブ','スパイク','ジャンプ']},
+ racket:{n:'テニス・卓球・バド',ic:'🎾',m:['素振り','サーブ','ラリー','フットワーク']},
+ track:{n:'陸上',ic:'🏃',m:['ジョギング','ダッシュ','フォームのドリル','ストレッチ']},
+ swim:{n:'水泳',ic:'🏊',m:['キック','プル','スイム','ターン・スタート']},
+ dance:{n:'ダンス',ic:'💃',m:['基礎練習','振り付けの練習','リズムトレーニング','ストレッチ']},
+ music:{n:'吹奏楽・楽器',ic:'🎺',m:['基礎練習（ロングトーン・音階など）','曲の練習','楽譜を読む・聞く']},
+ other:{n:'その他',ic:'⭐',m:[]}};
+const COMMON=['体幹トレーニング','筋トレ','ストレッチ'];
+const actIc=()=>ACTS[D.act]?.ic||'⭐';
+/* ====== 集計 ====== */
+const studyDays=()=>new Set(D.hist.map(h=>h.date));
+const pracDays=()=>new Set(D.practice.map(p=>p.date));
+function bothDays(){const p=pracDays();return[...studyDays()].filter(d=>p.has(d))}
+function streak(){const s=studyDays(),p=pracDays();const any=d=>s.has(d)||p.has(d);const d=new Date();if(!any(dstr(d)))d.setDate(d.getDate()-1);let n=0;while(any(dstr(d))){n++;d.setDate(d.getDate()-1)}return n}
+const BADGES=[['first','🌱','はじめの1回',()=>D.hist.length>=1],['perfect','💯','全問正解',()=>D.hist.some(h=>h.type==='quiz'&&h.score===h.total)],
+ ['listen','🎧','聞き流しデビュー',()=>D.hist.some(h=>h.type==='listen')],['prac','💪','練習デビュー',()=>D.practice.length>=1],
+ ['both1','⭐','文武両道デー',()=>bothDays().length>=1],['days5','🔥','5日やった',()=>new Set([...studyDays(),...pracDays()]).size>=5],
+ ['both5','🌟','文武両道 5日',()=>bothDays().length>=5],['days20','🏆','20日やった',()=>new Set([...studyDays(),...pracDays()]).size>=20],['words','📚','30問マスター',()=>Object.values(D.vocab).filter(v=>v.ok>=2&&v.ok>v.ng).length>=30]];
+function checkBadges(){for(const[id,ic,name,fn]of BADGES)if(!D.badges[id]&&fn()){D.badges[id]=today();setTimeout(()=>toast(`${ic} バッジゲット！「${name}」`),300)}save()}
+
+/* ====== 読み上げ ====== */
+const TTS=typeof speechSynthesis!=='undefined'&&typeof SpeechSynthesisUtterance!=='undefined';
+function voice(l){try{return speechSynthesis.getVoices().find(v=>v.lang&&v.lang.replace('_','-').toLowerCase().startsWith(l))}catch(e){return null}}
+function say(text,lang,rate=1){return new Promise(res=>{if(!TTS||!D.settings.sound){setTimeout(res,lang==='en'?900:1100);return}let done=false;const fin=()=>{if(!done){done=true;res()}};
+ try{const u=new SpeechSynthesisUtterance(text);u.lang=lang==='en'?'en-US':'ja-JP';const v=voice(lang);if(v)u.voice=v;u.rate=rate;u.onend=fin;u.onerror=fin;speechSynthesis.speak(u)}catch(e){fin()}setTimeout(fin,2500+text.length*250)})}
+const hush=()=>{try{TTS&&speechSynthesis.cancel()}catch(e){}};
+
+/* ====== モーダル ====== */
+function modal(title,html,mount){$('#mT').textContent=title;$('#mB').innerHTML=html;$('#modal').classList.remove('hidden');$('.mbox').scrollTop=0;mount&&mount($('#mB'))}
+function closeModal(){hush();$('#modal').classList.add('hidden');renderHome()}
+$('#mX').onclick=closeModal;
+const btn=(t,fn,cls='')=>{const b=document.createElement('button');b.className='btn '+cls;b.textContent=t;b.onclick=fn;return b};
+
+/* ====== ホーム ====== */
+function renderHome(){const t=today(),qz=D.hist.filter(h=>h.date===t&&h.type==='quiz'),ls=D.hist.filter(h=>h.date===t&&h.type==='listen'),pr=D.practice.filter(p=>p.date===t);
+ const best=qz.length?Math.max(...qz.map(h=>h.score)):null;const sd=studyDays(),pd=pracDays(),w0=weekStart();
+ const wk=[...Array(7)].map((_,k)=>{const d=new Date(w0);d.setDate(d.getDate()+k);const ds=dstr(d);const s=sd.has(ds),p=pd.has(ds);return`<div class="${ds===t?'today':''}">${'月火水木金土日'[k]}<b>${s&&p?'⭐':s?'📘':p?actIc():''}</b></div>`}).join('');
+ const backupOld=!D.lastBackup||(Date.now()-new Date(D.lastBackup).getTime())>7*864e5;
+ $('#home').innerHTML=`
+ <div class="top"><div class="logo">送迎<span>ドリル</span></div><button class="sm" id="hSnd">${D.settings.sound?'🔊 音あり':'🔇 音なし'}</button></div>
+ <div class="hello">${D.name?esc(D.name)+' さん　':''}${streak()?`🔥 ${streak()}日つづいてる`:'今日も5分だけ、やってみよう'}</div>
+ ${D.act?'':`<div class="box"><label class="f" style="margin-top:0">部活・習いごとは？（あとで変えられます）</label><div class="chips">${Object.entries(ACTS).map(([k,a])=>`<button class="chip" data-act="${k}">${a.ic} ${a.n}</button>`).join('')}</div></div>`}
+ ${D.name?'':`<div class="box"><label class="f" style="margin-top:0">よび名（ニックネーム）</label><div style="display:flex;gap:8px"><input id="nm" maxlength="8" placeholder="8文字まで"><button class="sm" id="nmOk" style="flex:none">OK</button></div><div class="note">本名は入れなくてOK</div></div>`}
+ <div class="hero"><div class="heroT">今日の5分</div><div class="heroS">送迎の車の中・待ち時間で、サクッと1セット</div></div>
+ <button class="card main" id="hQ"><div class="ic">${SUBJ[D.settings.subj].ic}</div><div><h3>${subjName(D.settings.subj,D.settings.grade)}クイズ</h3><p>${QN}問・約3分（${D.settings.grade}・${topic(D.settings.subj,D.settings.grade)}）</p></div><div class="st${qz.length?' done':''}">${qz.length?`${best}/${QN}`:'START'}</div></button>
+ <button class="card" id="hL"><div class="ic">🎧</div><div><h3>英単語の聞き流し</h3><p>画面を見なくてOK。車酔いしやすい人はこっち（${EN[enKey(D.settings.grade)].name}）</p></div><div class="st${ls.length?' done':''}">${ls.length?'DONE':LN+'語'}</div></button>
+ <button class="card" id="hW" style="border-color:#35d07f;background:linear-gradient(90deg,#1f4a3a,var(--card) 70%)"><div class="ic">🌏</div><div><h3>ブロックワールド</h3><p>歩いて・ジャンプして・先生にクイズ！ 🪙${D.coins||0}</p></div><div class="st">GO ▶</div></button>
+ <button class="card" id="hP"><div class="ic">${actIc()}</div><div><h3>練習を記録</h3><p>${D.act&&ACTS[D.act]&&D.act!=='other'?ACTS[D.act].n+'の':'部活・習いごとの'}自主練を書いておこう</p></div><div class="st${pr.length?' done':''}">${pr.length?'DONE':''}</div></button>
+ <div class="sec">学年<small>えらんだ学年の問題が出ます</small></div>
+ <div class="chips">${GRADES.map(g=>`<button class="chip${D.settings.grade===g?' on':''}" data-g="${g}" style="padding:7px 10px">${g}</button>`).join('')}</div>
+ <div class="sec">教科<small>まちがえた問題は次に多めに出ます</small></div>
+ <div class="chips">${Object.entries(SUBJ).map(([k,v])=>avail(k,D.settings.grade)?`<button class="chip${D.settings.subj===k?' on':''}" data-sb="${k}">${v.ic} ${subjName(k,D.settings.grade)}</button>`:`<span class="chip off">${v.ic} ${v.n}<small>小3から</small></span>`).join('')}</div>
+ <div class="sec">今週<small>📘勉強 ${actIc()}練習 ⭐両方</small></div><div class="week">${wk}</div>
+ <button class="btn sub" id="hSh">📩 おうちの人に今日の記録を送る</button>
+ <div class="links"><button id="hR">📊 きろく・バッジ</button><button id="hB">💾 バックアップ${backupOld&&(D.hist.length+D.practice.length)?' ⚠':''}</button><button id="hG">📱 ホーム画面に追加</button><button id="hS">⚙ 設定</button></div>
+ <p class="note" style="margin-top:14px">記録はこの端末の中だけに保存されます。名前や成績がどこかに送られることはありません。</p>`;
+ const q=s=>$('#home').querySelector(s);
+ q('#hQ').onclick=quiz;q('#hW').onclick=enterW3;q('#hL').onclick=listen;q('#hP').onclick=practice;q('#hSh').onclick=share;q('#hR').onclick=records;q('#hB').onclick=backup;q('#hG').onclick=guide;q('#hS').onclick=settings;
+ q('#hSnd').onclick=()=>{D.settings.sound=!D.settings.sound;save();renderHome()};
+ $('#home').querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>{D.act=b.dataset.act;save();renderHome()});
+ $('#home').querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{D.settings.grade=b.dataset.g;if(!avail(D.settings.subj,D.settings.grade))D.settings.subj='ma';save();renderHome()});
+ $('#home').querySelectorAll('[data-sb]').forEach(b=>b.onclick=()=>{D.settings.subj=b.dataset.sb;save();renderHome()});
+ if(q('#nmOk'))q('#nmOk').onclick=()=>{const v=q('#nm').value.trim().slice(0,8);if(v){D.name=v;save();renderHome()}}}
+
+/* ====== クイズ ====== */
+function quiz(){const sj=D.settings.subj,gr=D.settings.grade;const qs=buildQuiz(sj,gr,QN);const N=qs.length;let i=0,ok=0;const res=[];
+ const show=()=>{const it=qs[i];const ch=[it.a,...it.ws].sort(()=>Math.random()-.5);const cls=(it.long||it.q.length>14)?' long':(it.ja||(sj==='ma'&&it.q.length>8))?' ja':'';
+  modal(`${subjName(sj,gr)} ${i+1}/${N}`,`<div class="bar">${qs.map((_,k)=>`<i class="${k<i?(res[k].c?'ok':'ng'):k===i?'cur':''}"></i>`).join('')}</div>
+   <div class="qs" style="margin-top:14px">${esc(it.sub||(sj==='ma'?'答えはどれ？':'正しいものはどれ？'))}</div><div class="q${cls}">${esc(it.q)}</div>
+   ${it.speak&&it.speakNow?'<div class="qs"><button class="sm" id="spk">🔊 もう一度きく</button></div>':''}
+   <div id="cs">${ch.map((c,k)=>`<button class="ch" data-k="${k}">${esc(c)}</button>`).join('')}</div><div id="nx"></div>`,el=>{
+   if(it.speak&&it.speakNow){say(it.speak,'en',.9);el.querySelector('#spk').onclick=()=>{hush();say(it.speak,'en',.85)}}
+   el.querySelectorAll('.ch').forEach(b=>b.onclick=()=>{const cs=el.querySelector('#cs');if(cs.dataset.d)return;cs.dataset.d=1;const good=ch[+b.dataset.k]===it.a;if(good)ok++;res.push({q:it.q,a:it.a,e:it.e,c:good});
+    if(it.id){const V=D.vocab;V[it.id]=V[it.id]||{ok:0,ng:0};good?V[it.id].ok++:V[it.id].ng++}
+    el.querySelectorAll('.ch').forEach(x=>{if(ch[+x.dataset.k]===it.a)x.classList.add('ok');else if(x===b)x.classList.add('ng')});hush();if(it.speak&&!it.speakNow)say(it.speak,'en',.9);
+    const nx=el.querySelector('#nx');nx.innerHTML=`<div class="qs" style="margin:8px 0">${good?'⭕ 正解！':'❌ おしい！'}</div>${it.e?`<div class="box" style="font-size:13px">${esc(it.e)}</div>`:''}`;
+    const go=()=>{if(res.length!==i+1)return;i++;i<N?show():finish()};nx.appendChild(btn(i<N-1?'次へ ▶':'結果を見る',go));if(good&&!it.long&&sj!=='ma')setTimeout(()=>{if(!$('#modal').classList.contains('hidden'))go()},1300)})})};
+ const finish=()=>{D.hist.push({date:today(),ts:Date.now(),type:'quiz',subj:sj,grade:gr,score:ok,total:N});save();checkBadges();
+  const miss=res.filter(r=>!r.c),both=pracDays().has(today());
+  modal('結果',`<div class="q">${ok}<span style="font-size:.45em;color:var(--sub)"> / ${N}</span></div><div class="qs">${ok===N?'全問正解！すごい！':ok>=7?'いい感じ！':'まちがえた問題は、次に多めに出るよ'}</div>
+   ${miss.length?`<div class="sec">まちがえた問題</div>${miss.map(r=>`<div class="box ng"><b>${esc(r.q)}</b><br>答え：${esc(r.a)}${r.e&&sj!=='en'?`<div class="note">${esc(r.e)}</div>`:''}</div>`).join('')}`:''}
+   ${both?'<div class="box">⭐ 今日は練習もやったから「文武両道デー」！</div>':`<div class="box">${actIc()} 今日、練習も記録すると「文武両道デー」になるよ</div>`}`,el=>el.appendChild(btn('ホームへ',closeModal)))};
+ show()}
+
+/* ====== 聞き流し ====== */
+let LS=null;
+function listen(){const ws=EN[enKey(D.settings.grade)].w.slice().sort((x,y)=>{const V=D.vocab,f=w=>{const v=V[w[0]];return v?(v.ng*2-v.ok)+Math.random()*1.5:1+Math.random()};return f(y)-f(x)}).slice(0,LN).sort(()=>Math.random()-.5);const S=LS={i:0,p:false,stop:false,heard:0};$('#listen').classList.remove('hidden');$('#lsP').textContent='⏸ 一時停止';$('#lsW').textContent='';$('#lsJ').textContent='';
+ $('#lsI').textContent=!TTS?'この端末では読み上げが使えないため、文字だけで進みます':!D.settings.sound?'🔇 音なし設定です（ホーム右上で切りかえ）':'';
+ const gate=async()=>{while(S.p&&!S.stop)await wait(200)};
+ (async()=>{await say(' ','ja');for(;S.i<ws.length&&!S.stop;S.i++){const[en,ja]=ws[S.i];await gate();if(S.stop)break;$('#lsW').textContent=en;$('#lsJ').textContent='';$('#lsI').textContent=`${S.i+1} / ${ws.length}`;
+  await say(en,'en',.85);await wait(1800);await gate();if(S.stop)break;$('#lsJ').textContent=ja;await say(ja,'ja');await wait(500);await say(en,'en',.85);await wait(900);S.heard=S.i+1}endListen(S)})()}
+function endListen(S){if(S.end)return;S.end=S.stop=true;hush();$('#listen').classList.add('hidden');
+ if(S.heard>=5){D.hist.push({date:today(),ts:Date.now(),type:'listen',grade:D.settings.grade,count:S.heard});save();checkBadges();toast(`🎧 ${S.heard}語 聞いた！おつかれさま`)}else toast('5語以上聞くと記録されるよ');renderHome()}
+$('#lsS').onclick=()=>LS&&endListen(LS);
+$('#lsP').onclick=()=>{if(!LS)return;LS.p=!LS.p;if(LS.p)hush();$('#lsP').textContent=LS.p?'▶ 再開':'⏸ 一時停止'};
+
+/* ====== 自主練の記録 ====== */
+function practice(){const t=today();let stars=3;const A=ACTS[D.act]||ACTS.other;const menus=[...A.m,...COMMON];
+ modal('練習を記録',`<p class="note">部活や習いごとで、自分でやった練習をそのまま記録しよう。</p>
+  <label class="f">日付</label><input type="date" id="pd" value="${t}" max="${t}">
+  <label class="f">メニュー（${A.ic} ${A.n}）</label><select id="pm">${menus.map(x=>`<option>${esc(x)}</option>`).join('')}<option value="__free">その他（自分で書く）</option></select>
+  <input id="pf" class="hidden" maxlength="20" placeholder="練習の名前（20文字まで）" style="margin-top:8px">
+  <div class="g3"><div><label class="f">回数</label><input type="number" id="pr" value="20" min="0" max="999" inputmode="numeric"></div><div><label class="f">セット</label><input type="number" id="ps" value="3" min="0" max="99" inputmode="numeric"></div><div><label class="f">時間（分）</label><input type="number" id="pt" value="10" min="0" max="300" inputmode="numeric"></div></div>
+  <p class="note">回数で数えにくい練習は、時間だけでOK（回数・セットは0のままで）</p>
+  <label class="f">自己評価</label><div class="stars">${[1,2,3,4,5].map(n=>`<button data-n="${n}" class="${n<=3?'on':''}">★</button>`).join('')}</div>
+  <label class="f">ひとことメモ（任意）</label><input id="pn" maxlength="30" placeholder="例：前よりうまくできた">`,el=>{
+  const m=el.querySelector('#pm'),f=el.querySelector('#pf');if(!A.m.length){m.value='__free';f.classList.remove('hidden')}m.onchange=()=>f.classList.toggle('hidden',m.value!=='__free');
+  el.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{stars=+b.dataset.n;el.querySelectorAll('[data-n]').forEach(x=>x.classList.toggle('on',+x.dataset.n<=stars))});
+  el.appendChild(btn('記録する',()=>{const date=el.querySelector('#pd').value||t;if(date>t){toast('未来の日付は記録できません');return}
+   const menu=m.value==='__free'?f.value.trim().slice(0,20):m.value;if(!menu){toast('練習の名前を書いてね');return}
+   const n=(id,mx)=>Math.max(0,Math.min(mx,Math.round(+el.querySelector(id).value||0)));
+   D.practice.push({date,ts:Date.now(),act:D.act||'other',menu,reps:n('#pr',999),sets:n('#ps',99),min:n('#pt',300),rate:stars,memo:el.querySelector('#pn').value.trim().slice(0,30)});
+   save();checkBadges();toast(studyDays().has(date)&&date===t?'⭐ 文武両道デー！':'記録しました！');closeModal()}))})}
+const fmtP=p=>`${p.reps?p.reps+'回×'+p.sets+'セット・':''}${p.min}分`;
+
+/* ====== きろく・バッジ ====== */
+function records(){const all=new Set([...studyDays(),...pracDays()]).size,P=[...D.practice].sort((a,b)=>b.ts-a.ts).slice(0,30),Q=D.hist.filter(h=>h.type==='quiz');
+ const mast=Object.values(D.vocab).filter(v=>v.ok>=2&&v.ok>v.ng).length;
+ modal('きろく・バッジ',`<div class="stats"><div><b>${all}</b><span>やった日</span></div><div><b>${bothDays().length}</b><span>⭐文武両道</span></div><div><b>${mast}</b><span>覚えた問題</span></div></div>
+  <div class="sec">バッジ</div><div class="badges">${BADGES.map(([id,ic,nm])=>`<div class="badge${D.badges[id]?'':' lock'}"><b>${ic}</b>${nm}</div>`).join('')}</div>
+  <div class="sec">クイズ<small>直近</small></div>${Q.length?`<table><tr><th>日付</th><th>教科</th><th>正解</th></tr>${Q.slice(-10).reverse().map(h=>`<tr><td>${h.date.slice(5)}</td><td>${h.subj?subjName(h.subj,h.grade)+'（'+h.grade+'）':'英語'}</td><td>${h.score}/${h.total}</td></tr>`).join('')}</table>`:'<p class="note">まだありません</p>'}
+  <div class="sec">練習<small>自分で記録したもの</small></div>${P.length?`<table><tr><th>日付</th><th>メニュー</th><th>量</th><th>評価</th></tr>${P.map(p=>`<tr><td>${p.date.slice(5)}</td><td>${esc(p.menu)}${p.memo?`<br><span class="note">${esc(p.memo)}</span>`:''}</td><td>${fmtP(p)}</td><td style="color:var(--or2)">${'★'.repeat(p.rate)}</td></tr>`).join('')}</table>`:'<p class="note">まだありません</p>'}
+  <p class="note" style="margin-top:10px">ごほうびは「やったこと」で決まります。長い時間やっても増えません。</p>`)}
+
+/* ====== おうちの人へ ====== */
+function share(){const t=new Date(),ts=today(),qz=D.hist.filter(h=>h.date===ts&&h.type==='quiz'),ls=D.hist.filter(h=>h.date===ts&&h.type==='listen'),pr=D.practice.filter(p=>p.date===ts);
+ const L=[`【送迎ドリル】${t.getMonth()+1}/${t.getDate()}（${'日月火水木金土'[t.getDay()]}）${D.name?' '+D.name:''}`];
+ for(const h of qz)L.push(`・${h.subj?subjName(h.subj,h.grade)+'（'+h.grade+'）':'英語'}クイズ ${h.score}/${h.total}問 正解`);if(ls.length)L.push(`・英単語の聞き流し ${ls.reduce((s,h)=>s+h.count,0)}語`);
+ for(const p of pr)L.push(`・練習 ${p.menu}（${fmtP(p)}）`);
+ L.push(L.length===1?'・今日はこれから！':(qz.length||ls.length)&&pr.length?'勉強も練習もできた「文武両道デー」です⭐':'今日も1セットできました！');const txt=L.join('\n');
+ modal('おうちの人へ',`<p class="note">コピーして、LINEなどに貼りつけて送ってね。</p><div class="mono" id="shT">${esc(txt)}</div>`,el=>el.appendChild(btn('📋 コピーする',()=>copy(txt,el.querySelector('#shT')))))}
+async function copy(txt,node){let ok=false;try{await navigator.clipboard.writeText(txt);ok=true}catch(e){}
+ if(!ok){try{const r=document.createRange();r.selectNodeContents(node);const s=getSelection();s.removeAllRanges();s.addRange(r);ok=document.execCommand('copy')}catch(e){}}toast(ok?'コピーしました！':'文字を長押ししてコピーしてね')}
+
+/* ====== バックアップ ====== */
+function enc(o){const b=new TextEncoder().encode(JSON.stringify(o));let s='';b.forEach(c=>s+=String.fromCharCode(c));return'SGD1-'+btoa(s)}
+function dec(code){const s=atob(code.trim().replace(/^SGD1-/,'').replace(/\s/g,''));const b=Uint8Array.from(s,c=>c.charCodeAt(0));return JSON.parse(new TextDecoder().decode(b))}
+function backup(){const data=Object.assign({},D,{unlocked:true});const code=enc(data);
+ modal('バックアップ',`<p class="note">機種変更やブラウザのデータ削除で、記録が消えることがあります。下のコードをLINEのメモなどに貼っておけば、新しい端末で元に戻せます。</p>
+  <div class="sec">① コードを保存する</div><div class="mono" id="bc" style="max-height:120px;overflow:auto">${code}</div>
+  <div id="b1"></div>
+  <div class="sec">② 新しい端末で元に戻す</div><textarea id="bi" rows="3" placeholder="SGD1- から始まるコードを貼りつけ"></textarea><div id="b2"></div>
+  <p class="note">※元に戻すと、この端末の今の記録はコードの内容に置きかわります。</p>`,el=>{
+  el.querySelector('#b1').appendChild(btn('📋 コードをコピー',()=>{copy(code,el.querySelector('#bc'));D.lastBackup=new Date().toISOString();save()}));
+  el.querySelector('#b2').appendChild(btn('このコードで元に戻す',()=>{try{const o=dec(el.querySelector('#bi').value);if(o.v!==1)throw 0;D=Object.assign(blank(),o,{unlocked:true});save();toast('記録を元に戻しました！');closeModal()}catch(e){toast('コードが正しくないみたい')}},'sub'))})}
+
+/* ====== ホーム画面に追加 ====== */
+function guide(){modal('ホーム画面に追加',`<p class="note" style="font-size:13px">ホーム画面に追加すると、アプリみたいにすぐ開けます。記録も消えにくくなります。</p>
+ <div class="box"><b>iPhone（Safari）</b><br>① 画面下の「共有」ボタン（□に↑）をタップ<br>② 「ホーム画面に追加」をタップ<br>③ 右上の「追加」をタップ</div>
+ <div class="box"><b>Android（Chrome）</b><br>① 右上の「︙」をタップ<br>② 「ホーム画面に追加」をタップ<br>③ 「追加」をタップ</div>
+ <p class="note">※ブラウザやバージョンによって、ボタンの名前や場所が少しちがうことがあります。</p>`)}
+
+/* ====== 設定 ====== */
+function settings(){modal('設定',`<label class="f">よび名</label><input id="sn" maxlength="8" value="${esc(D.name)}">
+ <label class="f">部活・習いごと</label><div class="chips">${Object.entries(ACTS).map(([k,a])=>`<button class="chip${D.act===k?' on':''}" data-a="${k}">${a.ic} ${a.n}</button>`).join('')}</div>
+ <label class="f">読み上げ</label><div class="chips"><button class="chip${D.settings.sound?' on':''}" data-v="1">🔊 音あり</button><button class="chip${D.settings.sound?'':' on'}" data-v="0">🔇 音なし</button></div>
+ <div id="s1"></div><div class="sec">記録を全部消す</div><p class="note">この端末の記録をすべて消します。元に戻せないので、先にバックアップしてね。</p><div id="s2"></div>`,el=>{
+ el.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{D.act=b.dataset.a;save();el.querySelectorAll('[data-a]').forEach(x=>x.classList.toggle('on',x===b))});
+ el.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{D.settings.sound=b.dataset.v==='1';save();el.querySelectorAll('[data-v]').forEach(x=>x.classList.toggle('on',x===b))});
+ el.querySelector('#s1').appendChild(btn('保存',()=>{D.name=el.querySelector('#sn').value.trim().slice(0,8);save();closeModal()}));
+ let armed=false;const del=btn('記録を全部消す',()=>{if(!armed){armed=true;del.textContent='本当に消す？（もう一度タップ）';return}D=Object.assign(blank(),{unlocked:true});save();toast('記録を消しました');closeModal()},'sub');el.querySelector('#s2').appendChild(del)})}
+
+/* ====== パスワード ====== */
+async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+async function tryPw(){const v=$('#pw').value.trim();if(!v)return;let ok=false;try{ok=(await sha(v))===PW_HASH}catch(e){ok=false}
+ if(ok){D.unlocked=true;save();$('#gate').classList.add('hidden');renderHome()}else $('#pwMsg').textContent='パスワードがちがうみたい。記事をもう一度見てね。'}
+$('#pwGo').onclick=tryPw;$('#pw').onkeydown=e=>{if(e.key==='Enter')tryPw()};
+
+/* ===== 3D ===== */
+'use strict';
+/* ===================== J.C.I WORLD — mini engine (WebGL1, no dependencies) ===================== */
+const TAU=Math.PI*2,D2R=Math.PI/180;
+const isTouch=('ontouchstart' in window)||navigator.maxTouchPoints>0;
+if(isTouch)document.body.classList.add('touch');
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+let R=rng(20261102);
+const rr=(a,b)=>a+R()*(b-a);
+function hex(h){const n=parseInt(h.slice(1),16);return[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255]}
+function hex4(h,em=0){return[...hex(h),em]}
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const lerp=(a,b,t)=>a+(b-a)*t;
+function lerpAng(a,b,t){let d=((b-a+Math.PI)%TAU+TAU)%TAU-Math.PI;return a+d*t}
+
+/* ---------- mat4 (column-major) ---------- */
+const M4={
+ I(){const m=new Float32Array(16);m[0]=m[5]=m[10]=m[15]=1;return m},
+ mul(a,b){const o=new Float32Array(16);for(let c=0;c<4;c++){const b0=b[c*4],b1=b[c*4+1],b2=b[c*4+2],b3=b[c*4+3];
+  for(let r=0;r<4;r++)o[c*4+r]=a[r]*b0+a[4+r]*b1+a[8+r]*b2+a[12+r]*b3}return o},
+ c(...ms){let m=ms[0];for(let i=1;i<ms.length;i++)m=M4.mul(m,ms[i]);return m},
+ T(x,y,z){const m=M4.I();m[12]=x;m[13]=y;m[14]=z;return m},
+ S(x,y,z){const m=M4.I();m[0]=x;m[5]=y;m[10]=z;return m},
+ RY(a){const m=M4.I(),c=Math.cos(a),s=Math.sin(a);m[0]=c;m[2]=-s;m[8]=s;m[10]=c;return m},
+ RX(a){const m=M4.I(),c=Math.cos(a),s=Math.sin(a);m[5]=c;m[6]=s;m[9]=-s;m[10]=c;return m},
+ RZ(a){const m=M4.I(),c=Math.cos(a),s=Math.sin(a);m[0]=c;m[1]=s;m[4]=-s;m[5]=c;return m},
+ persp(f,asp,n,fa){const t=1/Math.tan(f/2),m=new Float32Array(16);m[0]=t/asp;m[5]=t;m[10]=(fa+n)/(n-fa);m[11]=-1;m[14]=2*fa*n/(n-fa);return m},
+ lookAt(e,t,u){let zx=e[0]-t[0],zy=e[1]-t[1],zz=e[2]-t[2];let l=Math.hypot(zx,zy,zz)||1;zx/=l;zy/=l;zz/=l;
+  let xx=u[1]*zz-u[2]*zy,xy=u[2]*zx-u[0]*zz,xz=u[0]*zy-u[1]*zx;l=Math.hypot(xx,xy,xz)||1;xx/=l;xy/=l;xz/=l;
+  const yx=zy*xz-zz*xy,yy=zz*xx-zx*xz,yz=zx*xy-zy*xx;const m=new Float32Array(16);
+  m[0]=xx;m[4]=xy;m[8]=xz;m[1]=yx;m[5]=yy;m[9]=yz;m[2]=zx;m[6]=zy;m[10]=zz;
+  m[12]=-(xx*e[0]+xy*e[1]+xz*e[2]);m[13]=-(yx*e[0]+yy*e[1]+yz*e[2]);m[14]=-(zx*e[0]+zy*e[1]+zz*e[2]);m[15]=1;return m}
+};
+const IDENT=M4.I();
+
+/* ---------- geometry (flat-shaded low poly) ---------- */
+function finish(t,cx,cy,cz){const n=new Array(t.length);
+ for(let i=0;i<t.length;i+=9){const ax=t[i],ay=t[i+1],az=t[i+2],bx=t[i+3]-ax,by=t[i+4]-ay,bz=t[i+5]-az,qx=t[i+6]-ax,qy=t[i+7]-ay,qz=t[i+8]-az;
+  let nx=by*qz-bz*qy,ny=bz*qx-bx*qz,nz=bx*qy-by*qx;const l=Math.hypot(nx,ny,nz)||1;nx/=l;ny/=l;nz/=l;
+  const mx=(t[i]+t[i+3]+t[i+6])/3-cx,my=(t[i+1]+t[i+4]+t[i+7])/3-cy,mz=(t[i+2]+t[i+5]+t[i+8])/3-cz;
+  if(nx*mx+ny*my+nz*mz<0){nx=-nx;ny=-ny;nz=-nz}
+  for(let k=0;k<3;k++){n[i+k*3]=nx;n[i+k*3+1]=ny;n[i+k*3+2]=nz}}
+ return{p:t,n,count:t.length/3}}
+function qp(t,a,b,c,d){t.push(...a,...b,...c,...a,...c,...d)}
+const GC={};
+function memo(k,f){return GC[k]||(GC[k]=f())}
+function gBox(w,h,d,ox=0,oy=0,oz=0){return memo(`b${w},${h},${d},${ox},${oy},${oz}`,()=>{const x=w/2,y=h/2,z=d/2,t=[];const v=(i,j,k)=>[ox+i*x,oy+j*y,oz+k*z];
+ qp(t,v(-1,-1,1),v(1,-1,1),v(1,1,1),v(-1,1,1));qp(t,v(1,-1,-1),v(-1,-1,-1),v(-1,1,-1),v(1,1,-1));
+ qp(t,v(-1,1,1),v(1,1,1),v(1,1,-1),v(-1,1,-1));qp(t,v(-1,-1,-1),v(1,-1,-1),v(1,-1,1),v(-1,-1,1));
+ qp(t,v(1,-1,1),v(1,-1,-1),v(1,1,-1),v(1,1,1));qp(t,v(-1,-1,-1),v(-1,-1,1),v(-1,1,1),v(-1,1,-1));return finish(t,ox,oy,oz)})}
+function gCyl(rt,rb,h,seg=8,oy=0,ox=0,oz=0){return memo(`c${rt},${rb},${h},${seg},${oy},${ox},${oz}`,()=>{const t=[];
+ for(let i=0;i<seg;i++){const a0=i/seg*TAU,a1=(i+1)/seg*TAU,c0=Math.cos(a0),s0=Math.sin(a0),c1=Math.cos(a1),s1=Math.sin(a1);
+  const b0=[ox+c0*rb,oy,oz+s0*rb],b1=[ox+c1*rb,oy,oz+s1*rb],t0=[ox+c0*rt,oy+h,oz+s0*rt],t1=[ox+c1*rt,oy+h,oz+s1*rt];
+  if(rt>0&&rb>0)qp(t,b0,b1,t1,t0);else if(rt<=0)t.push(...b0,...b1,...t0);else t.push(...b0,...t1,...t0);
+  if(rt>0)t.push(ox,oy+h,oz,...t0,...t1);if(rb>0)t.push(ox,oy,oz,...b1,...b0)}
+ return finish(t,ox,oy+h/2,oz)})}
+function gSph(r,ws=8,hs=6,oy=0,ox=0,oz=0){return memo(`s${r},${ws},${hs},${oy},${ox},${oz}`,()=>{const t=[];
+ const P=(i,j)=>{const th=j/hs*Math.PI,ph=i/ws*TAU;return[ox+r*Math.sin(th)*Math.cos(ph),oy+r*Math.cos(th),oz+r*Math.sin(th)*Math.sin(ph)]};
+ for(let j=0;j<hs;j++)for(let i=0;i<ws;i++){const a=P(i,j),b=P(i+1,j),c=P(i+1,j+1),d=P(i,j+1);if(j>0)t.push(...a,...b,...c);if(j<hs-1)t.push(...a,...c,...d)}
+ return finish(t,ox,oy,oz)})}
+
+/* ---------- WebGL ---------- */
+const cv=$('#gl');
+let gl=null;
+try{gl=cv.getContext('webgl',{antialias:true,alpha:false,powerPreference:'high-performance'})||cv.getContext('experimental-webgl')}catch(e){}
+function fatal(msg){const e=$('#err');e.textContent=msg;e.classList.remove('hidden')}
+
+
+const VS=`attribute vec3 aP;attribute vec3 aN;attribute vec4 aC;uniform mat4 uVP;uniform mat4 uM;uniform vec3 uCam;uniform vec2 uFog;
+varying vec3 vN;varying vec4 vC;varying vec3 vW;
+void main(){vec4 w=uM*vec4(aP,1.0);gl_Position=uVP*w;vN=(uM*vec4(aN,0.0)).xyz;vC=aC;vW=w.xyz;}`;
+const FS=`precision highp float;varying vec3 vN;varying vec4 vC;varying vec3 vW;uniform vec3 uLD;uniform vec3 uFogC;uniform vec3 uSky;uniform vec3 uGnd;uniform vec3 uCam;uniform vec2 uFog;
+void main(){float vF=clamp((distance(vW,uCam)-uFog.x)/(uFog.y-uFog.x),0.0,1.0);vec3 N=normalize(vN);float d=max(dot(N,uLD),0.0);vec3 L=mix(uGnd,uSky,N.y*0.5+0.5)*0.66+vec3(1.0,0.97,0.9)*d*0.6;
+vec3 c=vC.rgb*mix(L,vec3(1.0),vC.a);gl_FragColor=vec4(mix(c,uFogC,vF),1.0);}`;
+const VT=`attribute vec3 aP;attribute vec2 aU;uniform mat4 uVP;uniform mat4 uM;uniform vec3 uCam;uniform vec2 uFog;varying vec2 vU;varying float vF;
+void main(){vec4 w=uM*vec4(aP,1.0);gl_Position=uVP*w;vU=aU;float d=distance(w.xyz,uCam);vF=clamp((d-uFog.x)/(uFog.y-uFog.x),0.0,1.0);}`;
+const FT=`precision mediump float;varying vec2 vU;varying float vF;uniform sampler2D uT;uniform vec3 uFogC;uniform float uA;
+void main(){vec4 t=texture2D(uT,vU);if(t.a<0.03)discard;gl_FragColor=vec4(mix(t.rgb,uFogC,vF),t.a*uA);}`;
+function mkProg(vs,fs,attrs){const p=gl.createProgram();
+ for(const[s,ty]of[[vs,gl.VERTEX_SHADER],[fs,gl.FRAGMENT_SHADER]]){const sh=gl.createShader(ty);gl.shaderSource(sh,s);gl.compileShader(sh);
+  if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(sh));gl.attachShader(p,sh)}
+ attrs.forEach((a,i)=>gl.bindAttribLocation(p,i,a));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));
+ const u={};const n=gl.getProgramParameter(p,gl.ACTIVE_UNIFORMS);for(let i=0;i<n;i++){const inf=gl.getActiveUniform(p,i);u[inf.name]=gl.getUniformLocation(p,inf.name)}return{p,u}}
+let PC,PT;
+function buf(arr){const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,arr instanceof Float32Array?arr:new Float32Array(arr),gl.STATIC_DRAW);return b}
+const GPU=new Map();
+function gpu(g){let o=GPU.get(g);if(!o){o={pb:buf(g.p),nb:buf(g.n),count:g.count};GPU.set(g,o)}return o}
+let QP,QU;
+function initGL(){PC=mkProg(VS,FS,['aP','aN','aC']);PT=mkProg(VT,FT,['aP','aU']);
+ QP=buf([-.5,-.5,0,.5,-.5,0,.5,.5,0,-.5,-.5,0,.5,.5,0,-.5,.5,0]);QU=buf([0,1,1,1,1,0,0,1,1,0,0,0])}
+
+/* ---------- static world mesh (merged into one buffer) ---------- */
+const ST={p:[],n:[],c:[]};let STG=null;
+function addS(g,m,col,em=0,jit=0.07){const c=typeof col==='string'?hex(col):col;const P=ST.p,N=ST.n,C=ST.c;
+ for(let i=0;i<g.p.length;i+=9){const f=1+(R()-.5)*jit;const cr=c[0]*f,cg=c[1]*f,cb=c[2]*f;
+  for(let k=0;k<3;k++){const o=i+k*3,x=g.p[o],y=g.p[o+1],z=g.p[o+2],nx=g.n[o],ny=g.n[o+1],nz=g.n[o+2];
+   P.push(m[0]*x+m[4]*y+m[8]*z+m[12],m[1]*x+m[5]*y+m[9]*z+m[13],m[2]*x+m[6]*y+m[10]*z+m[14]);
+   N.push(m[0]*nx+m[4]*ny+m[8]*nz,m[1]*nx+m[5]*ny+m[9]*nz,m[2]*nx+m[6]*ny+m[10]*nz);C.push(cr,cg,cb,em)}}}
+function uploadStatic(){STG={pb:buf(ST.p),nb:buf(ST.n),cb:buf(ST.c),count:ST.p.length/3};ST.p=ST.n=ST.c=null}
+
+/* ---------- collision ---------- */
+const BOXES=[],CIRS=[];const PR=.42,STEP=.42;
+function addBox(cx,cz,w,d,top){BOXES.push({x0:cx-w/2,x1:cx+w/2,z0:cz-d/2,z1:cz+d/2,top})}
+function addCircle(x,z,r,top){CIRS.push({x,z,r,top})}
+function hitBox(b,x,z){const cx=x<b.x0?b.x0:x>b.x1?b.x1:x,cz=z<b.z0?b.z0:z>b.z1?b.z1:z;const dx=x-cx,dz=z-cz;return dx*dx+dz*dz<PR*PR}
+function hitCir(c,x,z){const dx=x-c.x,dz=z-c.z,r=c.r+PR;return dx*dx+dz*dz<r*r}
+function groundAt(x,z,y){let h=0;for(const b of BOXES)if(b.top>h&&b.top<=y+STEP&&hitBox(b,x,z))h=b.top;for(const c of CIRS)if(c.top>h&&c.top<=y+STEP&&hitCir(c,x,z))h=c.top;return h}
+let extraBlock=null;
+function blocked(x,z,y){if(extraBlock&&extraBlock(x,z))return true;
+ for(const b of BOXES)if(b.top>y+STEP&&hitBox(b,x,z))return true;for(const c of CIRS)if(c.top>y+STEP&&hitCir(c,x,z))return true;return false}
+
+/* ---------- static helpers ---------- */
+function box(x,y0,z,w,h,d,col,o={}){const m=o.rot?M4.mul(M4.T(x,y0,z),M4.RY(o.rot)):M4.T(x,y0,z);addS(gBox(w,h,d,0,h/2,0),m,col,o.em||0,o.jit??.07);
+ if(o.col)addBox(x,z,w,d,o.top??y0+h)}
+function cyl(x,y0,z,rt,rb,h,col,seg=8,o={}){addS(gCyl(rt,rb,h,seg),M4.T(x,y0,z),col,o.em||0,o.jit??.07);if(o.col)addCircle(x,z,o.cr??Math.max(rt,rb),o.top??y0+h)}
+function sph(x,y,z,r,col,o={}){addS(gSph(r,o.ws||8,o.hs||6),o.m||M4.T(x,y,z),col,o.em||0,o.jit??.07)}
+
+/* ---------- canvas textures ---------- */
+const FJP='"Noto Sans JP","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif';
+const FEN='"Russo One",'+FJP;
+function glTex(c){const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,c);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);return t}
+function ctex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');draw(g,w,h);return{t:glTex(c),w,h,aspect:w/h}}
+function rrect(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+const _mc=document.createElement('canvas').getContext('2d');
+function labelTex(text,style='player'){const fs=40;_mc.font=`900 ${fs}px ${FJP}`;const tw=Math.ceil(_mc.measureText(text).width);const w=tw+44,h=66;
+ return ctex(w,h,(g)=>{const S={player:['#FFD400','#0b0b0b','#0b0b0b'],npc:['#0b0b0b','#FFD400','#FFD400'],bot:['rgba(255,255,255,.92)','#151515','#151515']}[style]||['#000','#fff','#fff'];
+  rrect(g,3,3,w-6,h-6,16);g.fillStyle=S[0];g.fill();g.lineWidth=4;g.strokeStyle=S[2];g.stroke();g.fillStyle=S[1];g.font=`900 ${fs}px ${FJP}`;g.textAlign='center';g.textBaseline='middle';g.fillText(text,w/2,h/2+2)})}
+function numberTex(kit,num){const K=KITS[kit]||KITS.home;return ctex(128,128,(g)=>{g.fillStyle=K.jersey;g.fillRect(0,0,128,128);g.font=`86px ${FEN}`;g.textAlign='center';g.textBaseline='middle';
+ g.lineWidth=8;g.strokeStyle=K.stroke;g.strokeText(String(num),64,70);g.fillStyle=K.num;g.fillText(String(num),64,70)})}
+function signTex(main,sub,o={}){const w=o.w||1024,h=o.h||200;return ctex(w,h,(g)=>{
+ g.fillStyle=o.bg||'#0b0b0b';g.fillRect(0,0,w,h);
+ g.save();g.globalAlpha=.16;g.fillStyle='#FFD400';for(let x=-h;x<w;x+=46){g.beginPath();g.moveTo(x,h);g.lineTo(x+22,h);g.lineTo(x+22+h,0);g.lineTo(x+h,0);g.fill()}g.restore();
+ g.fillStyle='#FFD400';g.fillRect(0,0,w,10);g.fillRect(0,h-10,w,10);
+ let fs=o.fs||(sub?h*.48:h*.6);g.font=`italic ${fs}px ${FEN}`;const mw=g.measureText(main).width;if(mw>w*.86){fs*=w*.86/mw;g.font=`italic ${fs}px ${FEN}`}g.textAlign='center';g.textBaseline='middle';const y=sub?h*.42:h*.52;
+ g.save();g.translate(w/2,y);g.transform(1,0,-.18,1,0,0);
+ for(let i=9;i>0;i--){g.fillStyle='#000';g.fillText(main,i*1.2,i*1.2)}
+ g.lineWidth=6;g.strokeStyle='#000';g.strokeText(main,0,0);g.fillStyle=o.fg||'#FFD400';g.fillText(main,0,0);g.restore();
+ if(sub){let ss=h*.2;g.font=`900 ${ss}px ${FJP}`;const sw=g.measureText(sub).width;if(sw>w*.9){ss*=w*.9/sw;g.font=`900 ${ss}px ${FJP}`}g.fillStyle='#fff';g.fillText(sub,w/2,h*.8)}})}
+function symTex(s,bg,fg){return ctex(128,128,(g)=>{g.beginPath();g.arc(64,64,58,0,TAU);g.fillStyle=bg;g.fill();g.lineWidth=7;g.strokeStyle='#0b0b0b';g.stroke();
+ g.fillStyle=fg;g.font=`${s.length>1?52:70}px ${FEN}`;g.textAlign='center';g.textBaseline='middle';g.fillText(s,64,68)})}
+function letterTex(L,bg){return ctex(128,128,(g)=>{g.fillStyle=bg;g.fillRect(0,0,128,128);g.lineWidth=10;g.strokeStyle='#fff';g.strokeRect(5,5,118,118);
+ g.fillStyle='#fff';g.font=`82px ${FEN}`;g.textAlign='center';g.textBaseline='middle';g.fillText(L,64,70)})}
+function bubbleTex(s){const big=[...s].length<=2;_mc.font=`900 40px ${FJP}`;const w=big?140:Math.ceil(_mc.measureText(s).width)+56,h=big?140:84;
+ return ctex(w,h,(g)=>{rrect(g,4,4,w-8,h-8,30);g.fillStyle='#fff';g.fill();g.lineWidth=6;g.strokeStyle='#0b0b0b';g.stroke();
+ g.textAlign='center';g.textBaseline='middle';g.fillStyle='#0b0b0b';g.font=big?`80px ${FJP}`:`900 40px ${FJP}`;g.fillText(s,w/2,h/2+4)})}
+let SHADOW,SPARK;
+function courtTex(o={}){const W=1024,H=560;return ctex(W,H,(g)=>{
+ g.fillStyle=o.floor||'#d9a35e';g.fillRect(0,0,W,H);
+ if(o.wood!==false){g.globalAlpha=.12;for(let y=0;y<H;y+=16){g.fillStyle=(y/16)%2?'#7a4a1c':'#fff';g.fillRect(0,y,W,8)}g.globalAlpha=1}
+ const m=26,cw=W-m*2,ch=H-m*2;
+ g.fillStyle=o.paint||'#FFD400';const kw=cw*.2,kh=ch*.32;g.fillRect(m,H/2-kh/2,kw,kh);g.fillRect(W-m-kw,H/2-kh/2,kw,kh);
+ g.strokeStyle=o.line||'#fff';g.lineWidth=7;g.strokeRect(m,m,cw,ch);g.beginPath();g.moveTo(W/2,m);g.lineTo(W/2,H-m);g.stroke();
+ g.beginPath();g.arc(W/2,H/2,ch*.13,0,TAU);g.stroke();
+ g.strokeRect(m,H/2-kh/2,kw,kh);g.strokeRect(W-m-kw,H/2-kh/2,kw,kh);
+ g.beginPath();g.arc(m+kw,H/2,kh/2,-Math.PI/2,Math.PI/2);g.stroke();g.beginPath();g.arc(W-m-kw,H/2,kh/2,Math.PI/2,Math.PI*1.5);g.stroke();
+ const r3=ch*.45;g.beginPath();g.moveTo(m,H/2-r3);g.lineTo(m+cw*.08,H/2-r3);g.arc(m+cw*.06,H/2,r3,-Math.PI/2,Math.PI/2);g.lineTo(m,H/2+r3);g.stroke();
+ g.beginPath();g.moveTo(W-m,H/2-r3);g.lineTo(W-m-cw*.08,H/2-r3);g.arc(W-m-cw*.06,H/2,r3,-Math.PI/2,Math.PI/2,true);g.lineTo(W-m,H/2+r3);g.stroke();
+ g.save();g.translate(W/2,H/2);g.font=`italic 54px ${FEN}`;g.textAlign='center';g.textBaseline='middle';g.fillStyle='#0b0b0b';g.globalAlpha=.85;g.fillText(o.logo||'J.C.I',0,4);g.restore()})}
+
+/* ---------- characters ---------- */
+const KITS={home:{jersey:'#FFD400',shorts:'#151515',num:'#0b0b0b',stroke:'#ffffff',label:'HOME（黄）'},
+ away:{jersey:'#151515',shorts:'#151515',num:'#FFD400',stroke:'#000000',label:'AWAY（黒）'},
+ white:{jersey:'#f2f2f2',shorts:'#FFD400',num:'#0b0b0b',stroke:'#FFD400',label:'WHITE（白）'}};
+const SKINS=['#f6d5b5','#eebd92','#d39b6e','#a8724a'];
+const HAIRS=['#1b1b1b','#5a3b22','#c98b3a','#FFD400','#e94b4b','#3c7be0','#eeeeee'];
+const SHOES=['#ffffff','#151515','#FFD400','#e94b4b','#3c7be0'];
+const HAIRSTYLES=['ショート','ツンツン','もこもこ','ロング','ボウズ'];
+const DEFAULT_AV={name:'プレイヤー',skin:'#eebd92',hair:'#1b1b1b',hairStyle:0,kit:'home',number:7,shoes:'#ffffff',acc:'none',accColor:'#FFD400'};
+class Char{
+ constructor(cfg,opts={}){Object.assign(this,{x:0,y:0,z:0,rot:0,vy:0,phase:0,spd:0,walk:0,ground:true,bubble:null,bubbleT:0,ball:false});this.opts=opts;this.set(cfg)}
+ set(cfg){this.cfg=Object.assign({},DEFAULT_AV,cfg);const c=this.cfg,K=KITS[c.kit]||KITS.home;
+  this.col={skin:hex4(c.skin),hair:hex4(c.hair),jersey:hex4(K.jersey),shorts:hex4(K.shorts),shoes:hex4(c.shoes),eye:hex4('#151515'),acc:hex4(c.accColor||'#FFD400',.05),
+   white:hex4('#f4f4f4'),red:hex4('#e94b4b',.4),visor:hex4('#39c2ff',.6),gold:hex4('#ffcc1a',.2),ball:hex4('#ff8a1e')};
+  if(this.num)gl.deleteTexture(this.num.t);this.num=numberTex(c.kit,c.number);
+  if(this.label)gl.deleteTexture(this.label.t);this.label=labelTex(this.opts.label||c.name,this.opts.style||'player')}
+ say(s,t=2.4){if(this.bubble)gl.deleteTexture(this.bubble.t);this.bubble=bubbleTex(s);this.bubbleT=t}
+ draw(D,TX,SP,SH){const c=this.col,cf=this.cfg;const root=M4.mul(M4.T(this.x,this.y,this.z),M4.RY(this.rot));
+  const w=this.walk,sw=Math.sin(this.phase)*.8*w,bob=Math.abs(Math.cos(this.phase))*.07*w;
+  const P=(g,m,col)=>D.push({g:gpu(g),m:M4.mul(root,m),c:col});
+  const air=!this.ground;
+  for(const s of[-1,1]){const lm=M4.mul(M4.T(.15*s,.72,0),M4.RX(air?(s>0?-.5:.3):sw*s));P(gBox(.22,.62,.24,0,-.31,0),lm,c.skin);P(gBox(.27,.17,.36,0,-.63,.05),lm,c.shoes);
+   const am=M4.mul(M4.T(.44*s,1.4+bob,0),air?M4.mul(M4.RX(-2.7),M4.RZ(.15*s)):M4.RX(-sw*s*.85));P(gBox(.18,.58,.2,0,-.29,0),am,c.skin)}
+  P(gBox(.64,.34,.36),M4.T(0,.82,0),c.shorts);P(gBox(.66,.64,.38),M4.T(0,1.13+bob,0),c.jersey);
+  const hy=1.72+bob;const robot=cf.acc==='robot';P(gBox(.5,.48,.46),M4.T(0,hy,0),robot?hex4('#d9dde3'):c.skin);
+  if(robot){P(gBox(.42,.14,.04),M4.T(0,hy+.04,.235),c.visor);P(gBox(.04,.3,.04),M4.T(0,hy+.38,0),c.white);P(gSph(.08,6,4),M4.T(0,hy+.56,0),c.red)}
+  else{for(const s of[-1,1])P(gBox(.07,.1,.03),M4.T(.11*s,hy+.03,.235),c.eye);
+   const hs=cf.hairStyle;
+   if(hs===0){P(gBox(.54,.16,.5),M4.T(0,hy+.27,0),c.hair);P(gBox(.54,.3,.12),M4.T(0,hy+.1,-.2),c.hair)}
+   else if(hs===1){P(gBox(.54,.1,.5),M4.T(0,hy+.24,0),c.hair);for(let i=0;i<5;i++)P(gCyl(0,.1,.24,4),M4.mul(M4.T(-.2+i*.1,hy+.27,(i%2)*.1-.05),M4.RZ((i-2)*.25)),c.hair)}
+   else if(hs===2){P(gSph(.36,8,5),M4.T(0,hy+.2,-.06),c.hair)}
+   else if(hs===3){P(gBox(.56,.16,.52),M4.T(0,hy+.27,0),c.hair);P(gBox(.56,.62,.14),M4.T(0,hy-.06,-.21),c.hair);for(const s of[-1,1])P(gBox(.06,.42,.3),M4.T(.27*s,hy+.02,-.06),c.hair)}
+   else{P(gBox(.52,.06,.48),M4.T(0,hy+.25,0),c.hair)}}
+  const a=cf.acc;
+  if(a==='cap'){P(gCyl(.28,.28,.16,8),M4.T(0,hy+.24,0),c.acc);P(gBox(.42,.04,.26),M4.T(0,hy+.25,.3),c.acc)}
+  else if(a==='hat'){P(gCyl(.46,.46,.04,10),M4.T(0,hy+.24,0),c.acc);P(gCyl(.27,.29,.26,8),M4.T(0,hy+.26,0),c.acc)}
+  else if(a==='crown'){P(gCyl(.24,.24,.12,8),M4.T(0,hy+.3,0),c.gold);for(let i=0;i<5;i++){const an=i/5*TAU;P(gCyl(0,.06,.14,4),M4.T(Math.sin(an)*.2,hy+.42,Math.cos(an)*.2),c.gold)}}
+  else if(a==='beanie'){P(gCyl(.28,.29,.22,8),M4.T(0,hy+.18,0),c.acc);P(gSph(.09,6,4),M4.T(0,hy+.46,0),c.white)}
+  else if(a==='wizard'){P(gCyl(0,.32,.6,8),M4.T(0,hy+.24,0),c.acc)}
+  else if(a==='headband'){P(gBox(.54,.08,.5),M4.T(0,hy+.13,0),c.gold)}
+  else if(a==='goldband'){P(gBox(.54,.1,.5),M4.T(0,hy+.13,0),c.gold);for(const s of[-1,1])P(gBox(.08,.08,.03),M4.T(.25*s,1.5+bob,0),c.gold)}
+  if(this.ball){const by=this.ground?.35+Math.abs(Math.sin(this.phase*1.5))*.55:2.4;P(gSph(.2,8,6),M4.T(.42,by,.38),c.ball)}
+  TX.push({tex:this.num,m:M4.c(root,M4.T(0,1.15+bob,.196),M4.S(.46,.46,1))});
+  TX.push({tex:this.num,m:M4.c(root,M4.T(0,1.15+bob,-.196),M4.RY(Math.PI),M4.S(.46,.46,1))});
+  const lh=.4;SP.push({tex:this.label,x:this.x,y:this.y+2.5+(a==='wizard'?.35:0),z:this.z,w:lh*this.label.aspect,h:lh});
+  if(this.bubble&&this.bubbleT>0){const bh=this.bubble.aspect>1.2?.62:.85;SP.push({tex:this.bubble,x:this.x,y:this.y+3.25,z:this.z,w:bh*this.bubble.aspect,h:bh})}
+  SH.push({x:this.x,z:this.z,y:this.gy??0,s:1.25})}
+}
+
+/* ===================== ブロックワールド（ごほうびエリア） ===================== */
+KITS.navy={jersey:'#2b5bd7',shorts:'#16204a',num:'#ffffff',stroke:'#16204a',label:'ブルー'};
+const ZC={en:'#3c7be0',ja:'#e94b4b',ma:'#ff7a1a',sc:'#35d07f',so:'#9b59d0'};
+const ZN={en:['ENGLISH','英語の島'],ja:['KANJI','漢字の森'],ma:['MATH','計算の塔'],sc:['SCIENCE','理科ラボ'],so:['SOCIAL','社会の街']};
+const NPCN={en:'イングリッシュ先生',ja:'かんじ博士',ma:'けいさんロボ',sc:'ラボ先生',so:'ちずマスター'};
+const SQ=[],INTER=[],NPC3=[],DYN3=[];let W3={built:false,on:false},P=null,curI=null;
+const cam={yaw:0,pitch:.38,dist:9,x:0,y:3,z:10,tx:0,ty:1.5,tz:0};
+function quad(tex,x,y,z,w,h,rot=0){SQ.push({tex,m:M4.c(M4.T(x,y,z),M4.RY(rot),M4.S(w,h,1))})}
+function bTree(x,z,s=1){box(x,0,z,.8*s,2.6*s,.8*s,'#8b5a2b',{col:true,top:99,jit:0});box(x,2.4*s,z,3*s,2.6*s,3*s,['#3fae49','#2f9a3a','#56c24a'][Math.floor(R()*3)],{jit:.03})}
+function buildW3(){R=rng(11);
+ SHADOW=ctex(64,64,g=>{const gr=g.createRadialGradient(32,32,2,32,32,31);gr.addColorStop(0,'rgba(0,0,0,.4)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(0,0,64,64)});
+ SPARK=ctex(64,64,g=>{const gr=g.createRadialGradient(32,32,1,32,32,31);gr.addColorStop(0,'rgba(255,240,150,1)');gr.addColorStop(1,'rgba(255,170,40,0)');g.fillStyle=gr;g.fillRect(0,0,64,64)});
+ // 海と島（ベースプレート）
+ box(0,-3,0,400,2.6,400,'#2f8fd8',{em:.25,jit:0});
+ box(0,-2.3,0,124,2,124,'#d8c08a',{jit:0});
+ for(let i=-15;i<15;i++)for(let j=-15;j<15;j++){const x=i*4+2,z=j*4+2;box(x,-.2,z,3.96,.2,3.96,(i+j)&1?'#5cbf4a':'#52b443',{jit:.02})}
+ extraBlock=(x,z)=>Math.abs(x)>59||Math.abs(z)>59;
+ // スポーン
+ box(0,0,0,7,.25,7,'#9aa0a6',{col:true,jit:0});box(0,.25,0,5,.06,5,'#ffffff',{jit:0,em:.3});
+ const st=signTex('送迎ドリル WORLD','勉強のごほうびエリア',{w:1024,h:220});box(9,0,0,.6,4,10,'#16204a',{col:true,top:99,jit:0});quad(st,8.65,2.4,0,9.6,9.6/st.aspect,-Math.PI/2);
+ // 教科ゾーン
+ const ks=Object.keys(ZN);ks.forEach((k,i)=>{const a=-Math.PI/2+i/ks.length*Math.PI*2,zx=Math.round(Math.cos(a)*32),zz=Math.round(Math.sin(a)*32),c=ZC[k];
+  box(zx,0,zz,16,.2,16,c,{col:true,jit:.05});
+  const dx=-Math.cos(a),dz=-Math.sin(a),rot=Math.atan2(dx,dz),gx=zx+dx*9,gz=zz+dz*9,px=-dz,pz=dx;
+  for(const s of[-1,1]){box(gx+px*4*s,0,gz+pz*4*s,1.4,6,1.4,c,{col:true,top:99,jit:0});box(gx+px*4*s,6,gz+pz*4*s,1.8,.6,1.8,'#ffffff',{jit:0})}
+  addS(gBox(10,2,1,0,0,0),M4.c(M4.T(gx,6.2,gz),M4.RY(rot)),c);const t=signTex(ZN[k][0],ZN[k][1],{w:900,h:200});quad(t,gx+dx*.52,6.2,gz+dz*.52,9,9/t.aspect,rot);quad(t,gx-dx*.52,6.2,gz-dz*.52,9,9/t.aspect,rot+Math.PI);
+  // たてもの
+  const bx=zx-dx*4,bz=zz-dz*4;box(bx,.2,bz,8,5,8,'#f4f4f4',{col:true,top:99,jit:.03});box(bx,5.2,bz,9,1,9,c,{jit:0});box(bx,6.2,bz,6,1,6,c,{jit:0});
+  if(k==='ma'){for(let h=0;h<4;h++)box(bx,7.2+h*2,bz,4-h*.6,2,4-h*.6,h%2?'#ffffff':c,{jit:0})}
+  if(k==='ja'){for(let n=0;n<6;n++)bTree(zx+(R()-.5)*14,zz+(R()-.5)*14+(n%2?3:-3),.8)}
+  const nx=zx+dx*2,nz=zz+dz*2;const ch=new Char({kit:'white',number:i+1,acc:k==='ma'?'robot':'cap',accColor:c,hairStyle:i%5,skin:SKINS[i%4]},{label:NPCN[k],style:'npc'});ch.x=nx;ch.z=nz;ch.rot=Math.atan2(-dx*-1,-dz*-1);NPC3.push(ch);
+  INTER.push({x:nx,z:nz,r:3.2,label:'話す',sub:ZN[k][1],fn:()=>zoneTalk(k)})});
+ // アスレチック（ジャンプで登る）
+ const cols=['#e94b4b','#ff7a1a','#ffd23a','#35d07f','#3c7be0','#9b59d0','#ff6ab0'];let x=-20,z=20,y=0;
+ for(let i=0;i<9;i++){y+=1;x+=[0,3,3,0,-3,-3,0,3,0][i];z+=[3,0,0,3,0,0,3,0,3][i];box(x,0,z,2.4,y,2.4,cols[i%7],{col:true,jit:0})}
+ box(x,0,z+3.2,4,y,4,'#ffd23a',{col:true,jit:0});W3.goal={x,y,z:z+3.2};
+ INTER.push({x,z:z+3.2,y,r:2.4,label:'ゴール！',sub:'アスレチック',fn:obbyGoal});
+ const ot=signTex('ジャンプ チャレンジ','ブロックをのぼってゴールをめざそう',{w:900,h:200});box(-20,0,17,6,3,.5,'#16204a',{col:true,top:99,jit:0});quad(ot,-20,1.8,17.3,5.8,5.8/ot.aspect,0);
+ // 木・雲
+ for(let i=0;i<40;i++){const a=R()*Math.PI*2,r=44+R()*12,tx=Math.cos(a)*r,tz=Math.sin(a)*r;bTree(tx,tz,.8+R()*.5)}
+ for(let i=0;i<12;i++){const cx=(R()-.5)*160,cz=(R()-.5)*160,cy=26+R()*8;box(cx,cy,cz,10,2.4,6,'#ffffff',{em:.6,jit:0});box(cx+3,cy+1.4,cz,5,2,4,'#ffffff',{em:.6,jit:0})}
+ // くるくる回るコイン（かざり）
+ for(let i=0;i<10;i++){const a=i/10*Math.PI*2,cx=Math.cos(a)*18,cz=Math.sin(a)*18;DYN3.push({g:gpu(gCyl(.6,.6,.15,10)),c:hex4('#ffd23a',.5),f:t=>M4.c(M4.T(cx,1.4+Math.sin(t*2+i)*.25,cz),M4.RY(t*2+i),M4.RX(Math.PI/2))})}
+ uploadStatic();W3.built=true}
+
+/* ---------- 会話・ミニクイズ ---------- */
+function zoneTalk(k){const g=D.settings.grade;if(!avail(k,g)){modal(NPCN[k],`<p>${ZN[k][1]}へようこそ！</p><p class="note">${SUBJ[k].n}は小3からだよ。ほかのゾーンにも行ってみてね。</p>`);return}
+ modal(NPCN[k],`<p style="font-size:16px">${ZN[k][1]}へようこそ！<br>${g}の${subjName(k,g)}、3問チャレンジしてみる？</p><p class="note">正解1問で🪙1コイン</p>`,el=>{el.appendChild(btn('チャレンジ！',()=>miniQuiz(k)));el.appendChild(btn('あとで',closeW3Modal,'sub'))})}
+function miniQuiz(k){const g=D.settings.grade,qs=buildQuiz(k,g,3);let i=0,ok=0;
+ const show=()=>{const it=qs[i];const ch=[it.a,...it.ws].sort(()=>Math.random()-.5);
+  modal(`${ZN[k][1]} ${i+1}/3`,`<div class="qs">${esc(it.sub||'答えはどれ？')}</div><div class="q${(it.long||it.q.length>14)?' long':it.ja?' ja':''}">${esc(it.q)}</div><div id="cs">${ch.map((c,n)=>`<button class="ch" data-n="${n}">${esc(c)}</button>`).join('')}</div><div id="nx"></div>`,el=>{
+   if(it.speak&&it.speakNow)say(it.speak,'en',.9);
+   el.querySelectorAll('.ch').forEach(b=>b.onclick=()=>{const cs=el.querySelector('#cs');if(cs.dataset.d)return;cs.dataset.d=1;const good=ch[+b.dataset.n]===it.a;if(good)ok++;
+    if(it.id){const V=D.vocab;V[it.id]=V[it.id]||{ok:0,ng:0};good?V[it.id].ok++:V[it.id].ng++}
+    el.querySelectorAll('.ch').forEach(x=>{if(ch[+x.dataset.n]===it.a)x.classList.add('ok');else if(x===b)x.classList.add('ng')});
+    const nx=el.querySelector('#nx');nx.innerHTML=`<div class="qs" style="margin:8px 0">${good?'⭕ 正解！ 🪙+1':'❌ おしい！'}</div>${it.e?`<div class="box" style="font-size:13px">${esc(it.e)}</div>`:''}`;
+    nx.appendChild(btn(i<2?'次へ ▶':'おわり',()=>{i++;i<3?show():fin()}))})})};
+ const fin=()=>{D.coins=(D.coins||0)+ok;save();P&&P.say(ok===3?'🎉':ok?'👍':'💪');modal('けっか',`<div class="q">${ok}<span style="font-size:.45em;color:var(--sub)"> / 3</span></div><div class="qs">🪙 ${ok}コインゲット！（合計 ${D.coins}）</div>`,el=>el.appendChild(btn('ワールドにもどる',closeW3Modal)));w3Hud()};show()}
+function obbyGoal(){const t=today();if(D.obby===t){modal('ゴール！','<p>今日のゴールボーナスはもらったよ。明日またチャレンジしてね！</p>');return}
+ D.obby=t;D.coins=(D.coins||0)+3;save();P&&P.say('🏆');modal('ゴール！🏆','<p style="font-size:16px">アスレチック クリア！<br>🪙3コインゲット！</p><p class="note">ゴールボーナスは1日1回</p>');w3Hud()}
+function closeW3Modal(){hush();$('#modal').classList.add('hidden')}
+
+/* ---------- 入る・出る ---------- */
+function enterW3(){if(!gl){toast('この端末では3Dが使えません');return}$('#w3').classList.remove('hidden');$('#home').classList.add('hidden');
+ if(!W3.built){try{if(!PC)initGL();buildW3()}catch(e){toast('3Dの準備に失敗しました');console.error(e);exitW3();return}}
+ const av={name:D.name||'プレイヤー',kit:D.av?.kit||'navy',number:D.av?.num??7,hairStyle:D.av?.hair??0,skin:D.av?.skin||'#eebd92',hair:'#1b1b1b',shoes:'#ffffff'};
+ P=new Char(av,{label:D.name||'プレイヤー',style:'player'});P.x=0;P.z=3;P.y=.25;P.rot=Math.PI;cam.yaw=0;cam.tx=0;cam.tz=3;
+ W3.on=true;resizeW3();w3Hud();last3=performance.now();requestAnimationFrame(loop3);
+ if(!D.w3seen){D.w3seen=true;save();setTimeout(()=>modal('ようこそ！','<p style="font-size:15px">ここは勉強のごほうびエリア。<br>・色のついたゾーンの先生に話しかけると3問クイズ<br>・正解するとコインがたまる<br>・左のジャンプチャレンジもやってみよう！</p>',el=>el.appendChild(btn('あそぶ！',closeW3Modal))),300)}}
+function exitW3(){W3.on=false;$('#w3').classList.add('hidden');$('#home').classList.remove('hidden');renderHome()}
+function w3Hud(){$('#w3coin').textContent=D.coins||0}
+function resizeW3(){const dpr=Math.min(devicePixelRatio||1,1.5);cv.width=Math.round(innerWidth*dpr);cv.height=Math.round(innerHeight*dpr)}
+addEventListener('resize',()=>{if(W3.on)resizeW3()});
+
+/* ---------- 操作 ---------- */
+const keys={};let jumpQ=false,joy={x:0,y:0,id:null};
+addEventListener('keydown',e=>{if(!W3.on||/INPUT|TEXTAREA/.test(e.target.tagName))return;keys[e.code]=true;if(e.code==='Space'){jumpQ=true;e.preventDefault()}if((e.code==='KeyE'||e.code==='Enter')&&curI&&modalClosed())curI.fn()});
+addEventListener('keyup',e=>{keys[e.code]=false});
+const ptrs=new Map();
+cv.addEventListener('pointerdown',e=>{ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY})});
+cv.addEventListener('pointermove',e=>{const p=ptrs.get(e.pointerId);if(!p)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;
+ if(ptrs.size===1){cam.yaw-=dx*.0065;cam.pitch=clamp(cam.pitch+dy*.005,.08,1.2)}else if(ptrs.size===2){const o=[...ptrs.entries()].find(([k])=>k!==e.pointerId)[1];const d0=Math.hypot(p.x-o.x,p.y-o.y),d1=Math.hypot(e.clientX-o.x,e.clientY-o.y);if(d1>0)cam.dist=clamp(cam.dist*d0/d1,4,18)}p.x=e.clientX;p.y=e.clientY});
+['pointerup','pointercancel','pointerleave'].forEach(n=>cv.addEventListener(n,e=>ptrs.delete(e.pointerId)));
+cv.addEventListener('wheel',e=>{cam.dist=clamp(cam.dist*(1+e.deltaY*.001),4,18);e.preventDefault()},{passive:false});
+const JY=$('#joy'),KN=$('#knob');
+JY.addEventListener('pointerdown',e=>{joy.id=e.pointerId;JY.setPointerCapture(e.pointerId);jm(e);e.preventDefault()});
+JY.addEventListener('pointermove',e=>{if(e.pointerId===joy.id)jm(e)});
+const je=e=>{if(e.pointerId!==joy.id)return;joy={x:0,y:0,id:null};KN.style.transform=''};JY.addEventListener('pointerup',je);JY.addEventListener('pointercancel',je);
+function jm(e){const r=JY.getBoundingClientRect();let dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);const m=r.width*.38,l=Math.hypot(dx,dy);if(l>m){dx*=m/l;dy*=m/l}joy.x=dx/m;joy.y=dy/m;KN.style.transform=`translate(${dx}px,${dy}px)`}
+$('#bJump').addEventListener('pointerdown',e=>{jumpQ=true;e.preventDefault()});
+$('#bAct').addEventListener('pointerdown',e=>{e.preventDefault();if(curI&&modalClosed())curI.fn()});
+$('#bExit').onclick=exitW3;
+const modalClosed=()=>$('#modal').classList.contains('hidden');
+
+/* ---------- ループ ---------- */
+let last3=0,t3=0;
+function phys(ch,mx,mz,dt){const nx=ch.x+mx*dt;if(!blocked(nx,ch.z,ch.y))ch.x=nx;const nz=ch.z+mz*dt;if(!blocked(ch.x,nz,ch.y))ch.z=nz;
+ const py=ch.y;ch.vy-=26*dt;ch.y+=ch.vy*dt;const g=groundAt(ch.x,ch.z,Math.max(py,ch.y));if(ch.y<=g){ch.y=g;ch.vy=0;ch.ground=true}else ch.ground=ch.y-g<.02;ch.gy=g;
+ const sp=Math.hypot(mx,mz);ch.walk=lerp(ch.walk,sp>.6?1:0,Math.min(1,dt*10));ch.phase+=dt*sp*1.55}
+function loop3(now){if(!W3.on)return;const dt=Math.min(.05,(now-last3)/1000);last3=now;t3+=dt;
+ const free=modalClosed();let ix=0,iz=0;if(free){ix=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0)+joy.x;iz=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0)-joy.y}
+ let l=Math.hypot(ix,iz);if(l>1){ix/=l;iz/=l;l=1}
+ const fx=-Math.sin(cam.yaw),fz=-Math.cos(cam.yaw),rx=Math.cos(cam.yaw),rz=-Math.sin(cam.yaw),mx=(fx*iz+rx*ix)*7.5,mz=(fz*iz+rz*ix)*7.5;
+ if(l>.08)P.rot=lerpAng(P.rot,Math.atan2(mx,mz),Math.min(1,dt*12));
+ if(jumpQ&&P.ground&&free){P.vy=9.8;P.ground=false}jumpQ=false;phys(P,mx,mz,dt);if(P.y<-6){P.x=0;P.z=3;P.y=.3;P.vy=0}
+ if(P.bubbleT>0)P.bubbleT-=dt;
+ curI=null;if(free){let bd=1e9;for(const it of INTER){const d=Math.hypot(it.x-P.x,it.z-P.z);if(d<it.r&&d<bd&&Math.abs((it.y||0)-P.y)<1.8){bd=d;curI=it}}}
+ const ba=$('#bAct');if(curI){ba.classList.remove('hidden');ba.innerHTML=`${curI.label}<small>${esc(curI.sub)}</small>`}else ba.classList.add('hidden');
+ cam.tx=lerp(cam.tx,P.x,Math.min(1,dt*12));cam.tz=lerp(cam.tz,P.z,Math.min(1,dt*12));cam.ty=lerp(cam.ty,P.y+1.5,Math.min(1,dt*8));
+ cam.x=cam.tx+Math.sin(cam.yaw)*Math.cos(cam.pitch)*cam.dist;cam.y=Math.max(.6,cam.ty+Math.sin(cam.pitch)*cam.dist);cam.z=cam.tz+Math.cos(cam.yaw)*Math.cos(cam.pitch)*cam.dist;
+ try{draw3()}catch(e){console.error(e)}requestAnimationFrame(loop3)}
+const SKY3=hex('#8fd3ff');
+function draw3(){const W=cv.width,H=cv.height;gl.viewport(0,0,W,H);gl.clearColor(SKY3[0],SKY3[1],SKY3[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+ const V=M4.lookAt([cam.x,cam.y,cam.z],[cam.tx,cam.ty,cam.tz],[0,1,0]),VP=M4.mul(M4.persp(58*D2R,W/H,.3,400),V),fog=[90,260];
+ const D3=[],TX=[],SP=[],SH=[];P.draw(D3,TX,SP,SH);for(const n of NPC3){n.walk=0;n.gy=n.gy??.2;n.y=.2;n.draw(D3,TX,SP,SH)}for(const o of DYN3)D3.push({g:o.g,m:o.f(t3),c:o.c});
+ if(curI)SP.push({tex:SPARK,x:curI.x,y:(curI.y||.2)+.15,z:curI.z,w:1.6,h:1.6,flat:true});
+ gl.enable(gl.DEPTH_TEST);gl.disable(gl.BLEND);gl.depthMask(true);gl.useProgram(PC.p);const u=PC.u;
+ gl.uniformMatrix4fv(u.uVP,false,VP);gl.uniform3f(u.uCam,cam.x,cam.y,cam.z);gl.uniform2f(u.uFog,fog[0],fog[1]);gl.uniform3fv(u.uFogC,SKY3);
+ gl.uniform3f(u.uLD,.45/1.03,.8/1.03,.35/1.03);gl.uniform3f(u.uSky,1,1,1.04);gl.uniform3f(u.uGnd,.62,.6,.58);gl.uniformMatrix4fv(u.uM,false,IDENT);
+ gl.bindBuffer(gl.ARRAY_BUFFER,STG.pb);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);
+ gl.bindBuffer(gl.ARRAY_BUFFER,STG.nb);gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,3,gl.FLOAT,false,0,0);
+ gl.bindBuffer(gl.ARRAY_BUFFER,STG.cb);gl.enableVertexAttribArray(2);gl.vertexAttribPointer(2,4,gl.FLOAT,false,0,0);gl.drawArrays(gl.TRIANGLES,0,STG.count);gl.disableVertexAttribArray(2);
+ let lg=null;for(const o of D3){if(o.g!==lg){gl.bindBuffer(gl.ARRAY_BUFFER,o.g.pb);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,o.g.nb);gl.vertexAttribPointer(1,3,gl.FLOAT,false,0,0);lg=o.g}gl.vertexAttrib4fv(2,o.c);gl.uniformMatrix4fv(u.uM,false,o.m);gl.drawArrays(gl.TRIANGLES,0,o.g.count)}
+ gl.useProgram(PT.p);const t=PT.u;gl.uniformMatrix4fv(t.uVP,false,VP);gl.uniform3f(t.uCam,cam.x,cam.y,cam.z);gl.uniform2f(t.uFog,fog[0],fog[1]);gl.uniform3fv(t.uFogC,SKY3);gl.uniform1i(t.uT,0);gl.activeTexture(gl.TEXTURE0);
+ gl.bindBuffer(gl.ARRAY_BUFFER,QP);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,QU);gl.vertexAttribPointer(1,2,gl.FLOAT,false,0,0);
+ gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.uniform1f(t.uA,1);
+ const dq=(tex,m)=>{gl.bindTexture(gl.TEXTURE_2D,tex.t);gl.uniformMatrix4fv(t.uM,false,m);gl.drawArrays(gl.TRIANGLES,0,6)};
+ for(const q of SQ)dq(q.tex,q.m);for(const q of TX)dq(q.tex,q.m);
+ gl.depthMask(false);for(const s of SH)dq(SHADOW,M4.c(M4.T(s.x,s.y+.05,s.z),M4.RX(-Math.PI/2),M4.S(s.s,s.s,1)));
+ const rx=[V[0],V[4],V[8]],uy=[V[1],V[5],V[9]];
+ for(const s of SP){let m;if(s.flat)m=M4.c(M4.T(s.x,s.y,s.z),M4.RX(-Math.PI/2),M4.S(s.w,s.h,1));else{m=new Float32Array(16);m[0]=rx[0]*s.w;m[1]=rx[1]*s.w;m[2]=rx[2]*s.w;m[4]=uy[0]*s.h;m[5]=uy[1]*s.h;m[6]=uy[2]*s.h;m[10]=1;m[12]=s.x;m[13]=s.y;m[14]=s.z;m[15]=1;gl.depthMask(true)}dq(s.tex,m)}
+ gl.depthMask(true)}
+
+load();if(D.unlocked)renderHome();else $('#gate').classList.remove('hidden');
+</script>
+</body>
+</html>
