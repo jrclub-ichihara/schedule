@@ -3,135 +3,54 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1d1d1b">
+<meta name="theme-color" content="#000000">
 <title>Jr.CLUB市原 予定表</title>
 <link rel="icon" href="logo.jpg">
 <link rel="apple-touch-icon" href="logo.jpg">
 <style id="apiCss"></style>
+<link rel="stylesheet" href="common.css">
+<link rel="stylesheet" href="club-fonts.css">
+<link rel="stylesheet" href="club.css?v=1">
 <style>
-:root{--ink:#0b0b0a;--card:#161614;--line:#2a2a26;--y:#ffeb3b;--txt:#f3f3ef;--mute:#8f8d86;--ease:cubic-bezier(.2,.75,.2,1)}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--ink)!important;color:var(--txt)!important;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;font-size:15px;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
-/* ===== オープニング ===== */
-#splash{position:fixed;inset:0;z-index:100;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:transform .7s var(--ease),opacity .5s}
-#splash.bye{transform:translateY(-100%);opacity:.6}
-#splash img{width:84px;opacity:0;transform:scale(.6) rotate(-8deg);animation:sp1 .6s var(--ease) .05s forwards}
-#splash .bar{width:0;height:3px;background:var(--y);box-shadow:0 0 18px var(--y);animation:sp2 .55s var(--ease) .35s forwards}
-#splash b{font-size:13px;letter-spacing:.5em;color:var(--y);opacity:0;animation:sp3 .5s ease .55s forwards;padding-left:.5em}
-@keyframes sp1{to{opacity:1;transform:none}}@keyframes sp2{to{width:140px}}@keyframes sp3{to{opacity:1}}
-/* ===== ヘッダー ===== */
-.hero{position:relative;overflow:hidden;background:#000;padding:22px 16px 20px;padding-top:max(22px,env(safe-area-inset-top));border-bottom:1px solid #222}
-.hero .big{position:absolute;right:-10px;bottom:-14px;font:900 italic 74px/1 Impact,"Arial Black",sans-serif;color:transparent;-webkit-text-stroke:1.5px rgba(255,235,59,.22);letter-spacing:-.02em;transform:skewX(-8deg);white-space:nowrap;animation:drift 12s ease-in-out infinite alternate;pointer-events:none}
-@keyframes drift{to{transform:skewX(-8deg) translateX(-30px)}}
-.hero .rush{position:absolute;left:-20%;top:0;bottom:0;width:60%;background:repeating-linear-gradient(115deg,transparent 0 14px,rgba(255,235,59,.06) 14px 16px);animation:rush 2.4s var(--ease) .2s both;pointer-events:none}
-@keyframes rush{from{transform:translateX(-60%);opacity:0}to{transform:none;opacity:1}}
-.hero .in{position:relative;display:flex;align-items:center;gap:14px;max-width:560px;margin:0 auto}
-.hero img{width:56px;height:62px;border-radius:6px;flex:none;opacity:0;transform:scale(.8) rotate(-6deg);animation:pop .7s var(--ease) .1s forwards}
-.hero h1{margin:0;font-size:22px;letter-spacing:.02em;color:var(--y);font-weight:900;text-shadow:3px 3px 0 rgba(255,235,59,.18)}
-.hero h1 span{display:inline-block;opacity:0;filter:blur(8px);transform:translateY(14px) scale(.9);animation:soft .8s var(--ease) forwards}
-.hero p{margin:6px 0 0;font-size:12px;color:#fff;opacity:0;transform:translateY(6px);animation:fade .8s var(--ease) .7s forwards}
-.hero .tg{font-size:10px;letter-spacing:.3em;color:var(--y);opacity:0;margin-top:4px;animation:fade 1s ease 1s forwards}
-@keyframes soft{to{opacity:1;filter:blur(0);transform:none}}
-@keyframes pop{to{opacity:1;transform:none}}
-@keyframes fade{to{opacity:.9;transform:none}}
-main{padding:12px 16px 56px;max-width:560px;margin:0 auto;background:none!important}
-/* ===== 月タブ ===== */
-.mtabs{position:sticky;top:0;z-index:20;background:rgba(11,11,10,.84);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);margin:0 -16px 12px;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.05)}
-.mt-in{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:560px;margin:0 auto}
-.mt-in button{position:relative;z-index:1;border:1px solid var(--line);background:linear-gradient(160deg,#1c1c19,#121210);border-radius:12px;padding:8px 0 7px;color:var(--mute);font-family:inherit;transition:color .35s var(--ease),transform .25s var(--ease),border-color .35s;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
-.mt-in button b{font:900 italic 15px/1 -apple-system,"Arial Black",sans-serif;letter-spacing:.06em;color:#bdbbb4;transition:color .35s}
-.mt-in button small{font-size:10px;font-weight:700}
-.mt-in button:active{transform:scale(.95)}
-.mt-in button.on{border-color:transparent;color:var(--y)}.mt-in button.on b{color:#fff}
-.mt-in .pill{position:absolute;top:0;bottom:0;left:0;z-index:2;pointer-events:none;border-radius:12px;border:1.5px solid var(--y);background:rgba(255,235,59,.06);transition:transform .5s var(--ease),width .5s var(--ease);box-shadow:0 0 0 3px rgba(255,235,59,.1),0 8px 22px rgba(255,235,59,.16)}
-/* ===== 共通タイル ===== */
-.tile,.vw a,.lk2 a,.tp-teaser{position:relative;overflow:hidden;background:linear-gradient(160deg,#1c1c19,#121210)!important;border:1px solid var(--line)!important;border-radius:14px!important;color:var(--txt)!important;text-decoration:none;transition:transform .25s var(--ease),border-color .3s,box-shadow .3s}
-.vw a:active,.lk2 a:active,.tp-teaser:active{transform:scale(.97)}
-.vw{display:grid!important;grid-template-columns:1fr 1fr;gap:8px;background:none!important;border:0!important;padding:0!important;margin-bottom:14px!important}
-.vw a{display:flex!important;align-items:center;gap:8px;padding:10px 12px!important;font-size:12px!important;color:var(--mute)!important;border-radius:12px!important;text-align:left!important}
-.vw a:before{font:900 italic 13px/1 -apple-system,"Arial Black",sans-serif;letter-spacing:.06em;color:#bdbbb4}
-.vw a[data-vw=card]:before{content:"CARD"}.vw a[data-vw=table]:before{content:"TABLE"}
-.vw a.on{border-color:var(--y)!important;box-shadow:0 0 0 3px rgba(255,235,59,.1);background:linear-gradient(160deg,#25230f,#121210)!important;color:var(--y)!important}.vw a.on:before{color:#fff}
-.lk2{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin-top:16px!important}
-.lk2 a{display:flex!important;flex-direction:column;align-items:flex-start;gap:7px;padding:13px 12px 12px!important}
-.lk2 a svg,.tp-teaser svg{width:22px;height:22px;stroke:var(--y);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.lk2 a b{display:block;font:900 italic 13px/1 -apple-system,"Arial Black",sans-serif!important;letter-spacing:.06em;color:#fff!important}
-.lk2 a span{display:block;font-size:10.5px!important;color:var(--mute)!important;line-height:1.45;margin-top:3px}
-.lk2 a em{display:block;font-style:normal;font-size:12px;font-weight:800;color:var(--y);margin-top:4px}
-.lk2 a i,.tp-teaser i{position:absolute;right:11px;top:10px;font-style:normal;font-size:11px;color:#55534d}
-.tp-teaser{display:flex!important;align-items:center;gap:12px;padding:14px!important;margin-top:16px!important}
-.tp-teaser b{font:900 italic 14px/1 -apple-system,"Arial Black",sans-serif!important;letter-spacing:.06em;color:#fff!important;display:block;margin-bottom:4px}
-.tp-teaser span{font-size:12px;color:var(--mute)}
-@media(hover:hover){.vw a:hover,.lk2 a:hover,.tp-teaser:hover,.mt-in button:hover{border-color:rgba(255,235,59,.5)!important}}
-.sub{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 16px}
-.nv{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:12px 12px 11px;border-radius:14px;background:linear-gradient(160deg,#1c1c19,#121210);border:1px solid var(--line);color:var(--txt);text-decoration:none;font-family:inherit;text-align:left;transition:transform .25s var(--ease),border-color .3s,box-shadow .3s;-webkit-appearance:none;cursor:pointer}
-.nv:before{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,235,59,.14),transparent);transform:skewX(-20deg);animation:shine 3.2s var(--ease) 1.4s 1 both}
-@keyframes shine{from{left:-60%}to{left:130%}}
-.nv svg{width:22px;height:22px;stroke:var(--y);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.nv b{display:block;font:900 italic 13px/1 -apple-system,"Arial Black",sans-serif;letter-spacing:.06em;color:#fff}
-.nv small{display:block;font-size:10.5px;color:var(--mute);margin-top:3px;font-weight:600}
-.nv i{position:absolute;right:10px;top:10px;font-style:normal;font-size:11px;color:#55534d;transition:transform .3s var(--ease),color .3s}
-.nv:active{transform:scale(.96)}
-.nv.on{border-color:var(--y);box-shadow:0 0 0 3px rgba(255,235,59,.12),0 8px 24px rgba(255,235,59,.12)}
-.nv.on i{color:var(--y)}
-@media(hover:hover){.nv:hover{border-color:rgba(255,235,59,.5);transform:translateY(-2px)}.nv:hover i{transform:translate(2px,-2px);color:var(--y)}}
-/* ===== 表示切替 ===== */
-#view{transition:opacity .25s ease,transform .35s var(--ease)}
-#view.out{opacity:0;transform:translateY(8px)}
-/* ===== 日付カード ===== */
-.day{display:grid;grid-template-columns:54px 1fr;column-gap:12px;align-items:start;background:var(--card)!important;border:1px solid var(--line)!important;border-radius:16px!important;padding:12px 14px!important;margin-bottom:10px!important;position:relative;overflow:hidden}
-.day>*:not(.dh){grid-column:2}
-.day.we{background:linear-gradient(100deg,rgba(255,235,59,.09),var(--card) 55%)!important;border-color:rgba(255,235,59,.25)!important}
-.day.we:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--y)}
-.dh{grid-column:1;grid-row:1/span 20;display:flex;flex-direction:column;align-items:center;line-height:1;padding-top:2px;color:var(--txt);margin:0!important}
-.dh .dn{font:900 30px/1 -apple-system,"Arial Black",sans-serif;letter-spacing:-.03em}
-.dh .dw{font-size:12px;font-weight:800;margin-top:4px;color:var(--mute)}
-.day.we .dh .dw{color:var(--y)}
-.dh .now{margin:6px 0 0!important;background:var(--y)!important;color:#000!important;font-size:10px!important;font-weight:900;padding:2px 7px!important;border-radius:999px}
-.row{color:var(--txt);font-size:14.5px!important;padding:4px 0!important;align-items:center!important}
-.tag{border-radius:6px!important;min-width:46px!important}
-.tag.b{background:var(--y)!important;color:#000!important}.tag.a{background:rgba(255,235,59,.16)!important;color:var(--y)!important}.tag.n{background:#2a2a26!important;color:#eee!important}
-.off{color:#5f5d57!important;letter-spacing:.2em}
-.memo{color:var(--mute)!important}
-summary .ev{border-bottom-color:var(--y)!important;color:#fff}summary small{color:var(--mute)!important}summary:after{color:var(--y)!important}
-.dt{background:#0e0e0d!important;border:1px solid var(--line);color:var(--txt);border-radius:12px!important}.kv b{color:var(--mute)!important}.kv a,.fl{color:var(--y)!important}.fl{background:var(--card)!important;border-color:var(--line)!important}
-details .dt{animation:open .4s var(--ease)}
-@keyframes open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-.day.today{border:2px solid var(--y)!important;box-shadow:0 0 0 4px rgba(255,235,59,.15),0 10px 30px rgba(255,235,59,.12)!important}
-.day.past{filter:none!important}
-.pre{background:rgba(255,235,59,.1)!important;color:var(--y)!important;border:1px solid rgba(255,235,59,.25)}.msg{color:var(--mute)!important}
-.tp-goal div,.tp-r,.tp-rw div{background:var(--card)!important;border-color:var(--line)!important;color:var(--txt)}.tp-r.top{background:rgba(255,235,59,.12)!important;border-color:var(--y)!important}
-.mt-wrap{background:#fff;color:#1d1d1b}.mt-cap{color:var(--txt)}
-/* ===== ふわっと出る ===== */
-.rv{opacity:0;transform:translateY(26px) scale(.97);filter:blur(4px);transition:opacity .7s var(--ease),transform .8s var(--ease),filter .7s var(--ease)}
-.rv.in{opacity:1;transform:none;filter:none}
-.day.past.rv.in{opacity:.38}
-.sk{height:72px;border-radius:16px;margin-bottom:10px;background:linear-gradient(90deg,#161614 25%,#22221f 50%,#161614 75%);background-size:200% 100%;animation:sh 1.2s infinite}
-@keyframes sh{to{background-position:-200% 0}}
-.upd{text-align:center;font-size:11px;color:#55534d;margin:18px 0 0}
-.err{background:#2a1513;color:#ff8a7a;border-radius:12px;padding:12px;font-size:13px;margin-bottom:10px}
-@media (prefers-reduced-motion:reduce){.rv{transform:none!important;filter:none!important;transition:opacity .5s ease!important}#splash{display:none}}
+/* 予定表のページだけで使うもの（色・文字・部品は club.css） */
+body { background: var(--bg); color: var(--text); }
+main { max-width: 560px; background: none; }
+.hero .in { max-width: 560px; }
+.hero { min-height: 168px; display: flex; align-items: center; }
+.hero .in { width: 100%; }
+#view { transition: opacity 0.22s ease, transform 0.32s var(--ease); }
+#view.out { opacity: 0; transform: translateY(8px); }
+.rv { opacity: 0; transform: translateY(22px) scale(0.98); transition: opacity 0.6s var(--ease), transform 0.7s var(--ease); }
+.rv.in { opacity: 1; transform: none; }
+.day.past.rv.in { opacity: 0.45; }
+.sk { height: 76px; border-radius: var(--r-card); margin-bottom: 10px; background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%); background-size: 200% 100%; animation: sh 1.2s infinite; }
+@keyframes sh { to { background-position: -200% 0; } }
+.err { background: rgba(255, 113, 99, 0.15); color: var(--text); border-radius: var(--r-ctl); padding: 12px 14px; font-size: var(--fs-sm); margin-bottom: 10px; }
+@media (prefers-reduced-motion: reduce) { .rv { transform: none; transition: opacity 0.3s ease; } }
 </style>
 </head>
-<body>
-<div id="splash"><img src="logo.jpg" alt=""><div class="bar"></div><b>SCHEDULE</b></div>
-<header class="hero"><div class="big">SCHEDULE</div><div class="rush"></div><div class="in">
-  <img src="logo.jpg" alt="ICHIHARA">
-  <div><h1 id="ttl"></h1><p id="sub">試合は押すと詳しく見られます</p><div class="tg">POUNDING THE ROCK</div></div>
+<body class="page-sched">
+<header class="hero"><canvas class="court" id="court" aria-hidden="true"></canvas><div class="big" aria-hidden="true">SCHEDULE</div><div class="in">
+  <div class="logo" id="logo" role="img" aria-label="Jr.CLUB市原のロゴ"></div>
+  <div><h1 id="ttl">SCHEDULE</h1><p id="sub">Jr.CLUB市原 予定表</p><div class="tg">POUNDING THE ROCK</div></div>
 </div></header>
 <main>
   <nav class="mtabs"><div class="mt-in" id="tabs"><span class="pill" id="pill"></span></div></nav>
   <div class="sub" id="sub2"></div>
+  <div id="next"></div>
   <div id="view"><div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div></div>
   <div id="links"></div>
+  <div class="foot" id="foot"></div>
   <p class="upd" id="upd"></p>
 </main>
+<script src="club.js?v=1"></script>
 <script>
 (function(){
 var API='https://script.google.com/macros/s/AKfycbwB-_TuXQhHCfWU0GYXXQq9Fm8mdG7bFzOEHE3CJLB3LoYam0eGmSPQlHNJHY49stKs/exec?api=schedule';
 var MON=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];var KEY='jrclub_sched_v1',D=null,CUR='',VIEW='card',$=function(i){return document.getElementById(i)};
-// タイトルを1文字ずつふわっと
-var t='Jr.CLUB市原 予定表';$('ttl').innerHTML=t.split('').map(function(c,i){return '<span style="animation-delay:'+(0.12+i*0.04)+'s">'+(c===' '?'&nbsp;':c)+'</span>'}).join('');
+// 線で描くロゴ・上の動く絵・ページのいちばん下
+$('logo').innerHTML=TEAM.lockup();$('foot').innerHTML=TEAM.mark()+'<p>Pounding the Rock</p>';
+var COURT=TEAM.hero($('court'));
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}}
 function save(d){try{localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}}
 var io='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -6% 0px'}):null;
@@ -146,7 +65,11 @@ function tiles(root){[].forEach.call(root.querySelectorAll('.lk2 a'),function(a)
   [].forEach.call(root.querySelectorAll('a.tp-teaser'),function(a){if(a.dataset.ok)return;a.dataset.ok=1;var t=a.textContent.replace(/^.*?3Pチャレンジ/,'').trim();
     a.innerHTML='<i>›</i>'+IC.ball+'<div><b>3POINT CHALLENGE</b><span>'+t+'</span></div>'})}
 function dates(root){[].forEach.call(root.querySelectorAll('.dh'),function(h){if(h.dataset.ok)return;h.dataset.ok=1;var now=h.querySelector('.now');var m=(h.firstChild&&h.firstChild.textContent||'').match(/(\d+)\/(\d+)（([^）]+)）/);if(!m)return;
-    h.innerHTML='<span class="dn">'+m[2]+'</span><span class="dw">'+m[3]+'</span>';if(now)h.appendChild(now)})}
+    var w=m[3].charAt(0),hol=/祝/.test(m[3]),day=h.parentNode;
+    if(day){if(w==='土')day.classList.add('sat');if(w==='日')day.classList.add('sun');if(hol)day.classList.add('hol')}
+    h.innerHTML='<span class="dn">'+m[2]+'</span><span class="dw">'+w+'</span>'+(hol?'<span class="hol">祝</span>':'');if(now)h.appendChild(now)});
+  /* 試合の結果（WIN 57-51）を、新しい見た目のしるしにする */
+  [].forEach.call(root.querySelectorAll('summary b[style]'),function(b){var t=b.textContent.trim(),win=/^WIN/.test(t);b.removeAttribute('style');b.className='result '+(win?'win':'lose');b.textContent=t})}
 function reveal(root){dates(root);tiles(root);var els=root.querySelectorAll('.day,.tp-hero,.tp-goal,.tp-r,.tp-rw,.tp-teaser,.pre,.mt-wrap,.lk2 a'),n=0;
   [].forEach.call(els,function(el){el.classList.add('rv');var r=el.getBoundingClientRect();
     if(r.top<innerHeight){el.style.transitionDelay=Math.min(n++*70,560)+'ms';requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('in')})});setTimeout(function(){el.style.transitionDelay=''},1200)}
@@ -160,12 +83,26 @@ function pill(){var on=$('tabs').querySelector('button.on'),p=$('pill');if(!p)re
 function go(k,first){CUR=k;[].forEach.call($('tabs').querySelectorAll('button'),function(b){b.classList.toggle('on',b.dataset.k===k)});
   $('tp3')&&$('tp3').classList.toggle('on',k==='3p');pill();
   var mo=D.months.filter(function(x){return x.key===k})[0];
-  $('sub').textContent=k==='3p'?'3Pシュート チャレンジ':(mo?mo.y+'年'+mo.m+'月　':'')+'試合は押すと詳しく見られます';
+  $('sub').textContent=k==='3p'?'3Pシュート チャレンジ':(mo?'Jr.CLUB市原　'+mo.y+'年'+mo.m+'月':'Jr.CLUB市原 予定表');
   var html=k==='3p'?D.tp:(mo?mo.main:'');
   var v=$('view');v.classList.add('out');
   setTimeout(function(){v.innerHTML=html;[].forEach.call(v.querySelectorAll('script'),function(o){var n=document.createElement('script');n.textContent=o.textContent;o.parentNode.replaceChild(n,o)});applyView();v.classList.remove('out');reveal(v);
+    nextGame(k);
     var td=document.getElementById('today');if(first&&td&&td.offsetParent)setTimeout(function(){td.scrollIntoView({block:'center',behavior:'smooth'})},500);
     else if(!first)window.scrollTo({top:0,behavior:'smooth'})},first?0:180)}
+/* 次の試合：今月の、今日から先でいちばん近い試合（押すとその日の詳しいところへ） */
+function nextGame(k){var box=$('next');box.innerHTML='';if(!D||k!==D.cur)return;
+  var days=[].slice.call($('view').querySelectorAll('#vCard .day:not(.past), .day:not(.past)')),hit=null;
+  for(var i=0;i<days.length&&!hit;i++){var ev=days[i].querySelector('summary .ev');if(ev&&!/^応援$/.test(ev.textContent.trim()))hit={day:days[i],ev:ev}}
+  if(!hit)return;var mo=D.months.filter(function(x){return x.key===k})[0],dn=+(hit.day.querySelector('.dh .dn')||{}).textContent;if(!mo||!dn)return;
+  var now=new Date(),t0=new Date(now.getFullYear(),now.getMonth(),now.getDate()),d=new Date(mo.y,mo.m-1,dn),left=Math.round((d-t0)/864e5);
+  var sm=hit.ev.parentNode.querySelector('small'),dt=hit.ev.closest('details').querySelector('.dt'),place='';
+  if(dt){[].forEach.call(dt.querySelectorAll('.kv'),function(kv){var b=kv.querySelector('b');if(b&&b.textContent.trim()==='場所'){var sp=kv.querySelector('span');place=sp?sp.firstChild&&sp.firstChild.textContent||'':''}})}
+  var wd=(hit.day.querySelector('.dh .dw')||{}).textContent||'';
+  box.innerHTML='<button class="next" id="nextBtn" aria-label="次の試合を見る"><div class="lb">NEXT GAME</div><h3></h3><p></p><div class="cd'+(left<=0?' today':'')+'">'+(left<=0?'<b>今日</b>':'<span>あと</span><b>'+left+'</b><span>日</span>')+'</div></button>';
+  box.querySelector('h3').textContent=hit.ev.textContent.trim();
+  box.querySelector('p').innerHTML=mo.m+'/'+dn+'('+wd+') '+(sm?sm.textContent:'')+(place?'<br>'+place.replace(/[<>&]/g,''):'');
+  $('nextBtn').onclick=function(){var det=hit.ev.closest('details');if(VIEW==='table'){VIEW='card';applyView()}if(det)det.open=true;hit.day.scrollIntoView({block:'center',behavior:TEAM.calm?'auto':'smooth'})}}
 function applyView(){var c=$('vCard'),tb=$('vTable');if(!c||!tb)return;var tbl=VIEW==='table';c.style.display=tbl?'none':'';tb.style.display=tbl?'':'none';
   [].forEach.call(document.querySelectorAll('[data-vw]'),function(x){x.classList.toggle('on',x.dataset.vw===VIEW)});if(tbl)reveal(tb)}
 document.addEventListener('click',function(e){
@@ -177,10 +114,10 @@ function show(d,first){D=d;$('apiCss').textContent=d.css||'';tabs();
   if(!CUR){try{var qm=new URLSearchParams(location.search).get('m');if(qm)CUR=qm}catch(e){}}
   var k=(CUR&&(CUR==='3p'||d.months.some(function(x){return x.key===CUR})))?CUR:(d.months.some(function(x){return x.key===d.cur})?d.cur:d.months[0].key);
   go(k,first);$('upd').textContent='最終更新 '+d.at}
-var SP=$('splash'),spT=0;try{spT=+localStorage.getItem('jrclub_sp')||0}catch(e){}
-var quick=Date.now()-spT<30*60*1000;try{localStorage.setItem('jrclub_sp',Date.now())}catch(e){}
-function hideSplash(){if(!SP)return;SP.classList.add('bye');setTimeout(function(){SP&&SP.remove();SP=null},700)}
-if(quick){SP.remove();SP=null}else setTimeout(hideSplash,1150);
+/* 開いたときのロゴの動き：その日はじめては長いほう、同じ日の2回目からは短いほう、同じ訪問の中ではもう出さない（ほかのページと共通） */
+(function(){var seen=null,day=new Date().toDateString(),how='';try{seen=sessionStorage.getItem('jr_intro');sessionStorage.setItem('jr_intro','1')}catch(e){}
+  if(!seen){var last='';try{last=localStorage.getItem('jr_intro_day')||'';localStorage.setItem('jr_intro_day',day)}catch(e){}how=last===day?'short':'full'}
+  TEAM.intro($('logo'),how)})();
 var cache=load();if(cache&&cache.months){show(cache,true)}
 function fetchNew(n){fetch(API,{cache:'no-store'}).then(function(r){return r.json()}).then(function(d){if(!d||!d.ok)throw 0;
     var changed=!cache||JSON.stringify(cache.months)!==JSON.stringify(d.months)||cache.tp!==d.tp;save(d);
