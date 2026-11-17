@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Jr.CLUB市原 顔の名前付け</title>
+<link rel="icon" href="logo.jpg">
+<link rel="apple-touch-icon" href="logo.jpg">
+<link rel="stylesheet" href="common.css">
+<style>
+.tabs{display:flex;border-bottom:1px solid #222;margin-bottom:12px}.tabs button{flex:1;border:0;background:none;color:#777;padding:10px;font-weight:800;font-size:14px;border-bottom:3px solid transparent}.tabs button.on{color:var(--y);border-color:var(--y)}
+.help{font-size:12px;color:var(--mute);line-height:1.6;margin:0 0 12px}
+.st{font-size:13px;color:#ddd;margin:0 0 10px}
+.grp{background:linear-gradient(160deg,#1c1c19,#121210);border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:12px}
+.grp h3{margin:0 0 8px;font-size:13px;color:#bbb;font-weight:700}.grp h3 b{color:var(--y);font-size:15px}
+.fs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}@media(min-width:600px){.fs{grid-template-columns:repeat(8,1fr)}}
+.fs button{position:relative;border:0;padding:0;background:#222;border-radius:50%;aspect-ratio:1/1;overflow:hidden}
+.fs img{width:100%;height:100%;object-fit:cover;display:block}
+.fs button.off img{opacity:.25}.fs button.off:after{content:"×";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ff8a65;font-weight:900;font-size:20px}
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.acts button{border:1px solid #333;background:#1a1a18;color:#eee;border-radius:999px;padding:9px 14px;font-size:13px;font-weight:700}
+.acts .yes{background:var(--y);color:#111;border-color:var(--y)}.acts .no{color:#ff8a65}.acts .later{color:#888;margin-left:auto}
+.more{margin:14px auto;display:block;border:1px solid #333;background:none;color:#fff;border-radius:999px;padding:10px 22px}
+.ex{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.ex label{display:flex;align-items:center;gap:8px;border:1px solid #2a2a2a;background:#151515;border-radius:10px;padding:11px 10px;font-size:13px;font-weight:700}
+.ex label.on{border-color:#ff8a65;color:#ff8a65}
+.pk{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:320;display:none;align-items:flex-end;justify-content:center}.pk.on{display:flex}
+.pkin{background:#141414;width:100%;max-width:520px;max-height:80vh;overflow:auto;border-radius:16px 16px 0 0;padding:14px 14px max(14px,env(safe-area-inset-bottom))}
+.pkh{font-size:14px;margin-bottom:10px}.pkl{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.pkl button{border:1px solid #2a2a2a;background:#1c1c1c;color:#eee;border-radius:10px;padding:11px 8px;font-size:13px;font-weight:700;text-align:left}
+.pkc{margin-top:10px;width:100%;border:0;background:#222;color:#fff;border-radius:10px;padding:11px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#ffeb3b;color:#111;font-weight:800;padding:10px 16px;border-radius:999px;display:none;z-index:400;font-size:13px}
+.card{background:linear-gradient(160deg,#1c1c19,#121210);border:1px solid var(--line);border-radius:14px;padding:14px}
+.card input{width:100%;box-sizing:border-box;padding:11px;border-radius:10px;border:1px solid #333;background:#0f0f0f;color:#fff;font-size:16px;margin:8px 0}
+</style>
+</head>
+<body>
+<header class="hero"><div class="big">FACES</div><div class="rush"></div><div class="in">
+  <img src="logo.jpg" alt="ICHIHARA">
+  <div><h1 data-split>FACES</h1><p>顔の名前付け</p><div class="tg">POUNDING THE ROCK</div></div>
+</div></header>
+<main>
+  <div class="topnav"><a class="tile back" href="album.html">‹ <b>ALBUM</b><small>アルバムにもどる</small></a></div>
+  <div class="card" id="login" style="display:none"><label>チームのパスコード</label><input type="password" id="pass" inputmode="numeric"><button class="btn b1" id="go">開く</button></div>
+  <div id="body" style="display:none">
+    <div class="tabs"><button data-v="g" class="on">まとめて名前付け</button><button data-v="x">見分けから外す子</button></div>
+    <div id="view"></div>
+  </div>
+  <p class="st" id="ld">読み込み中…</p>
+</main>
+<div class="pk" id="pk"><div class="pkin"><div class="pkh" id="pkH"></div><div class="pkl" id="pkL"></div><button class="pkc" id="pkC">やめる</button></div></div>
+<div class="toast" id="toast"></div>
+<script src="common.js?v=6"></script>
+<script>JR.shim();</script>
+<script src="face.js?v=1"></script>
+<script>
+/* 名前のない顔を「たぶん同じ子」でまとめて、まとめて名前を付ける画面。
+   まとめる計算・候補の計算は、この端末の中だけで行います（顔を外のサービスに送りません）。 */
+var PASS=JR.pass(),ADMIN='',D=null,B=null,GS=[],SHOWN=0,V='g',$=function(i){return document.getElementById(i)};
+try{ADMIN=localStorage.getItem('jrclub_plan_pass')||''}catch(e){}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function toast(t){var e=$('toast');e.textContent=t;e.style.display='block';setTimeout(function(){e.style.display='none'},1800)}
+function init(){$('ld').style.display='block';google.script.run.withSuccessHandler(function(d){$('ld').style.display='none';
+    if(d.needPass){$('login').style.display='block';return}JR.pass(PASS);D=d;if(!d.isAdmin)ADMIN='';
+    $('login').style.display='none';$('body').style.display='block';rebuild()})
+  .withFailureHandler(function(e){$('ld').innerHTML='読み込めませんでした（'+esc(e&&e.message||e)+'）<br>サーバー側（GAS）がまだ新しい画面に対応していないかもしれません。'}).getFaceBank(PASS,ADMIN)}
+$('go').onclick=function(){PASS=$('pass').value.trim();init()};
+[].forEach.call(document.querySelectorAll('.tabs button'),function(b){b.onclick=function(){V=b.dataset.v;[].forEach.call(document.querySelectorAll('.tabs button'),function(x){x.classList.toggle('on',x===b)});render()}});
+function named(){return D.faces.filter(function(f){return f.n&&f.n!=='対象外'})}
+function rebuild(){B=JRFACE.bank(named(),D.exclude||[]);
+  var un=D.faces.filter(function(f){return !f.n}).slice(-1500); /* 古いスマホでも重くならないよう、新しい1500個まで */
+  GS=JRFACE.cluster(un.map(function(f){return {d:f.d,box:{w:f.w||60},f:f}})).map(function(c){return {items:c.items.map(function(x){return x.f}),off:{}}});
+  suggest();SHOWN=0;render()}
+/* グループの平均の顔で候補を出す */
+function suggest(){GS.forEach(function(g){var m=new Float32Array(128),n=0;g.items.forEach(function(f){if(g.off[f.id])return;var v=JRFACE.vec(f.d);for(var i=0;i<128;i++)m[i]+=v[i];n++});
+  if(!n){g.q='';return}for(var i=0;i<128;i++)m[i]/=n;var r=JRFACE.match({d:m,yaw:0,box:{w:100}},B);g.q=r.n||r.q})}
+function render(){if(V==='x'){renderEx();return}
+  var left=GS.filter(function(g){return g.items.length}),tot=0;left.forEach(function(g){tot+=g.items.length});
+  var show=left.slice(0,SHOWN=Math.max(SHOWN,20));
+  $('view').innerHTML='<p class="help">名前のない顔を「たぶん同じ子」でまとめました。ちがう子がまざっていたら、その顔を押して外してから名前を付けてください。付けた名前は見本になって、次から当たりやすくなります。</p>'+
+    '<p class="st">名前のない顔 <b>'+tot+'</b>（'+left.length+'グループ）</p>'+
+    (left.length?show.map(function(g){var k=GS.indexOf(g);return '<div class="grp" data-k="'+k+'"><h3>'+(g.q?'たぶん <b>'+esc(g.q)+'？</b>　':'')+g.items.length+'こ</h3><div class="fs">'+
+      g.items.slice(0,40).map(function(f){return '<button data-id="'+esc(f.id)+'"'+(g.off[f.id]?' class="off"':'')+'><img src="'+esc(f.c||'')+'" loading="lazy"></button>'}).join('')+'</div>'+
+      '<div class="acts">'+(g.q?'<button class="yes" data-a="yes">はい、'+esc(g.q)+'</button>':'')+'<button data-a="pick">名前をえらぶ</button><button class="no" data-a="out">チームの子じゃない</button><button class="later" data-a="later">あとで</button></div></div>'}).join('')
+      +(left.length>show.length?'<button class="more" id="more">もっと見る</button>':''):'<p class="st">ぜんぶ名前が付いています🎉</p>');
+  if($('more'))$('more').onclick=function(){SHOWN+=20;render()}}
+$('view').addEventListener('click',function(e){var gEl=e.target.closest('.grp');if(!gEl)return;var g=GS[+gEl.dataset.k];
+  var fb=e.target.closest('.fs button');if(fb){var id=fb.dataset.id;g.off[id]=!g.off[id];fb.classList.toggle('off',!!g.off[id]);return}
+  var a=e.target.closest('.acts button');if(!a)return;a=a.dataset.a;
+  if(a==='later'){GS.splice(GS.indexOf(g),1);GS.push(g);render();return}
+  if(a==='yes')return assign(g,g.q);if(a==='out')return assign(g,'対象外');
+  if(a==='pick')openPk('<b>このグループはだれ？</b>',function(n){assign(g,n)})});
+function assign(g,n){var ids=g.items.filter(function(f){return !g.off[f.id]});if(!ids.length){toast('顔をえらんでください');return}toast('保存中…');
+  google.script.run.withSuccessHandler(function(){ids.forEach(function(f){f.n=n;f.how='手'});
+    var rest=g.items.filter(function(f){return g.off[f.id]});g.items=rest;g.off={};
+    /* 外した顔は1つずつのグループにもどす */
+    if(rest.length>1){GS.splice(GS.indexOf(g),1);rest.forEach(function(f){GS.push({items:[f],off:{}})})}
+    B=JRFACE.bank(named(),D.exclude||[]);suggest();render();toast(n==='対象外'?'チーム外にしました':n+' にしました（'+ids.length+'こ）')})
+  .withFailureHandler(function(e){alert(e.message||e)}).setFaceNames(PASS,ids.map(function(f){return {id:f.id,n:n}}))}
+function openPk(head,cb){$('pkH').innerHTML=head;var ex={};(D.exclude||[]).forEach(function(n){ex[n]=1});
+  $('pkL').innerHTML=D.roster.map(function(r){return '<button data-n="'+esc(r.name)+'">#'+esc(r.no)+' '+esc(r.name)+(ex[r.name]?'（外す設定）':'')+'</button>'}).join('');
+  [].forEach.call($('pkL').querySelectorAll('button'),function(b){b.onclick=function(){$('pk').classList.remove('on');cb(b.dataset.n)}});$('pk').classList.add('on')}
+$('pkC').onclick=function(){$('pk').classList.remove('on')};$('pk').onclick=function(e){if(e.target===this)this.classList.remove('on')};
+/* 「この子は顔の自動の見分けから外す」設定（コーチ・スタッフ用のパスコードで変えられます） */
+function renderEx(){var ex={};(D.exclude||[]).forEach(function(n){ex[n]=1});
+  $('view').innerHTML='<p class="help">チェックした子は、写真をアップしたときに顔から自動で名前を付けません（候補「◯◯？」も出しません）。写真を開いて手で名前を付けることはできます。'+(ADMIN?'':'<br><b style="color:#ff8a65">変えられるのはコーチ・スタッフ（予定表の管理パスコードを入れた端末）だけです。</b>')+'</p>'+
+    '<div class="ex">'+D.roster.map(function(r){return '<label'+(ex[r.name]?' class="on"':'')+'><input type="checkbox" data-n="'+esc(r.name)+'"'+(ex[r.name]?' checked':'')+(ADMIN?'':' disabled')+'>#'+esc(r.no)+' '+esc(r.name)+'</label>'}).join('')+'</div>';
+  [].forEach.call($('view').querySelectorAll('.ex input'),function(c){c.onchange=function(){var list=[].filter.call($('view').querySelectorAll('.ex input'),function(x){return x.checked}).map(function(x){return x.dataset.n});
+    google.script.run.withSuccessHandler(function(){D.exclude=list;B=JRFACE.bank(named(),list);suggest();renderEx();toast('保存しました')})
+      .withFailureHandler(function(e){c.checked=!c.checked;alert(e.message||e)}).setFaceExclude(ADMIN,list)}})}
+window.__jrBackHook=function(){if($('pk').classList.contains('on')){$('pk').classList.remove('on');return true}return false};
+init();
+</script>
+</body>
+</html>

@@ -32,12 +32,13 @@
   .lb .fx img,.lb .fx .nf{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #ffeb3b;display:flex;align-items:center;justify-content:center;background:#222;font-size:18px;box-sizing:border-box}
   .lb .fx em{font-style:normal;font-size:10.5px;line-height:1.2;max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .lb .fx.q img{border-color:#777}.lb .fx.out img{opacity:.35;border-color:#444}.lb .fx.add .nf{border-style:dashed;color:#ffeb3b}
+  .lb .fx.cand img{border:2px dashed #ffeb3b;opacity:.85}.lb .fx.cand em{color:#ffeb3b}
   .lb .fh{margin:2px 2px 0;font-size:11px;color:#777}
   .pk{position:fixed;inset:0;z-index:260;background:rgba(0,0,0,.6);display:none;align-items:flex-end}.pk.on{display:flex}
   .pkin{background:#141414;border-top:2px solid #ffeb3b;border-radius:16px 16px 0 0;width:100%;max-height:78vh;overflow:auto;padding:14px 14px 22px;box-sizing:border-box}
   .pkh{display:flex;align-items:center;gap:10px;margin-bottom:10px}.pkh img{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #ffeb3b}.pkh b{font-size:15px}
   .pkl{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}.pkl button{border:1px solid #2a2a2a;background:#1c1c1c;color:#eee;border-radius:10px;padding:11px 8px;font-size:13px;font-weight:700;text-align:left}
-  .pkl button.cur{background:#ffeb3b;color:#111}.pkl button.sub{color:#ff8a65;grid-column:span 1}
+  .pkl button.cur{background:#ffeb3b;color:#111}.pkl button.sub{color:#ff8a65;grid-column:span 1}.pkl button.yes{grid-column:1/-1;background:#ffeb3b;color:#111;text-align:center;font-size:14px}
   .pkc{margin-top:12px;width:100%;border:1px solid #333;background:none;color:#bbb;border-radius:999px;padding:11px;font-size:14px}
   .lb .hide{margin-left:auto;border:1px solid #4a2522;background:none;color:#ff6b5e;border-radius:999px;padding:6px 12px;font-size:12px}
   .empty{text-align:center;color:#777;padding:40px 10px;font-size:13px;line-height:1.8}
@@ -77,7 +78,7 @@ main{padding:12px 16px 56px!important}
   <div><h1 data-split>TEAM ALBUM</h1><p>Jr.CLUB市原の思い出</p><div class="tg">POUNDING THE ROCK</div></div>
 </div></header>
 <div style="max-width:720px;margin:0 auto;padding:12px 16px 0"><div class="topnav" style="margin:0"><a class="tile back" href="./">‹ <b>SCHEDULE</b><small>予定表にもどる</small></a></div></div>
-<script src="common.js?v=5"></script>
+<script src="common.js?v=6"></script>
 <script>JR.shim();</script>
 
   
@@ -119,7 +120,7 @@ main{padding:12px 16px 56px!important}
       [].forEach.call($('view').querySelectorAll('.alb'),function(el){el.onclick=function(){var a=al[+el.dataset.i];CUR={t:a.t,sub:md(a.ymd),list:a.list,alb:{a:a.ymd,t:a.t}};render()}});
     }else{var cnt={};inYear().forEach(function(p){p.n.forEach(function(n){cnt[n]=(cnt[n]||0)+1})});
       var names=D.roster.map(function(r){return r.name});Object.keys(cnt).forEach(function(n){if(names.indexOf(n)<0)names.push(n)});
-      $('view').innerHTML='<p class="help">名前を押すと、その子が写っている写真が見られます（顔で自動に見分けているので、たまに間違いもあります。写真を開いて顔を押すと、その場で直せます）<br><a href="'+(D.url||'')+'?mode=faces" target="_top" style="color:#ffeb3b">まとめて名前を付ける（顔の名前付けページ）›</a></p><div class="chips">'+names.map(function(n){var r=D.roster.filter(function(x){return x.name===n})[0];
+      $('view').innerHTML='<p class="help">名前を押すと、その子が写っている写真が見られます（顔で自動に見分けているので、たまに間違いもあります。写真を開いて顔を押すと、その場で直せます）<br><a href="faces.html" target="_top" style="color:#ffeb3b">まとめて名前を付ける・見分けから外す子の設定 ›</a></p><div class="chips">'+names.map(function(n){var r=D.roster.filter(function(x){return x.name===n})[0];
         return '<button data-n="'+esc(n)+'"'+(cnt[n]?'':' disabled')+'>'+(r?'#'+esc(r.no)+' ':'')+esc(n)+'<i>'+(cnt[n]||0)+'</i></button>'}).join('')+'</div>';
       [].forEach.call($('view').querySelectorAll('.chips button'),function(b){b.onclick=function(){var n=b.dataset.n;CUR={t:n,sub:FY+'年度',list:inYear().filter(function(p){return p.n.indexOf(n)>=0}).sort(function(a,b){return a.ymd<b.ymd?1:-1})};render()}});
     }
@@ -153,21 +154,23 @@ main{padding:12px 16px 56px!important}
     google.script.run.withSuccessHandler(function(fs){FACES[id]=fs;if(LIST[IDX]&&LIST[IDX].id===id)drawFaces(p)}).withFailureHandler(function(){$('lbF').innerHTML=''}).getPhotoFaces(PASS,id)}
   function drawFaces(p){var fs=FACES[p.id]||[];
     $('lbF').innerHTML='<div class="fl">'+fs.map(function(f,i){var out=f.n==='対象外';
-      return '<button class="fx'+(out?' out':f.n?'':' q')+'" data-i="'+i+'">'+(f.c?'<img src="'+f.c+'">':'<span class="nf">🏀</span>')+'<em>'+(out?'チーム外':f.n?esc(f.n.split(/\s/)[0]):'だれ？')+'</em></button>'}).join('')+
-      '<button class="fx add" id="fAdd"><span class="nf">＋</span><em>子を追加</em></button></div><p class="fh">名前がちがう時は、顔を押すとその場で直せます</p>';
+      var cand=!out&&!f.n&&f.q; /* 自信がないときの候補（◯◯？） */
+      return '<button class="fx'+(out?' out':f.n?'':cand?' q cand':' q')+'" data-i="'+i+'">'+(f.c?'<img src="'+f.c+'">':'<span class="nf">🏀</span>')+'<em>'+(out?'チーム外':f.n?esc(f.n.split(/\s/)[0]):cand?esc(f.q.split(/\s/)[0])+'？':'だれ？')+'</em></button>'}).join('')+
+      '<button class="fx add" id="fAdd"><span class="nf">＋</span><em>子を追加</em></button></div><p class="fh">名前がちがう時は、顔を押すとその場で直せます（「◯◯？」は自信がない候補です。押して「はい」で決まります）</p>';
     [].forEach.call($('lbF').querySelectorAll('.fx[data-i]'),function(b){b.onclick=function(){pickFace(p,fs[+b.dataset.i])}});
     $('fAdd').onclick=function(){pickAdd(p)}}
   function syncNames(p){var m={};(FACES[p.id]||[]).forEach(function(f){if(f.n&&f.n!=='対象外')m[f.n]=1});p.n=Object.keys(m)}
   function closePk(){$('pk').classList.remove('on')}
   $('pkC').onclick=closePk;$('pk').onclick=function(e){if(e.target===this)closePk()};
   function openPk(head,cur,extra,cb){$('pkH').innerHTML=head;
-    $('pkL').innerHTML=D.roster.map(function(r){return '<button data-n="'+esc(r.name)+'"'+(r.name===cur?' class="cur"':'')+'>#'+esc(r.no)+' '+esc(r.name)+'</button>'}).join('')+
-      extra.map(function(x){return '<button class="sub" data-n="'+esc(x[0])+'">'+esc(x[1])+'</button>'}).join('');
+    $('pkL').innerHTML=extra.filter(function(x){return x[2]}).map(function(x){return '<button class="yes" data-n="'+esc(x[0])+'">'+esc(x[1])+'</button>'}).join('')+D.roster.map(function(r){return '<button data-n="'+esc(r.name)+'"'+(r.name===cur?' class="cur"':'')+'>#'+esc(r.no)+' '+esc(r.name)+'</button>'}).join('')+
+      extra.filter(function(x){return !x[2]}).map(function(x){return '<button class="sub" data-n="'+esc(x[0])+'">'+esc(x[1])+'</button>'}).join('');
     [].forEach.call($('pkL').querySelectorAll('button'),function(b){b.onclick=function(){closePk();cb(b.dataset.n)}});
     $('pk').classList.add('on')}
-  function pickFace(p,f){openPk((f.c?'<img src="'+f.c+'">':'')+'<b>この顔はだれ？</b>',f.n,[['対象外','チームの子じゃない'],['','名前を外す']],function(n){
-    if(n===f.n)return;toast('保存中…');
-    google.script.run.withSuccessHandler(function(){if(n===''&&/-T\d+$/.test(f.id)){FACES[p.id]=FACES[p.id].filter(function(x){return x!==f})}else{f.n=n;f.how='手'}
+  function pickFace(p,f){var cand=!f.n&&f.q&&f.q!=='対象外'?f.q:'';
+    openPk((f.c?'<img src="'+f.c+'">':'')+'<b>'+(cand?'たぶん '+esc(cand)+'？':'この顔はだれ？')+'</b>',f.n,(cand?[[cand,'はい、'+cand+' です',1]]:[]).concat([['対象外','チームの子じゃない'],['','名前を外す']]),function(n){
+    if(n===f.n&&!(n===''&&cand))return;toast('保存中…');
+    google.script.run.withSuccessHandler(function(){if(n===''&&/-T\d+$/.test(f.id)){FACES[p.id]=FACES[p.id].filter(function(x){return x!==f})}else{f.n=n;f.q='';f.how='手'}
       syncNames(p);drawFaces(p);toast(n&&n!=='対象外'?n+' にしました':'直しました')}).withFailureHandler(function(e){alert(e.message||e)}).fixPhotoFace(PASS,f.id,n)})}
   function pickAdd(p){openPk('<b>この写真に写っている子を追加</b>','',[],function(n){toast('保存中…');
     google.script.run.withSuccessHandler(function(r){if(r&&r.id)(FACES[p.id]=FACES[p.id]||[]).push({id:r.id,n:n,c:'',how:'手'});syncNames(p);drawFaces(p);toast(n+' を追加しました')})

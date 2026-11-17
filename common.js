@@ -13,12 +13,12 @@ var JR=(function(){
   function idbPut(map){db().then(function(d){if(!d)return;try{var t=d.transaction('th2','readwrite'),st=t.objectStore('th2');Object.keys(map).forEach(function(k){if(map[k])st.put(map[k],k)})}catch(e){}})}
   // 開いた瞬間に前回の中身を出して、裏で新しいのを取り直す
   var SWR={getAlbumIndex:{key:'jrc_albidx',again:function(){var lb=document.getElementById('lb');return !window.CUR&&!(lb&&lb.classList.contains('on'))}},
-    getUpInit:{key:'jrc_upinit',again:function(){return false}},getRosterData:{key:'jrc_roster2',again:function(){return true}}};
+    getUpInit:{key:'jrc_upinit',again:function(){return false},fresh:function(r){window.__jrUpInitFresh&&window.__jrUpInitFresh(r)}},getRosterData:{key:'jrc_roster2',again:function(){return true}}};
   function call(k,a,s,f){
     if(k==='getAlbumThumbs'){var ids=(a[1]||[]).map(String);idbGet(ids).then(function(have){var miss=ids.filter(function(i){return !have[i]});
         if(!miss.length)return s&&s(have);rpc(k,[a[0],miss]).then(function(r){r=r||{};var lq=r._lq||[];delete r._lq;var keep={};Object.keys(r).forEach(function(i){if(lq.indexOf(i)<0)keep[i]=r[i]});idbPut(keep);s&&s(Object.assign(have,r||{}))},function(e){if(Object.keys(have).length)s&&s(have);else f?f(e):console.error(e)})});return}
     var w=SWR[k];if(w){var c=load(w.key);var sk=JSON.stringify(a);var hit=c&&c.a===sk?c.r:null;if(hit&&!hit.needPass)setTimeout(function(){s&&s(hit)},0);
-      rpc(k,a).then(function(r){save(w.key,{a:sk,r:r});if(!hit||hit.needPass)return s&&s(r);if(JSON.stringify(r)!==JSON.stringify(hit)&&w.again())s&&s(r)},function(e){if(!hit)f?f(e):console.error(e)});return}
+      rpc(k,a).then(function(r){save(w.key,{a:sk,r:r});if(!hit||hit.needPass)return s&&s(r);if(JSON.stringify(r)!==JSON.stringify(hit)){if(w.again())s&&s(r);else if(w.fresh)w.fresh(r)}},function(e){if(!hit)f?f(e):console.error(e)});return}
     rpc(k,a).then(function(r){s&&s(r)},function(e){f?f(e):console.error(e)})}
   function shim(){var mk=function(){var s=null,f=null,o={withSuccessHandler:function(cb){s=cb;return p},withFailureHandler:function(cb){f=cb;return p}};
       var p=new Proxy(o,{get:function(t,k){if(k in t)return t[k];return function(){call(k,[].slice.call(arguments),s,f)}}});return p};
