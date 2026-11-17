@@ -51,7 +51,8 @@ main{padding:12px 16px 56px!important}
   <div><h1 data-split>PHOTO UPLOAD</h1><p>撮った写真をみんなと共有</p><div class="tg">POUNDING THE ROCK</div></div>
 </div></header>
 <div style="max-width:720px;margin:0 auto;padding:12px 16px 0"><div class="topnav" style="margin:0"><a class="tile back" href="./">‹ <b>SCHEDULE</b><small>予定表にもどる</small></a></div></div>
-<script src="common.js?v=5"></script>
+<script src="common.js?v=6"></script>
+<script src="face.js?v=2"></script>
 <script>JR.shim();</script>
 
   
@@ -100,15 +101,12 @@ main{padding:12px 16px 56px!important}
   $('go').onclick=function(){PASS=$('pass').value.trim();init()};
   $('alb').onchange=function(){$('newAlb').style.display=this.value==='new'?'block':'none';$('fbBox').style.display=this.value==='auto'?'block':'none'};
   $('who').onchange=function(){try{localStorage.setItem('jrclub_up_who',this.value.trim())}catch(e){}};
-  function loadFaceApi(v){
-    FAREADY=new Promise(function(res){
-      var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@vladmandic/face-api@'+v+'/dist/face-api.js';
-      s.onload=function(){var M='https://cdn.jsdelivr.net/npm/@vladmandic/face-api@'+v+'/model/';
-        Promise.all([faceapi.nets.tinyFaceDetector.loadFromUri(M),faceapi.nets.faceLandmark68Net.loadFromUri(M),faceapi.nets.faceRecognitionNet.loadFromUri(M)])
-          .then(function(){FA=true;res()}).catch(function(){res()})};
-      s.onerror=function(){res()};document.head.appendChild(s);
-    });
-  }
+  var BANK=null;
+  /* 見本の束を作る（名前が確定した顔ぜんぶ・「外す」子の設定も反映） */
+  function setBank(d){BANK=JRFACE.bank(d.refs||[],d.faceExclude||[])}
+  /* 画面を開いたあと、サーバーから新しい見本（直した名前を含む）が届いたら差しかえる */
+  window.__jrUpInitFresh=function(d){if(d&&!d.needPass&&INIT){INIT.refs=d.refs;INIT.faceExclude=d.faceExclude;setBank(INIT)}};
+  function loadFaceApi(v){setBank(INIT);FAREADY=JRFACE.load(v).then(function(ok){FA=ok})}
   /* 撮影日（EXIF）を読む */
   function exifDate(buf){try{var v=new DataView(buf);if(v.getUint16(0)!==0xFFD8)return '';var o=2;
     while(o<v.byteLength-4){var mk=v.getUint16(o);if(mk===0xFFE1){var st=o+10;if(v.getUint32(o+4)!==0x45786966)return '';
@@ -129,7 +127,6 @@ main{padding:12px 16px 56px!important}
     for(var i=0;i<W*H;i++)g[i]=p[i*4]*.3+p[i*4+1]*.59+p[i*4+2]*.11;
     for(var y=1;y<H-1;y++)for(var i=1;i<W-1;i++){var k=y*W+i,l=4*g[k]-g[k-1]-g[k+1]-g[k-W]-g[k+W];s+=l;s2+=l*l;n++}
     var m=s/n;return s2/n-m*m}
-  function dist(a,b){var s=0;for(var i=0;i<128;i++){var d=a[i]-b[i];s+=d*d}return Math.sqrt(s)}
   function loadImg(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){var buf=r.result,url=URL.createObjectURL(f),im=new Image();
     im.onload=function(){res({im:im,ex:exifDate(buf),url:url})};im.onerror=function(){rej(new Error('読めない写真'))};im.src=url};r.onerror=rej;r.readAsArrayBuffer(f)})}
   async function work(f,cell){
@@ -138,14 +135,14 @@ main{padding:12px 16px 56px!important}
     HASH[h]=1;try{
     var full=canvasOf(im,2400),thumb=canvasOf(im,480),faces=[],score=Math.min(60,Math.round(Math.sqrt(sharp(im))*2));
     if(FA){try{
-      var det=await faceapi.detectAllFaces(canvasOf(im,800),new faceapi.TinyFaceDetectorOptions({inputSize:512,scoreThreshold:.5})).withFaceLandmarks().withFaceDescriptors();
-      var sc=Math.max(im.width,im.height)>800?Math.max(im.width,im.height)/800:1;
-      det.forEach(function(r){var b=r.detection.box;if(b.width<28)return;
-        var cx=(b.x+b.width/2)*sc,cy=(b.y+b.height/2)*sc,sz=Math.max(b.width,b.height)*sc*1.6,c=document.createElement('canvas');c.width=96;c.height=96;
+      /* 顔さがし・見分けは face.js（この端末の中だけで計算） */
+      var det=await JRFACE.detect(full),sc=im.width/full.width;
+      det.forEach(function(r){var b=r.box;
+        var cx=(b.x+b.w/2)*sc,cy=(b.y+b.h/2)*sc,sz=Math.max(b.w,b.h)*sc*1.6,c=document.createElement('canvas');c.width=96;c.height=96;
         c.getContext('2d').drawImage(im,cx-sz/2,cy-sz/2,sz,sz,0,0,96,96);
-        var d=Array.prototype.map.call(r.descriptor,function(x){return Math.round(x*1000)/1000}),nm='',best=0.5;
-        (INIT.refs||[]).forEach(function(p){var e=dist(d,p.d);if(e<best){best=e;nm=p.n}});
-        faces.push({d:d.join(','),c:jpeg(c,9000,0.75),n:nm});score+=Math.min(15,Math.round(b.width/12))});
+        var m=JRFACE.match(r,BANK);
+        /* n=確定した名前、q=候補（◯◯？）、p=自信、y=横顔の度合い、w=顔の大きさ(px) */
+        faces.push({d:r.d.join(','),c:jpeg(c,9000,0.75),n:m.n,q:m.q,p:m.p,y:r.yaw,w:Math.round(b.w*sc)});score+=Math.min(15,Math.round(b.w*800/full.width/12))});
       score+=faces.length?15:0;FACES+=faces.length;
     }catch(e){}}
     var sel=$('alb').value,ymd,title='';
