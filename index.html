@@ -10,7 +10,7 @@
 <style id="apiCss"></style>
 <link rel="stylesheet" href="common.css">
 <link rel="stylesheet" href="club-fonts.css">
-<link rel="stylesheet" href="club.css?v=1">
+<link rel="stylesheet" href="club.css?v=2">
 <style>
 /* 予定表のページだけで使うもの（色・文字・部品は club.css） */
 body { background: var(--bg); color: var(--text); }
@@ -126,5 +126,6 @@ function fetchNew(n){fetch(API,{cache:'no-store'}).then(function(r){return r.jso
 fetchNew(0);
 })();
 </script>
+<script src="club-page.js?v=2"></script>
 </body>
 </html>
