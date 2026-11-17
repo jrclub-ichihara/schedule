@@ -52,7 +52,7 @@ main{padding:12px 16px 56px!important}
 </div></header>
 <div style="max-width:720px;margin:0 auto;padding:12px 16px 0"><div class="topnav" style="margin:0"><a class="tile back" href="./">‹ <b>SCHEDULE</b><small>予定表にもどる</small></a></div></div>
 <script src="common.js?v=6"></script>
-<script src="face.js?v=1"></script>
+<script src="face.js?v=2"></script>
 <script>JR.shim();</script>
 
   
@@ -142,7 +142,7 @@ main{padding:12px 16px 56px!important}
         c.getContext('2d').drawImage(im,cx-sz/2,cy-sz/2,sz,sz,0,0,96,96);
         var m=JRFACE.match(r,BANK);
         /* n=確定した名前、q=候補（◯◯？）、p=自信、y=横顔の度合い、w=顔の大きさ(px) */
-        faces.push({d:r.d.join(','),c:jpeg(c,9000,0.75),n:m.n,q:m.q,p:m.p,y:r.yaw,w:Math.round(b.w*sc),how:m.n?'自':''});score+=Math.min(15,Math.round(b.w*800/full.width/12))});
+        faces.push({d:r.d.join(','),c:jpeg(c,9000,0.75),n:m.n,q:m.q,p:m.p,y:r.yaw,w:Math.round(b.w*sc)});score+=Math.min(15,Math.round(b.w*800/full.width/12))});
       score+=faces.length?15:0;FACES+=faces.length;
     }catch(e){}}
     var sel=$('alb').value,ymd,title='';

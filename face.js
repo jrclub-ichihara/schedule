@@ -60,7 +60,7 @@ var JRFACE=(function(){
 
   /* 見本の束：refs=[{n:名前,d:特徴,how:'手'(人が付けた)|'自'(自動)}] → 1人ごとにまとめ、平均も作る */
   function bank(refs,exclude){var by={},ex={};(exclude||[]).forEach(function(n){ex[n]=1});
-    (refs||[]).forEach(function(r){if(!r||!r.n||r.n==='対象外'||!r.d)return;var v=vec(r.d);(by[r.n]=by[r.n]||{n:r.n,v:[],w:[]}).v.push(v);by[r.n].w.push(r.how==='自'?0.6:1)});
+    (refs||[]).forEach(function(r){if(!r||!r.n||r.n==='対象外'||!r.d)return;var v=vec(r.d);(by[r.n]=by[r.n]||{n:r.n,v:[],w:[]}).v.push(v);by[r.n].w.push(r.how==='手'?1:0.6)});
     var people=Object.keys(by).map(function(n){var p=by[n],m=new Float32Array(128),sw=0;
       p.v.forEach(function(v,i){for(var j=0;j<128;j++)m[j]+=v[j]*p.w[i];sw+=p.w[i]});for(var j=0;j<128;j++)m[j]/=sw;p.mean=m;p.ex=!!ex[n];return p});
     return {people:people,size:(refs||[]).length}}
